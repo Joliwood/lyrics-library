@@ -1,0 +1,59 @@
+# On peut utiliser le # pour écrire des commentaires à destination des développers
+# Un schéma doit conteni la description des entités de notre projet, chaque entité sera représenté par un type (type complexe) qui contient différents attributs.
+type Restaurant {
+  id: Int
+  name: String
+  description: String
+  terrace: Boolean
+  manager_id: Int
+  city: City
+}
+
+## On peut si on le souhaite ajouter des commentaire pour les utilisateurs de l'API qui apparaitront dans la documentation
+"Ville de France"
+type City {
+  "identifiant de la ville"
+  id: Int
+  "nom de la ville"
+  name: String
+  "code postal de la ville"
+  postal_code: String
+  restaurants: [Restaurant]
+}
+
+# le type Query ne réprésente pas une entité en soit, mais liste les points d'entrée de récupération d'information. C'est ici que l'on permettre par enxemple, de récupérer plusieurs resto, un resto en fonction de sonid, etc…
+type Query {
+  # Pour définir le fait que l'on renvoi une collection d'entité on entoure le nom du type avec des crochets
+  restaurants: [Restaurant]
+  # afin de permettre à un utilisateur de ne récupérer qu'un seul restaurant, on peut lui donnée une fenêtre comme un paramètre de fonction, afin de nous préciser l'id de ce restaurant
+  # et grâce au ! on peut rendre cette information obligatoire
+  restaurant(id: Int!): Restaurant
+
+  cities: [City]
+  city(id: Int!): City
+}
+
+# afin de garantir l'ordre d'éxecution des mutation potentiellement multiple demandé par le client, il faut intégrer celle-ci au sein dun type Mutation et non du type Query. Les 2 fonctionnenet basiquement de la même façon a part le fait que les multiples query sont exécutés en parallèle alors que les multiple mutation sont exécutées en séries
+
+type Mutation {
+  addRestaurant(input: RestaurantCreateInput!): Restaurant
+  updateRestaurant(id: Int!, input: RestaurantUpdateInput!): Restaurant
+  # Comme on ne peut pas retourner le restaurant supprimé, car cela n'a aucun sens, alors on retroune un booléen précisant si la suppression c'est bien passé ou non
+  deleteRestaurant(id: Int!): Boolean
+}
+
+input RestaurantCreateInput {
+  name: String!
+  description: String!
+  terrace: Boolean!
+  city_id: Int!
+  manager_id: Int!
+}
+
+input RestaurantUpdateInput {
+  name: String
+  description: String
+  terrace: Boolean
+  city_id: Int
+  manager_id: Int
+}

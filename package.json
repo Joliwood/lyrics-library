@@ -2,9 +2,15 @@
   "name": "lyrics-library",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
   "author": "Guillaume <jolibois.contact@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node .",
+    "dev": "npx nodemon",
+    "resetDB": "sqitch revert -y; sqitch deploy;node ./data/seeding.js"
+},
   "dependencies": {
     "@apollo/server": "^4.9.0",
     "@faker-js/faker": "^8.0.2",
