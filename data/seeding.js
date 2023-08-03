@@ -1,12 +1,5 @@
-/**
- * Ce fichier à pour but d'insérer en BDD des données de restaurants, d'utilisateurs, de villes et
- * de style de cuisine de restaurants.
- *
- * L'exécution de ce script est présente dans le script resetDB
- */
-
 import '../app/helpers/env.loader.js';
-import { faker } from '@faker-js/faker';
+import { Faker } from '@faker-js/faker';
 import debugModule from 'debug';
 
 import db from '../app/db/pg.js';
@@ -15,11 +8,10 @@ const debug = debugModule('seeding');
 
 db.queryCount = 0;
 
-faker.locale = 'fr';
-const NB_MANAGERS = 50;
-const NB_RESTAURANTS = 100;
-const NB_TYPES = 20;
-const NB_CITIES = 200;
+const NB_ARTISTS = 5;
+const NB_ALBUMS = 10;
+const NB_SONGS = 20;
+const NB_GENRES = 2;
 
 function pgQuoteEscape(row) {
   const newRow = {};
@@ -33,233 +25,159 @@ function pgQuoteEscape(row) {
   return newRow;
 }
 
-function generateManagers(nbManagers) {
-  const managers = [];
-  for (let iManager = 0; iManager < nbManagers; iManager += 1) {
-    const manager = {
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
+function generateArtists(nbArtists) {
+  const artists = [];
+  for (let i = 0; i < nbArtists; i += 1) {
+    const artist = {
+      name: new Faker({ locale: 'fr' }).name.firstName(),
     };
-    managers.push(manager);
+    artists.push(artist);
   }
-  return managers;
+  return artists;
 }
 
-async function insertManagers(managers) {
-  await db.query('TRUNCATE TABLE "manager" RESTART IDENTITY CASCADE');
-  const managerValues = managers.map((manager) => `(
-                 '${manager.firstname}',
-                 '${manager.lastname}',
-                 '${manager.email}',
-                 '${manager.password}'
-             )`);
+async function insertArtists(artists) {
+  await db.query('TRUNCATE TABLE "artist" RESTART IDENTITY CASCADE');
+  const artistValues = artists.map((artist) => {
+    const newArtist = pgQuoteEscape(artist);
+    return `(
+            '${newArtist.name}',
+            '${newArtist.country}'
+        )`;
+  });
 
   const queryStr = `
-             INSERT INTO "manager"
+             INSERT INTO "artist"
              (
-                 "firstname",
-                 "lastname",
-                 "email",
-                 "password"
+                 "name",
+                 "country"
              )
              VALUES
-             (
-                 'Yann',
-                 'Guilloux',
-                 'yann@oclock.io',
-                 '$2b$10$h4Dh2fRGAf4YdC.Cqg1yleq41QHmG61B76THHCp03SgMEizvZlscy'
-             ),-- superpass
-             (
-                 'Nicolas',
-                 'Charpin',
-                 'nicolas.charpin@oclock.io',
-                 '$2b$10$h4Dh2fRGAf4YdC.Cqg1yleq41QHmG61B76THHCp03SgMEizvZlscy'
-             ), -- superpass
-             (
-                 'Benjamin',
-                 'Nougadère',
-                 'benjamin.nougadere@oclock.io',
-                 '$2b$10$h4Dh2fRGAf4YdC.Cqg1yleq41QHmG61B76THHCp03SgMEizvZlscy'
-             ), -- superpass
-             ${managerValues}
+             ${artistValues}
              RETURNING id
      `;
   const result = await db.query(queryStr);
   return result.rows;
 }
 
-function generateCookingStyles(nbCookingStyles) {
-  const cookingStyles = [];
-  for (let i = 0; i < nbCookingStyles; i += 1) {
-    const cookingStyle = {
-      label: faker.address.country(),
+function generateGenres(nbGenres) {
+  const genres = [];
+  for (let i = 0; i < nbGenres; i += 1) {
+    const genre = {
+      label: new Faker({ locale: 'fr' }).address.country(),
     };
-    cookingStyles.push(cookingStyle);
+    genres.push(genre);
   }
-  return cookingStyles;
+  return genres;
 }
 
-async function insertCookingStyles(cookingStyles) {
-  await db.query('TRUNCATE TABLE "cooking_style" RESTART IDENTITY CASCADE');
-  const cookingStylesValues = cookingStyles.map((cookingStyle) => {
-    const newCookingStyle = pgQuoteEscape(cookingStyle);
+async function insertGenres(genres) {
+  await db.query('TRUNCATE TABLE "genre" RESTART IDENTITY CASCADE');
+  const genresValues = genres.map((genre) => {
+    const newGenre = pgQuoteEscape(genre);
     return `(
-            '${newCookingStyle.label}'
+            '${newGenre.label}'
         )`;
   });
 
   const queryStr = `
-             INSERT INTO "cooking_style"
+             INSERT INTO "genre"
              (
                  "label"
              )
              VALUES
-             ${cookingStylesValues}
+             ${genresValues}
              RETURNING id
      `;
   const result = await db.query(queryStr);
   return result.rows;
 }
 
-function generateCities(nbCities) {
-  const cities = [];
-  for (let i = 0; i < nbCities; i += 1) {
-    let name = faker.address.city();
+function generateAlbums(nbAlbums, artistIds) {
+  const albums = [];
+  for (let i = 0; i < nbAlbums; i += 1) {
+    let title = new Faker({ locale: 'fr' }).name.firstName();
     // eslint-disable-next-line no-loop-func
-    while (cities.find((city) => city.name === name)) {
-      name = faker.address.city();
+    while (albums.find((album) => album.title === title)) {
+      title = new Faker({ locale: 'fr' }).name.firstName();
     }
 
-    let postalCode = faker.address.zipCode();
-    // eslint-disable-next-line no-loop-func
-    while (cities.find((city) => city.postal_code === postalCode)) {
-      postalCode = faker.address.zipCode();
-    }
-    const city = {
-      name,
-      postal_code: postalCode,
-      geopos: faker.address.nearbyGPSCoordinate(),
+    const album = {
+      title,
+      release_year: new Faker({ locale: 'fr' }).datatype.number({ min: 1900, max: 2023 }),
+      artist_id: artistIds[new Faker({ locale: 'fr' }).datatype.number({ min: 0, max: artistIds.length - 1 })],
     };
-    cities.push(city);
+    albums.push(album);
   }
-  return cities;
+  return albums;
 }
 
-async function insertCities(cities) {
-  await db.query('TRUNCATE TABLE "city" RESTART IDENTITY CASCADE');
-  const citiesValues = cities.map((city) => {
-    const newCity = pgQuoteEscape(city);
+async function insertAlbums(albums) {
+  await db.query('TRUNCATE TABLE "album" RESTART IDENTITY CASCADE');
+  const albumValues = albums.map((album) => {
+    const newAlbum = pgQuoteEscape(album);
     return `(
-            '${newCity.name}',
-            '${newCity.postal_code}',
-            '${newCity.geopos}'
+            '${newAlbum.title}',
+            ${newAlbum.release_year},
+            ${newAlbum.artist_id}
         )`;
   });
   const queryStr = `
-             INSERT INTO "city"
+             INSERT INTO "album"
              (
-                 "name",
-                 "postal_code",
-                 "geopos"
+                 "title",
+                 "release_year",
+                 "artist_id"
              )
              VALUES
-             ${citiesValues}
+             ${albumValues}
              RETURNING id
      `;
   const result = await db.query(queryStr);
   return result.rows;
 }
 
-async function generateRestaurant(nbResto, managerIds, cityIds) {
-  const restaurants = [];
-  for (let i = 0; i < nbResto; i += 1) {
-    let name = `${faker.name.firstName()} ${faker.name.suffix()}`;
+function generateSongs(nbSongs, albumIds) {
+  const songs = [];
+  for (let i = 0; i < nbSongs; i += 1) {
+    let title = `${new Faker({ locale: 'fr' }).name.firstName()} ${new Faker({ locale: 'fr' }).name.suffix()}`;
     // eslint-disable-next-line no-loop-func
-    while (restaurants.find((restaurant) => restaurant.name === name)) {
-      name = `${faker.name.firstName()} ${faker.name.suffix()}`;
+    while (songs.find((song) => song.title === title)) {
+      title = `${new Faker({ locale: 'fr' }).name.firstName()} ${new Faker({ locale: 'fr' }).name.suffix()}`;
     }
-    const restaurant = {
-      name,
-      description: faker.company.catchPhrase(),
-      terrace: faker.datatype.boolean(),
-      manager_id: managerIds[faker.datatype.number({ min: 0, max: managerIds.length - 1 })],
-      city_id: cityIds[faker.datatype.number({ min: 0, max: cityIds.length - 1 })],
+    const song = {
+      title,
+      duration: new Faker({ locale: 'fr' }).datatype.number({ min: 60, max: 600 }), // In seconds
+      lyrics: new Faker({ locale: 'fr' }).lorem.paragraph(),
+      album_id: albumIds[new Faker({ locale: 'fr' }).datatype.number({ min: 0, max: albumIds.length - 1 })],
     };
-    restaurants.push(restaurant);
+    songs.push(song);
   }
-  return restaurants;
+  return songs;
 }
 
-async function insertRestaurant(restaurants) {
-  await db.query('TRUNCATE TABLE "restaurant" RESTART IDENTITY CASCADE');
-  const restaurantValues = restaurants.map((restaurant) => {
-    const newRestaurant = pgQuoteEscape(restaurant);
+async function insertSongs(songs) {
+  await db.query('TRUNCATE TABLE "song" RESTART IDENTITY CASCADE');
+  const songValues = songs.map((song) => {
+    const newSong = pgQuoteEscape(song);
     return `(
-                 'Chez ${newRestaurant.name}',
-                 '${newRestaurant.description}',
-                 ${newRestaurant.terrace},
-                 ${newRestaurant.manager_id},
-                 ${newRestaurant.city_id}
-             )`;
+            '${newSong.title}',
+            ${newSong.duration},
+            '${newSong.lyrics}',
+            ${newSong.album_id}
+        )`;
   });
-
   const queryStr = `
-             INSERT INTO "restaurant"
+             INSERT INTO "song"
              (
-                 "name",
-                 "description",
-                 "terrace",
-                 "manager_id",
-                 "city_id"
+                 "title",
+                 "duration",
+                 "lyrics",
+                 "album_id"
              )
              VALUES
-             ${restaurantValues}
+             ${songValues}
              RETURNING id
-     `;
-  const result = await db.query(queryStr);
-  return result.rows;
-}
-
-function generateRestaurantHasCS(restaurantIds, cookingStyleIds) {
-  const restaurantHasCookingStyles = restaurantIds.map((restaurantId) => {
-    const cookingStyleIdsFree = [...cookingStyleIds];
-    const nbRestaurantCookingStyle = Math.min(
-      faker.datatype.number(10),
-      Math.ceil(cookingStyleIds.length / 3),
-    ) + 1;
-    const cookingStyles = [];
-    for (let i = 0; i < nbRestaurantCookingStyle; i += 1) {
-      const randomCookingStyleIndex = faker.datatype.number(cookingStyleIdsFree.length - 1);
-      const cookingStyleId = cookingStyleIdsFree.splice(randomCookingStyleIndex, 1)[0];
-
-      cookingStyles.push({
-        cookingStyleId,
-        restaurantId,
-      });
-    }
-    return cookingStyles;
-  }).flat();
-  return restaurantHasCookingStyles;
-}
-
-async function insertRestaurantHasCS(restaurantHasCookingStyles) {
-  await db.query('TRUNCATE TABLE "restaurant_has_cooking_style" RESTART IDENTITY CASCADE');
-  const restaurantHasCookingStyleValues = restaurantHasCookingStyles.map((restaurantHasCookingStyle) => (`(
-             ${restaurantHasCookingStyle.cookingStyleId},
-             ${restaurantHasCookingStyle.restaurantId}
-         )`));
-
-  const queryStr = `
-         INSERT INTO "restaurant_has_cooking_style"
-         (
-            "cooking_style_id",
-            "restaurant_id"
-         )
-         VALUES
-         ${restaurantHasCookingStyleValues}
-         RETURNING id
      `;
   const result = await db.query(queryStr);
   return result.rows;
@@ -267,47 +185,38 @@ async function insertRestaurantHasCS(restaurantHasCookingStyles) {
 
 (async () => {
   /**
-      * Générations d'utilisateurs fake
-      * Ajout de ces utilisateurs en BDD
-      */
-  const managers = generateManagers(NB_MANAGERS);
-  const insertedManagers = await insertManagers(managers);
-  debug(`${insertedManagers.length} managers inserted`);
-  const managerIds = insertedManagers.map((manager) => manager.id);
+   * Générations d'artistes fake
+   * Ajout de ces artistes en BDD
+   */
+  const artists = generateArtists(NB_ARTISTS);
+  const insertedArtists = await insertArtists(artists);
+  debug(`${insertedArtists.length} artists inserted`);
+  const artistIds = insertedArtists.map((artist) => artist.id);
 
   /**
-     * Génération des style de cuisine fake
-     * Ajout de ces style de cuisine en BDD
-     */
-  const cookingStyles = generateCookingStyles(NB_TYPES);
-  const insertedCookingStyles = await insertCookingStyles(cookingStyles);
-  debug(`${insertedCookingStyles.length} cookingStyles inserted`);
-  const cookingStyleIds = insertedCookingStyles.map((cookingStyle) => cookingStyle.id);
+   * Génération des genres fake
+   * Ajout de ces genres en BDD
+   */
+  const genres = generateGenres(NB_GENRES);
+  const insertedGenres = await insertGenres(genres);
+  debug(`${insertedGenres.length} genres inserted`);
 
   /**
-     * Génération des villes fake
-     * Ajout de ces villes en BDD
-     */
-  const cities = generateCities(NB_CITIES);
-  const insertedCities = await insertCities(cities);
-  debug(`${insertedCities.length} cities inserted`);
-  const cityIds = insertedCities.map((city) => city.id);
+   * Génération des albums fake
+   * Ajout de ces albums dans la BDD
+   */
+  const albums = await generateAlbums(NB_ALBUMS, artistIds);
+  const insertedAlbums = await insertAlbums(albums);
+  debug(`${insertedAlbums.length} albums inserted`);
+  const albumIds = insertedAlbums.map((album) => album.id);
 
   /**
-      * Génération des restaurants fake
-      * Ajout de ces restaurants dans la BDD
-      */
-  const restaurants = await generateRestaurant(NB_RESTAURANTS, managerIds, cityIds);
-  const insertedRestaurants = await insertRestaurant(restaurants);
-  debug(`${insertedRestaurants.length} movies inserted`);
-  const restaurantIds = insertedRestaurants.map((restaurant) => restaurant.id);
+   * Génération des chansons fake
+   * Ajout de ces chansons dans la BDD
+   */
+  const songs = await generateSongs(NB_SONGS, albumIds);
+  const insertedSongs = await insertSongs(songs);
+  debug(`${insertedSongs.length} songs inserted`);
 
-  /**
-      * Association des restaurants et des styles de cuisine
-      * Ajout de ces associations en BDD
-      */
-  const restaurantHasCookingStyles = generateRestaurantHasCS(restaurantIds, cookingStyleIds);
-  const insertedRestaurantHasCSs = await insertRestaurantHasCS(restaurantHasCookingStyles);
-  debug(`${insertedRestaurantHasCSs.length} restaurant <> cooking style association inserted`);
   db.originalClient.end();
 })();

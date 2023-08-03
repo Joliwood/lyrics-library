@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "npx nodemon",
-    "resetDB": "sqitch revert -y; sqitch deploy;node ./data/seeding.js"
+    "dev": "set DEBUG=app:* npx nodemon --ext js,gql",
+    "resetDB": "sqitch revert -y; sqitch deploy; set DEBUG=* node ./data/seeding.js"
 },
   "dependencies": {
     "@apollo/server": "^4.9.0",

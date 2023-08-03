@@ -1,3 +1,5 @@
+-- Deploy lyrics_library:init to pg
+
 BEGIN;
 
 -- Création des domaines
