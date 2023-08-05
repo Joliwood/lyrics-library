@@ -26,7 +26,7 @@ const server = new ApolloServer({
   resolvers,
 });
 
-const port = process.env.PORT ?? 3000;
+const port = process.env.PGPORT ?? 3000;
 
 // Ensuite on créer et lance le server web HTTP qui pourra réponsre aux requêtes du client.
 const { url } = await startStandaloneServer(server, {
