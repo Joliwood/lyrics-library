@@ -1,9 +1,6 @@
 type Album {
-  # commentaire test du schéma album
-  id: ID!
+  id: Int!
   title: String!
   releaseYear: Int
-  artist: Artist!
-  createdAt: String!
-  updatedAt: String
+  artist_id: Int
 }

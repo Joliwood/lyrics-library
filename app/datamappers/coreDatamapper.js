@@ -1,30 +1,57 @@
-const knex = require('../db/knex.js');
+class CoreDatamapper {
+  tableName;
 
-class CoreDataMapper {
-  constructor(tableName) {
-    this.tableName = tableName;
+  constructor(client) {
+    this.client = client;
+    // Malheureusement je ne peux pas accéder à la valeur de this.tableName de l'instan ce enfant,
+    // dans le contructeur parent. Car la définition de cette propriété n'a pas encore été effectué
+    // a ce stade.
   }
 
-  async findAll() {
-    return knex(this.tableName).select('*');
+  // Pour résoudre le problème je déporte la définition du dataloader dans une méthode autre que le
+  // contructeur, que j'exécuterai dans le dataource après avoir instancié le datamapper
+  init() {
+    this.idLoader = this.client.query
+      .from(this.tableName)
+      .batch(async (query, ids) => {
+        const rows = await query.whereIn('id', ids);
+        return ids.map((id) => rows.find((row) => row.id === id));
+      });
   }
 
-  async findById(id) {
-    return knex(this.tableName).where({ id }).first();
+  /**
+     * Récupération par identifiant
+     * @param {number|number[]} id identifiant ou liste d'identifiants
+     * @returns un enregistrement ou une liste d'enregistrement
+     */
+  async findByPk(id) {
+    const row = await this.client.query.from(this.tableName).where({ id }).first();
+    return row;
   }
 
-  async create(data) {
-    const [id] = await knex(this.tableName).insert(data, 'id');
-    return id;
+  async findAll(params) {
+    const query = this.client.query.from(this.tableName);
+    if (params?.where) {
+      query.where(params?.where);
+    }
+    const rows = await query;
+    return rows;
   }
 
-  async update(id, data) {
-    await knex(this.tableName).where({ id }).update(data);
+  async create(inputData) {
+    const row = await this.client.query.insert(inputData).into(this.tableName);
+    return row;
+  }
+
+  async update(id, inputData) {
+    const row = await this.client.query.from(this.tableName).update(inputData).where({ id });
+    return row;
   }
 
   async delete(id) {
-    await knex(this.tableName).where({ id }).del();
+    const result = await this.client.query.from(this.tableName).where({ id }).del();
+    return result;
   }
 }
 
-module.exports = CoreDataMapper;
+export default CoreDatamapper;

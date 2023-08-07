@@ -1,8 +1,5 @@
 type Artist {
-  id: ID!
+  id: Int!
   name: String!
   country: String
-  albums: [Album]
-  createdAt: String!
-  updatedAt: String
 }

@@ -21,7 +21,7 @@ CREATE TABLE "artist" (
 CREATE TABLE "album" (
   "id" SERIAL PRIMARY KEY,
   "title" TEXT NOT NULL,
-  "release_year" year,
+  "release_year" INT,
   "artist_id" INT NOT NULL REFERENCES "artist" ("id"),
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT now(),
   "updated_at" TIMESTAMPTZ

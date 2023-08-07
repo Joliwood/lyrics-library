@@ -1,21 +1,10 @@
 #query.gql
 
 type Query {
-  # Récupérer tous les artistes
   allArtists: [Artist]
-
-  # Récupérer un artiste par ID
-  artist(id: Int!): Artist
-
-  # Récupérer tous les albums
+  artist(id: ID!): Artist
   allAlbums: [Album]
-
-  # Récupérer un album par ID
-  album(id: Int!): Album
-
-  # Récupérer toutes les chansons
+  album(id: ID!): Album
   allSongs: [Song]
-
-  # Récupérer une chanson par ID
   song(id: Int!): Song
 }

@@ -1,9 +1,11 @@
 type Song {
-  id: ID!
+  id: Int!
   title: String!
   duration: Int!
   lyrics: String
-  album: Album!
-  createdAt: String!
-  updatedAt: String
+  album_id: Int!
+}
+
+type Query {
+  songs: [Song]
 }
