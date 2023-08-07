@@ -1,0 +1,9 @@
+type Album {
+  # commentaire test du schéma album
+  id: ID!
+  title: String!
+  releaseYear: Int
+  artist: Artist!
+  createdAt: String!
+  updatedAt: String
+}

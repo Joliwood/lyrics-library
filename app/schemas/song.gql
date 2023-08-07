@@ -1,0 +1,9 @@
+type Song {
+  id: ID!
+  title: String!
+  duration: Int!
+  lyrics: String
+  album: Album!
+  createdAt: String!
+  updatedAt: String
+}

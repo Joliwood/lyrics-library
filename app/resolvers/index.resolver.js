@@ -1,61 +1,20 @@
-import restaurantDatamapper from '../datamappers/restaurant.js';
-import cityDatamapper from '../datamappers/city.js';
-
-export default {
-  // Dans le resolver on doit respecter le format du schéma, et lister pour chaque chose que l'on
-  // veut expliquer les attributs sous forme de méthode JS Pour le type Query
+const resolvers = {
   Query: {
-    // on a un attribut "restaurants" du type Query On va retourner une valeur qui respecte le
-    // format décrit dans le schéma. Ici on doit retourné un tableau de "Restaurant"
-    // ([Restaurant]) sachant qu'un restaurant est un objet qui doit contenir les propriétés
-    // listées en tant qu'attribut dans le type "Restaurant"
-    /*
-        [
-          {
-            id: 1, name: 'le super resto',
-            description: 'Wahoo il est génial',
-            terrace: false,
-            manager_id: 1,
-            city_id: 2
-          },
-          {…},
-          …
-        ]
-        */
-    async restaurants() {
-      const rows = await restaurantDatamapper.findAll();
-      // par contre ici, je vais renvoyer plus de propriété qu'attendu, par exemple
-      // "created_at", mais c'est pas grave graphQL va les ignorer.
-      return rows;
+    artist: async (parent, { id }, context) => {
+      const artist = await context.dataSources.coreDataMapper.getArtistById(id);
+      return artist;
     },
-
-    async restaurant(_, args) {
-      const row = await restaurantDatamapper.findByPk(args.id);
-      return row;
-    },
-
-    async cities() {
-      const rows = await cityDatamapper.findAll();
-      return rows;
-    },
-
-    async city(_, args) {
-      const row = await cityDatamapper.findByPk(args.id);
-      return row;
+    album: async (parent, { id }, context) => {
+      const album = await context.dataSources.coreDataMapper.getAlbumById(id);
+      return album;
     },
   },
-
-  Restaurant: {
-    async city(parent) {
-      const row = await cityDatamapper.findByPk(parent.city_id);
-      return row;
-    },
-  },
-
-  City: {
-    async restaurants(parent) {
-      const rows = await restaurantDatamapper.findByCity(parent.id);
-      return rows;
+  Artist: {
+    albums: async (parent, args, context) => {
+      const albums = await context.dataSources.coreDataMapper.getAlbumsByArtistId(parent.id);
+      return albums;
     },
   },
 };
+
+export default resolvers;

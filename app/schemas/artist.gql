@@ -1,0 +1,8 @@
+type Artist {
+  id: ID!
+  name: String!
+  country: String
+  albums: [Album]
+  createdAt: String!
+  updatedAt: String
+}
