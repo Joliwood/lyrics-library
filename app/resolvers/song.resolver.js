@@ -11,13 +11,13 @@ export default {
     //   return row;
     // },
   
-  Query: {
+  // Query: {
   
-    songs: async () => {
-      const rows = await songDatamapper.findAll();
-      return rows;
-    }
+  //   songs: async () => {
+  //     const rows = await songDatamapper.findAll();
+  //     return rows;
+  //   }
       
-  }
+  // }
   };
   

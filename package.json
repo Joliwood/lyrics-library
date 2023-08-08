@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "set DEBUG=app:* npx nodemon --ext js,gql",
+    "dev": "set DEBUG=app:* & npx nodemon --ext js,gql",
     "resetDB": "sqitch revert -y & sqitch deploy & set DEBUG=* node ./data/seeding.js"
   },
   "dependencies": {

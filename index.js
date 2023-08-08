@@ -10,10 +10,10 @@ import resolvers from './app/resolvers/index.resolver.js';
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  cors: {
-    origin: true, // Allow requests from any origin
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  },
+  // cors: {
+  //   origin: true, // Allow requests from any origin
+  //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  // },
 });
 
 const port = process.env.PGPORT ?? 3000;
