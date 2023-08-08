@@ -4,6 +4,18 @@ class CoreDatamapper {
   constructor(client) {
       this.client = client;
   }
+    
+    async findByPk(id) {
+        const preparedQuery = `
+                SELECT * FROM "${this.tableName}"
+                WHERE id = ${id}
+            `;
+  
+        const result = await this.client.query(preparedQuery);
+        console.log(result.rows[0]);
+  
+        return result.rows[0];
+    }
 
   async findAll(params) {
       let filter = '';
@@ -43,6 +55,8 @@ class CoreDatamapper {
 
       return result.rows;
   }
+    
+    
 }
 
 export default CoreDatamapper;

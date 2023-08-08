@@ -1,4 +1,4 @@
-import songDatamapper from '../datamappers/song.js';
+import songDatamapper from '../../datamappers/song.js';
 
 export default {
     // async album(parent, _, { dataSources }) {

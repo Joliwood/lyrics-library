@@ -1,0 +1,28 @@
+type Artist {
+  id: Int!
+  name: String!
+  country: String
+}
+
+type Album {
+  id: Int!
+  title: String!
+  release_year: Int
+  artist: Artist
+  artits_id: Int
+}
+
+type Song {
+  id: Int!
+  "Title of the song"
+  title: String!
+  "Duration in seconds of the song"
+  duration: Int!
+  "The Lyrics, if there is in"
+  lyrics: String
+  album_id: Int!
+}
+
+type Query {
+  albums: [Album]
+}

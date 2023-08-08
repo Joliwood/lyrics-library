@@ -17,7 +17,7 @@ export default {
   originalClient: pool,
 
   async query(...params) {
-    await pool.connect();
+    // await pool.connect();
     debugSql(...params);
     queryCount += 1;
     debugSql(`Req n°${queryCount}`);

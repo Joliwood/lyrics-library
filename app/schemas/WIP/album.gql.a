@@ -2,5 +2,10 @@ type Album {
   id: Int!
   title: String!
   releaseYear: Int
+  artist: Artist
   artist_id: Int
+}
+
+type Query {
+  albums: [Album]
 }

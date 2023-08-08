@@ -4,9 +4,10 @@ import { EOL } from 'os';
 
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const schemaNames = [
+  'schema'
   // 'album',
   // 'artist',
-  'song',
+  // 'song',
   // 'query'
 ];
 const schemas = schemaNames.map((schemaName) =>  readFileSync(`${dirname}${schemaName}.gql`, 'utf-8'));
