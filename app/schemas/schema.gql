@@ -10,7 +10,7 @@ type Album {
   title: String!
   release_year: Int
   artist: Artist
-  artits_id: Int
+  artist_id: Int
 }
 
 type Song {
@@ -31,24 +31,15 @@ type Query {
   song(id: Int!): Song
 }
 
-# Les Mutations n'acceptent pas de type directement, obligé de créer un input copié d'Artist
-input ArtistInput {
-  id: Int
-  name: String
-  country: String
-}
-
 input AlbumCreateInput {
   title: String!
-  release_year: Int!
-  artist: ArtistInput
+  release_year: Int
   artist_id: Int
 }
 
 input AlbumUpdateInput {
   title: String
   release_year: Int
-  artist: ArtistInput
   artist_id: Int
 }
 

@@ -75,7 +75,7 @@ class CoreDatamapper {
     return row;
   }
 
-  async update({ id }, inputData) {
+  async update(id, inputData) {
     const fieldsAndPlaceholders = [];
     let indexPlaceholder = 1;
     const values = [];
@@ -100,6 +100,10 @@ class CoreDatamapper {
     return row;
   }
 
+  async delete(id) {
+    const result = await this.client.query(`DELETE FROM "${this.tableName}" WHERE id = $1`, [id]);
+    return !!result.rowCount;
+  }
 
 }
 

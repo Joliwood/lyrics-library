@@ -35,11 +35,12 @@ export default {
       return row;
     },
     async updateAlbum(_, args) {
-      const row = await albumDatamapper.update(args.input);
+      const row = await albumDatamapper.update(args.id, args.input);
       return row;
     },
-    deleteAlbum(_, args) {
-
+    async deleteAlbum(_, args) {
+      const result = await albumDatamapper.delete(args.id);
+      return result;
     }
 
   },
