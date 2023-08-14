@@ -2,6 +2,7 @@ type Artist {
   id: Int!
   name: String!
   country: String
+  albums: [Album]
 }
 
 type Album {
@@ -25,4 +26,35 @@ type Song {
 
 type Query {
   albums: [Album]
+  album(id: Int!): Album
+  songs: [Song]
+  song(id: Int!): Song
+}
+
+# Les Mutations n'acceptent pas de type directement, obligé de créer un input copié d'Artist
+input ArtistInput {
+  id: Int
+  name: String
+  country: String
+}
+
+input AlbumCreateInput {
+  title: String!
+  release_year: Int!
+  artist: ArtistInput
+  artist_id: Int
+}
+
+input AlbumUpdateInput {
+  title: String
+  release_year: Int
+  artist: ArtistInput
+  artist_id: Int
+}
+
+type Mutation {
+  addAlbum(input: AlbumCreateInput!): Album
+  # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
+  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
+  deleteAlbum(id: Int!): Boolean
 }

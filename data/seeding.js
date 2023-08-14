@@ -1,6 +1,6 @@
 import '../app/helpers/env.loader.js';
 import { fakerFR as faker } from '@faker-js/faker';
-// import debugModule from 'debug';
+// import debugModule from 'debug'; 
 
 import db from '../app/db/pg.js';
 

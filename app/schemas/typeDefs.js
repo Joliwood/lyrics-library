@@ -10,7 +10,7 @@ const schemaNames = [
   // 'song',
   // 'query'
 ];
-const schemas = schemaNames.map((schemaName) =>  readFileSync(`${dirname}${schemaName}.gql`, 'utf-8'));
+const schemas = schemaNames.map((schemaName) => readFileSync(`${dirname}${schemaName}.gql`, 'utf-8'));
 
 const typeDefs = `#graphql
   ${schemas.join(EOL)}
