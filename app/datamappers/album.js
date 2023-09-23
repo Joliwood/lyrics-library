@@ -1,19 +1,11 @@
-import CoreDatamapper from './coreDatamapper';
+import CoreDatamapper from './coreDatamapper.js';
 
 class Album extends CoreDatamapper {
   tableName = 'album';
 
   async findByArist(artistId) {
-    const preparedQuery = {
-      text: `
-        SELECT *
-        FROM "${this.tableName}"
-        WHERE "artist_id" = $1`,
-      values: [artistId],
-    };
-
-    const result = await this.client.query(preparedQuery);
-    return result.rows;
+    const rows = await this.client.query.from(this.tableName).where({ artist_id: artistId });
+    return rows;
   }
 }
 

@@ -1,8 +1,8 @@
-import '../app/helpers/env.loader';
+import '../app/helpers/env.loader.js';
 import { fakerFR as faker } from '@faker-js/faker';
 // import debugModule from 'debug';
 
-import db from '../app/db/pg';
+import db from '../app/db/pg.js';
 
 // const debug = debugModule('seeding');
 

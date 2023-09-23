@@ -1,28 +1,24 @@
-import albumDatamapper from '../datamappers/album';
-import songDatamapper from '../datamappers/song';
-import artistDatamapper from '../datamappers/artist';
-
 export default {
 
   Query: {
 
-    async albums() {
-      const rows = await albumDatamapper.findAll();
+    async albums(_, __, { dataSources }) {
+      const rows = await dataSources.origin.albumDatamapper.findAll();
       return rows;
     },
 
-    async album(_, args) {
-      const row = await albumDatamapper.findByPk(args.id);
+    async album(_, args, { dataSources }) {
+      const row = await dataSources.origin.albumDatamapper.findByPk(args.id);
       return row;
     },
 
-    async songs() {
-      const row = await songDatamapper.findAll();
+    async songs(_, __, { dataSources }) {
+      const row = await dataSources.origin.songDatamapper.findAll();
       return row;
     },
 
-    async song(_, args) {
-      const row = await songDatamapper.findByPk(args.id);
+    async song(_, args, { dataSources }) {
+      const row = await dataSources.origin.songDatamapper.findByPk(args.id);
       return row;
     },
 
@@ -30,16 +26,16 @@ export default {
 
   Mutation: {
 
-    async addAlbum(_, args) {
-      const row = await albumDatamapper.create(args.input);
+    async addAlbum(_, args, { dataSources }) {
+      const row = await dataSources.origin.albumDatamapper.create(args.input);
       return row;
     },
-    async updateAlbum(_, args) {
-      const row = await albumDatamapper.update(args.id, args.input);
+    async updateAlbum(_, args, { dataSources }) {
+      const row = await dataSources.origin.albumDatamapper.update(args.id, args.input);
       return row;
     },
-    async deleteAlbum(_, args) {
-      const result = await albumDatamapper.delete(args.id);
+    async deleteAlbum(_, args, { dataSources }) {
+      const result = await dataSources.origin.albumDatamapper.delete(args.id);
       return result;
     },
 
@@ -47,8 +43,8 @@ export default {
 
   Album: {
 
-    async artist(parent) {
-      const row = await artistDatamapper.findByPk(parent.artist_id);
+    async artist(parent, _, { dataSources }) {
+      const row = await dataSources.origin.artistDatamapper.findByPk(parent.artist_id);
       return row;
     },
 
@@ -56,8 +52,8 @@ export default {
 
   Artist: {
 
-    async albums(parent) {
-      const rows = await albumDatamapper.findByArist(parent.id);
+    async albums(parent, _, { dataSources }) {
+      const rows = await dataSources.origin.albumDatamapper.findByArist(parent.id);
       return rows;
     },
 
