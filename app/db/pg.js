@@ -10,6 +10,7 @@ const pool = new pg.Pool({
   // We can't use PGUSER because it's already used by Postgres
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
+  ssl: true,
 });
 
 let queryCount = 0;

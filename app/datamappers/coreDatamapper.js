@@ -6,7 +6,7 @@ class CoreDatamapper {
   }
 
   async findByPk(id) {
-    const row = await this.client.query.from(this.tableName).where({ id });
+    const row = await this.client.query.from(this.tableName).where({ id }).first();
     return row;
   }
 

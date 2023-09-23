@@ -7,7 +7,7 @@ import typeDefs from './app/schemas/typeDefs.js';
 
 import resolvers from './app/resolvers/index.resolver.js';
 
-import OriginDatasource from './app/datasources/origin.datasource.js';
+import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
 
 // une fois les 2 parties récupérés on les envoi au server Apollo
 // Le server Apollo peut être considéré comm: eun middleware
@@ -28,16 +28,17 @@ const { url } = await startStandaloneServer(server, {
     const { cache } = server;
     return {
       dataSources: {
-        origin: new OriginDatasource({
+        lyricsdb: new LyricsDbDatasource({
           cache,
           knexConfig: {
             client: 'pg',
             connection: {
-              host: process.env.PGHOST,
-              port: process.env.PGPORT,
-              user: process.env.PGUSER,
-              password: process.env.PGPASSWORD,
-              database: process.env.PGDATABASE,
+              user: process.env.PG_USER,
+              database: process.env.PG_DATABASE,
+              password: process.env.PG_PASSWORD,
+              port: process.env.PG_PORT,
+              host: process.env.PG_HOST,
+              ssl: true,
             },
           },
         }),

@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "set DEBUG=app:* & npx nodemon --ext js,gql",
+    "dev": "set DEBUG=app:* && nodemon index.js",
     "knex:migration": "knex migrate:make",
     "knex:update": "knex migrate:latest",
     "knex:seed": "knex seed:run"

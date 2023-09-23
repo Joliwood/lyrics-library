@@ -3,11 +3,11 @@ import AlbumDatamapper from '../datamappers/album.js';
 import ArtistDatamapper from '../datamappers/artist.js';
 import SongDatamapper from '../datamappers/song.js';
 
-export default class OriginDatasource extends BatchedSQLDataSource {
+export default class LyricsDbDatasource extends BatchedSQLDataSource {
   constructor(config) {
     super(config);
-    this.album = new AlbumDatamapper(this.client);
-    this.artist = new ArtistDatamapper(this.client);
-    this.song = new SongDatamapper(this.client);
+    this.albumDatamapper = new AlbumDatamapper(this.db);
+    this.artistDatamapper = new ArtistDatamapper(this.db);
+    this.songDatamapper = new SongDatamapper(this.db);
   }
 }
