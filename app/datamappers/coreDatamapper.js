@@ -104,7 +104,6 @@ class CoreDatamapper {
     const result = await this.client.query(`DELETE FROM "${this.tableName}" WHERE id = $1`, [id]);
     return !!result.rowCount;
   }
-
 }
 
 export default CoreDatamapper;

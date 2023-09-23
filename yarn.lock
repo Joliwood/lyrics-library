@@ -102,6 +102,14 @@
   resolved "https://registry.yarnpkg.com/@apollo/utils.isnodelike/-/utils.isnodelike-2.0.1.tgz#08a7e50f08d2031122efa25af089d1c6ee609f31"
   integrity sha512-w41XyepR+jBEuVpoRM715N2ZD0xMD413UiJx8w5xnAZD2ZkSJnMJBoIzauK83kJpSgNuR6ywbV29jG9NmxjK0Q==
 
+"@apollo/utils.keyvaluecache@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@apollo/utils.keyvaluecache/-/utils.keyvaluecache-1.0.2.tgz#2bfe358c4d82f3a0950518451996758c52613f57"
+  integrity sha512-p7PVdLPMnPzmXSQVEsy27cYEjVON+SH/Wb7COyW3rQN8+wJgT1nv9jZouYtztWW8ZgTkii5T6tC9qfoDREd4mg==
+  dependencies:
+    "@apollo/utils.logger" "^1.0.0"
+    lru-cache "7.10.1 - 7.13.1"
+
 "@apollo/utils.keyvaluecache@^2.1.0":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@apollo/utils.keyvaluecache/-/utils.keyvaluecache-2.1.1.tgz#f3f79a2f00520c6ab7a77a680a4e1fec4d19e1a6"
@@ -109,6 +117,11 @@
   dependencies:
     "@apollo/utils.logger" "^2.0.1"
     lru-cache "^7.14.1"
+
+"@apollo/utils.logger@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@apollo/utils.logger/-/utils.logger-1.0.1.tgz#aea0d1bb7ceb237f506c6bbf38f10a555b99a695"
+  integrity sha512-XdlzoY7fYNK4OIcvMD2G94RoFZbzTQaNP0jozmqqMudmaGo2I/2Jx71xlDJ801mWA/mbYRihyaw6KJii7k5RVA==
 
 "@apollo/utils.logger@^2.0.0", "@apollo/utils.logger@^2.0.1":
   version "2.0.1"
@@ -257,6 +270,15 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@josephg/resolvable/-/resolvable-1.0.1.tgz#69bc4db754d79e1a2f17a650d3466e038d94a5eb"
   integrity sha512-CtzORUwWTTOTqfVtHaKRJ0I1kNQd1bpn3sUh8I3nJDVY+5/M/Oe1DnEWzPQvqq/xPIIkzzzIP7mfCoAjFRvDhg==
+
+"@nic-jennings/sql-datasource@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@nic-jennings/sql-datasource/-/sql-datasource-0.0.7.tgz#c78cfad7c59f581f0be7ca4ab9e83a9e381e417f"
+  integrity sha512-bjwGJ2i2o9TszUVTA98RX0Awka3C2UYM9t33z/+2Ij/6t/CkgNc42nQSzS0SohfjX0W0f8kVOxO0U+Ku/yJzqw==
+  dependencies:
+    "@apollo/utils.keyvaluecache" "^1.0.1"
+    dataloader "^2.1.0"
+    knex-tiny-logger "^2.1.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -650,7 +672,7 @@ callsites@^3.0.0:
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
-chalk@^4.0.0:
+chalk@^4.0.0, chalk@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -735,6 +757,11 @@ cross-spawn@^7.0.2:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+dataloader@^2.1.0:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.2.2.tgz#216dc509b5abe39d43a9b9d97e6e5e473dfbe3e0"
+  integrity sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==
 
 debug@2.6.9:
   version "2.6.9"
@@ -1611,6 +1638,13 @@ json5@^1.0.2:
   dependencies:
     minimist "^1.2.0"
 
+knex-tiny-logger@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/knex-tiny-logger/-/knex-tiny-logger-2.1.0.tgz#11a7cc9b6979eb9dc34c8c5591abb31eff5f5b81"
+  integrity sha512-XBvxSmUK7B0peWbrvZynggP2l2AhDLJcuIUbxeoHGvC5Hen0WizcXudZOckPaX3nRPnWxkeGdRg6Vq+nt6Q+SA==
+  dependencies:
+    chalk "^4.1.0"
+
 knex@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/knex/-/knex-2.5.1.tgz#a6c6b449866cf4229f070c17411f23871ba52ef9"
@@ -1670,6 +1704,11 @@ long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
+
+"lru-cache@7.10.1 - 7.13.1":
+  version "7.13.1"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.13.1.tgz#267a81fbd0881327c46a81c5922606a2cfe336c4"
+  integrity sha512-CHqbAq7NFlW3RSnoWXLJBxCWaZVBrfa9UEHId2M3AW8iEBurbqduNexEUCGc3SHc6iCYXNJCDi903LajSVAEPQ==
 
 lru-cache@^7.10.1, lru-cache@^7.14.1:
   version "7.18.3"

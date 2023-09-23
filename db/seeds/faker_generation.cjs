@@ -1,4 +1,4 @@
-exports.seed = async function (knex) {
+exports.seed = async (knex) => {
   // Use dynamic import() to load the ES Module
   const { fakerFR: faker } = await import('@faker-js/faker');
 
@@ -17,7 +17,7 @@ exports.seed = async function (knex) {
 
   // Generation of artists
   const artists = [];
-  for (let i = 0; i < NB_ARTISTS; i++) {
+  for (let i = 0; i < NB_ARTISTS; i += 1) {
     artists.push({
       name: faker.person.firstName(),
       country: faker.location.country(),
@@ -31,12 +31,12 @@ exports.seed = async function (knex) {
 
   // Generation of albums with random artist_id
   const albums = [];
-  for (let i = 0; i < NB_ALBUMS; i++) {
+  for (let i = 0; i < NB_ALBUMS; i += 1) {
     albums.push({
       title: faker.word.words(),
       release_year: faker.number.int({ min: 1901, max: 2099 }),
       artist_id: artistIds[faker.number.int(
-        { min: 0, max: artistIds.length - 1 }
+        { min: 0, max: artistIds.length - 1 },
       )],
     });
   }
@@ -48,7 +48,7 @@ exports.seed = async function (knex) {
 
   // Generation of artists
   const songs = [];
-  for (let i = 0; i < NB_SONGS; i++) {
+  for (let i = 0; i < NB_SONGS; i += 1) {
     songs.push({
       title: faker.music.songName(),
       duration: faker.number.int({ min: 30, max: 300 }),
@@ -59,4 +59,4 @@ exports.seed = async function (knex) {
   await knex('song').insert(songs);
 
   knex.destroy();
-}
+};

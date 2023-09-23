@@ -1,6 +1,6 @@
-import albumDatamapper from '../datamappers/album.js';
-import songDatamapper from '../datamappers/song.js';
-import artistDatamapper from '../datamappers/artist.js';
+import albumDatamapper from '../datamappers/album';
+import songDatamapper from '../datamappers/song';
+import artistDatamapper from '../datamappers/artist';
 
 export default {
 
@@ -41,7 +41,7 @@ export default {
     async deleteAlbum(_, args) {
       const result = await albumDatamapper.delete(args.id);
       return result;
-    }
+    },
 
   },
 
@@ -50,7 +50,7 @@ export default {
     async artist(parent) {
       const row = await artistDatamapper.findByPk(parent.artist_id);
       return row;
-    }
+    },
 
   },
 
@@ -59,7 +59,7 @@ export default {
     async albums(parent) {
       const rows = await albumDatamapper.findByArist(parent.id);
       return rows;
-    }
+    },
 
-  }
+  },
 };

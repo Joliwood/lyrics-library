@@ -9,11 +9,14 @@
   "scripts": {
     "start": "node .",
     "dev": "set DEBUG=app:* & npx nodemon --ext js,gql",
-    "resetDB": "sqitch revert -y & sqitch deploy & set DEBUG=* node ./data/seeding.js"
+    "knex:migration": "knex migrate:make",
+    "knex:update": "knex migrate:latest",
+    "knex:seed": "knex seed:run"
   },
   "dependencies": {
     "@apollo/server": "^4.9.0",
     "@faker-js/faker": "^8.0.2",
+    "@nic-jennings/sql-datasource": "^0.0.7",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "dotenv": "^16.3.1",

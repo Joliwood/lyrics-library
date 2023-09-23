@@ -1,5 +1,4 @@
-import CoreDatamapper from './coreDatamapper.js';
-import client from '../db/pg.js';
+import CoreDatamapper from './coreDatamapper';
 
 class Album extends CoreDatamapper {
   tableName = 'album';
@@ -18,4 +17,4 @@ class Album extends CoreDatamapper {
   }
 }
 
-export default new Album(client);
+export default Album;

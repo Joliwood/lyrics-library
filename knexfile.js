@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
 import * as url from 'url';
+import dotenv from 'dotenv';
 
 dotenv.config();
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -39,7 +39,10 @@ const knexConfig = {
       max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations',
+      directory: `${__dirname}/db/migrations`,
+    },
+    seeds: {
+      directory: `${__dirname}/db/seeds`,
     },
   },
 
@@ -58,7 +61,10 @@ const knexConfig = {
       max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations',
+      directory: `${__dirname}/db/migrations`,
+    },
+    seeds: {
+      directory: `${__dirname}/db/seeds`,
     },
   },
 };

@@ -4,7 +4,7 @@ import { EOL } from 'os';
 
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const schemaNames = [
-  'schema'
+  'schema',
   // 'album',
   // 'artist',
   // 'song',

@@ -1,9 +1,10 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import './app/helpers/env.loader.js';
+import './app/helpers/env.loader';
 
-import typeDefs from './app/schemas/typeDefs.js';
-import resolvers from './app/resolvers/index.resolver.js';
+import typeDefs from './app/schemas/typeDefs';
+
+import resolvers from './app/resolvers/index.resolver';
 
 // une fois les 2 parties récupérés on les envoi au server Apollo
 // Le server Apollo peut être considéré comm: eun middleware

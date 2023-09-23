@@ -1,8 +1,7 @@
-import CoreDatamapper from './coreDatamapper.js';
-import client from '../db/pg.js';
+import CoreDatamapper from './coreDatamapper';
 
 class Song extends CoreDatamapper {
   tableName = 'song';
 }
 
-export default new Song(client);
+export default Song;
