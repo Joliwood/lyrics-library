@@ -11,6 +11,7 @@ type Album {
   release_year: Int
   artist: Artist
   artist_id: Int
+  songs: [Song]
 }
 
 type Song {
@@ -27,6 +28,8 @@ type Song {
 type Query {
   albums: [Album]
   album(id: Int!): Album
+  artists: [Artist]
+  artist(id: Int!): Artist
   songs: [Song]
   song(id: Int!): Song
 }

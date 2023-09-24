@@ -5,6 +5,20 @@ class CoreDatamapper {
     this.client = client;
   }
 
+  // Normaly this method should be called in the constructor but this.tableName is not defined yet
+  // So we will make this method disponible and let the datasource call it after each constructor
+  init() {
+    // This idsLoader allows to order all results by id, for every query request
+    this.idsLoader = this.client.query
+      .from(this.tableName)
+      .batch(async (query, ids) => {
+        const rows = await query.whereIn('id', ids);
+        return ids.map((id) => rows.find((row) => row.id === id));
+      });
+
+    // this.i
+  }
+
   async findByPk(id) {
     const row = await this.client.query.from(this.tableName).where({ id }).first();
     return row;

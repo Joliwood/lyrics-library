@@ -9,5 +9,9 @@ export default class LyricsDbDatasource extends BatchedSQLDataSource {
     this.albumDatamapper = new AlbumDatamapper(this.db);
     this.artistDatamapper = new ArtistDatamapper(this.db);
     this.songDatamapper = new SongDatamapper(this.db);
+
+    this.albumDatamapper.init();
+    this.artistDatamapper.init();
+    this.songDatamapper.init();
   }
 }
