@@ -1,14 +1,15 @@
 import { readFileSync } from 'fs';
 import * as url from 'url';
+// EOL = End of line adapted for every OS
 import { EOL } from 'os';
 
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const schemaNames = [
-  'schema',
-  // 'album',
-  // 'artist',
-  // 'song',
-  // 'query'
+  'album',
+  'artist',
+  'song',
+  'query',
+  'mutation',
 ];
 const schemas = schemaNames.map((schemaName) => readFileSync(`${dirname}${schemaName}.gql`, 'utf-8'));
 

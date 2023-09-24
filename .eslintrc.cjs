@@ -9,7 +9,6 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    indent: ['error', 2],
     'import/extensions': ['error', 'always'],
     'no-underscore-dangle': ['error', { allow: ['__dirname'] }],
   },

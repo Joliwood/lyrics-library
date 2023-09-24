@@ -1,0 +1,6 @@
+type Mutation {
+  addAlbum(input: AlbumCreateInput!): Album
+  # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
+  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
+  deleteAlbum(id: Int!): Boolean
+}

@@ -15,8 +15,6 @@ class CoreDatamapper {
         const rows = await query.whereIn('id', ids);
         return ids.map((id) => rows.find((row) => row.id === id));
       });
-
-    // this.i
   }
 
   async findByPk(id) {

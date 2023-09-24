@@ -1,0 +1,11 @@
+type Song {
+  id: Int!
+  "Title of the song"
+  title: String!
+  "Duration in seconds of the song"
+  duration: Int!
+  "The Lyrics, if there is in"
+  lyrics: String
+  album_id: Int!
+  album: Album
+}
