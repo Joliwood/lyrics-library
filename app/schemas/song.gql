@@ -14,4 +14,5 @@ input SongCreateInput {
   title: String!
   duration: Int!
   album_id: Int!
+  lyrics: String
 }

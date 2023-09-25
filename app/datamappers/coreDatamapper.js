@@ -31,13 +31,14 @@ class CoreDatamapper {
     return rows;
   }
 
+  // We have to add [] to the row with .returning('*') so it returns all we ask in the query
   async create(inputData) {
-    const row = await this.client.query.from(this.tableName).insert(inputData);
+    const [row] = await this.client.query.from(this.tableName).insert(inputData).returning('*');
     return row;
   }
 
   async update(id, inputData) {
-    const row = await this.client.query.from(this.tableName).update(inputData).where({ id });
+    const [row] = await this.client.query.from(this.tableName).update(inputData).where({ id }).returning('*');
     return row;
   }
 
