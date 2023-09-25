@@ -32,7 +32,7 @@ class CoreDatamapper {
   }
 
   async create(inputData) {
-    const row = await this.client.query.insert(inputData).into(this.tableName);
+    const row = await this.client.query.from(this.tableName).insert(inputData);
     return row;
   }
 

@@ -9,3 +9,9 @@ type Song {
   album_id: Int!
   album: Album
 }
+
+input SongCreateInput {
+  title: String!
+  duration: Int!
+  album_id: Int!
+}

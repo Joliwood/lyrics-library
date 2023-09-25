@@ -1,9 +1,0 @@
-type Artist {
-  id: Int!
-  name: String!
-  country: String
-}
-
-type Query {
-  artists: [Artist]
-}
