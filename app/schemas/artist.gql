@@ -1,13 +1,17 @@
 type Artist {
   id: Int!
-  email: String!
-  password: String!
+  email: String
   name: String!
   country: String
   albums: [Album]
 }
 
-input loginInput {
+type JWT {
+  token: String
+  expire_at: String
+}
+
+input LoginInput {
   email: String!
   password: String!
 }

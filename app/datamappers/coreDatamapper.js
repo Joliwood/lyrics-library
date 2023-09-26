@@ -24,8 +24,8 @@ class CoreDatamapper {
 
   async findAll(params) {
     const query = this.client.query.from(this.tableName);
-    if (params?.where) {
-      query.where(params?.where);
+    if (params) {
+      query.where(params);
     }
     const rows = await query;
     return rows;
