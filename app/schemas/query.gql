@@ -8,4 +8,6 @@ type Query {
 
   # Request that allow a JsonWebToken recuperation
   login(input: LoginInput!): JWT
+
+  profile: ArtistUser
 }

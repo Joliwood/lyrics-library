@@ -1,6 +1,14 @@
 type Artist {
   id: Int!
-  email: String
+  # email row exists in table but is visible only to the artist himself
+  # email: String
+  name: String!
+  country: String
+  albums: [Album]
+}
+
+type ArtistUser {
+  email: String!
   name: String!
   country: String
   albums: [Album]

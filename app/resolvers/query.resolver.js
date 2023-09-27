@@ -59,12 +59,30 @@ export default {
       });
     }
 
-    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TTL });
+    const userInfos = {
+      name: user.name,
+      email: user.email,
+      country: user.country,
+      gender: user.gender,
+    };
+
+    const token = jwt.sign(userInfos, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TTL });
     const expireAt = new Date();
     expireAt.setSeconds(expireAt.getSeconds() + process.env.JWT_TTL);
     return {
       token,
       expire_at: expireAt,
     };
+  },
+
+  profile(_, __, { user }) {
+    if (!user) {
+      throw new GraphQLError('Authentication failed', {
+        extensions: {
+          code: 'UNAUTHENTICATED',
+        },
+      });
+    }
+    return user;
   },
 };

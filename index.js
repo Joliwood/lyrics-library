@@ -2,12 +2,10 @@ import { ApolloServer } from '@apollo/server';
 // eslint-disable-next-line import/extensions
 import { startStandaloneServer } from '@apollo/server/standalone';
 import './app/helpers/env.loader.js';
-
 import typeDefs from './app/schemas/typeDefs.js';
-
 import resolvers from './app/resolvers/index.resolver.js';
-
 import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
+import login from './app/services/login.service.js';
 
 // une fois les 2 parties récupérés on les envoi au server Apollo
 // Le server Apollo peut être considéré comm: eun middleware
@@ -24,9 +22,14 @@ const port = process.env.PGPORT ?? 3000;
 
 // Ensuite on créer et lance le server web HTTP qui pourra réponsre aux requêtes du client.
 const { url } = await startStandaloneServer(server, {
-  context: async () => {
+  context: async ({ req }) => {
     const { cache } = server;
+    let token;
+    if (req.headers.authorization) {
+      [, token] = req.headers.authorization.split(' ');
+    }
     return {
+      user: login.getUser(token),
       dataSources: {
         lyricsdb: new LyricsDbDatasource({
           cache,
