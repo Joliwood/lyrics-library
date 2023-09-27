@@ -29,7 +29,8 @@ const { url } = await startStandaloneServer(server, {
       [, token] = req.headers.authorization.split(' ');
     }
     return {
-      user: login.getUser(token),
+      req,
+      user: login.getUser(token, req.ip),
       dataSources: {
         lyricsdb: new LyricsDbDatasource({
           cache,

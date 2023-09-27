@@ -35,7 +35,7 @@ export default {
     return row;
   },
 
-  async login(_, args, { dataSources }) {
+  async login(_, args, { dataSources, req }) {
     const { email, password } = args.input;
 
     // Use findByEmail to find a user by their email
@@ -64,6 +64,7 @@ export default {
       email: user.email,
       country: user.country,
       gender: user.gender,
+      ip: req.ip,
     };
 
     const token = jwt.sign(userInfos, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TTL });
@@ -72,6 +73,7 @@ export default {
     return {
       token,
       expire_at: expireAt,
+
     };
   },
 
