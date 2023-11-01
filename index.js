@@ -16,6 +16,12 @@ const server = new ApolloServer({
   //   origin: true, // Allow requests from any origin
   //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   // },
+
+  // WIP //
+  context: async ({ req }) => {
+    user: req.user, // This contains the authenticated user info if available
+    // other context data...
+  },
 });
 
 const port = process.env.PGPORT ?? 3000;
@@ -23,6 +29,7 @@ const port = process.env.PGPORT ?? 3000;
 // Ensuite on créer et lance le server web HTTP qui pourra réponsre aux requêtes du client.
 const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => {
+    // This cache is specific to Appolo server, not to GraphQL
     const { cache } = server;
     let token;
     if (req.headers.authorization) {
