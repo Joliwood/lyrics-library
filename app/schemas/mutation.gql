@@ -4,5 +4,8 @@ type Mutation {
   updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
   deleteAlbum(id: Int!): Boolean
 
+  # We must be connected (JWT check) to update his profile
+  updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
+
   addSong(input: SongCreateInput!): Song
 }

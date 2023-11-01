@@ -23,3 +23,10 @@ input LoginInput {
   email: String!
   password: String!
 }
+
+input ArtistUpdateInput {
+  email: String
+  password: String
+  name: String
+  country: String
+}

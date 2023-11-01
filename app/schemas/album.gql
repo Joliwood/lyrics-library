@@ -10,7 +10,7 @@ type Album {
 input AlbumCreateInput {
   title: String!
   release_year: Int
-  artist_id: Int
+  artist_id: Int!
 }
 
 input AlbumUpdateInput {
