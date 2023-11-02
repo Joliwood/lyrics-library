@@ -73,7 +73,6 @@ export default {
     return {
       token,
       expire_at: expireAt,
-
     };
   },
 

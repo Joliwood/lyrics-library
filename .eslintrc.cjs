@@ -9,6 +9,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
+    'no-console': 'off',
     'import/extensions': ['error', 'always'],
     'no-underscore-dangle': ['error', { allow: ['__dirname'] }],
   },

@@ -5,7 +5,7 @@ import './app/helpers/env.loader.js';
 import typeDefs from './app/schemas/typeDefs.js';
 import resolvers from './app/resolvers/index.resolver.js';
 import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
-import login from './app/services/login.service.js';
+// import login from './app/services/login.service.js';
 
 // une fois les 2 parties récupérés on les envoi au server Apollo
 // Le server Apollo peut être considéré comm: eun middleware
@@ -18,10 +18,9 @@ const server = new ApolloServer({
   // },
 
   // WIP //
-  context: async ({ req }) => {
-    user: req.user, // This contains the authenticated user info if available
-    // other context data...
-  },
+  // context: async ({ req }) => ({
+  //   user: req.user, // This contains the authenticated user info if available
+  // }),
 });
 
 const port = process.env.PGPORT ?? 3000;
@@ -31,13 +30,12 @@ const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => {
     // This cache is specific to Appolo server, not to GraphQL
     const { cache } = server;
-    let token;
-    if (req.headers.authorization) {
-      [, token] = req.headers.authorization.split(' ');
-    }
+    // const user = req.headers.token;
     return {
       req,
-      user: login.getUser(token, req.ip),
+      // If we want to block all the application with authentification
+      // user: login.getUser(req.headers.token, req.ip),
+      user: req.headers.tokenuser,
       dataSources: {
         lyricsdb: new LyricsDbDatasource({
           cache,
@@ -59,5 +57,4 @@ const { url } = await startStandaloneServer(server, {
   listen: { port },
 });
 
-// eslint-disable-next-line no-console
 console.log(`🚀  Server ready at: ${url}`);
