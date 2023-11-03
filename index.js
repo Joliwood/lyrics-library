@@ -5,32 +5,26 @@ import './app/helpers/env.loader.js';
 import typeDefs from './app/schemas/typeDefs.js';
 import resolvers from './app/resolvers/index.resolver.js';
 import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
-// import login from './app/services/login.service.js';
 
-// une fois les 2 parties récupérés on les envoi au server Apollo
-// Le server Apollo peut être considéré comm: eun middleware
+// Once we received the 2 parts, we send them to the Apollo server
+// The Appolo server can be considered as a middleware
 const server = new ApolloServer({
+  // The typeDefs regroups all schemas
   typeDefs,
   resolvers,
   // cors: {
   //   origin: true, // Allow requests from any origin
   //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   // },
-
-  // WIP //
-  // context: async ({ req }) => ({
-  //   user: req.user, // This contains the authenticated user info if available
-  // }),
 });
 
 const port = process.env.PGPORT ?? 3000;
 
-// Ensuite on créer et lance le server web HTTP qui pourra réponsre aux requêtes du client.
+// Then we create and launch the HTTP web server that will be able to respond to client requests
 const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => {
     // This cache is specific to Appolo server, not to GraphQL
     const { cache } = server;
-    // const user = req.headers.token;
     return {
       req,
       // If we want to block all the application with authentification
