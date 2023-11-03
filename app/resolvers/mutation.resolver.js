@@ -18,4 +18,9 @@ export default {
     const row = await dataSources.lyricsdb.songDatamapper.create(args.input);
     return row;
   },
+
+  async updateArtist(_, args, { dataSources }) {
+    const row = await dataSources.lyricsdb.artistDatamapper.update(args.id, args.input);
+    return row;
+  },
 };

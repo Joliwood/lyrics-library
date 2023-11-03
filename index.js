@@ -5,11 +5,11 @@ import './app/helpers/env.loader.js';
 import typeDefs from './app/schemas/typeDefs.js';
 import resolvers from './app/resolvers/index.resolver.js';
 import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
-import login from './app/services/login.service.js';
 
-// une fois les 2 parties récupérés on les envoi au server Apollo
-// Le server Apollo peut être considéré comm: eun middleware
+// Once we received the 2 parts, we send them to the Apollo server
+// The Appolo server can be considered as a middleware
 const server = new ApolloServer({
+  // The typeDefs regroups all schemas
   typeDefs,
   resolvers,
   // cors: {
@@ -20,17 +20,16 @@ const server = new ApolloServer({
 
 const port = process.env.PGPORT ?? 3000;
 
-// Ensuite on créer et lance le server web HTTP qui pourra réponsre aux requêtes du client.
+// Then we create and launch the HTTP web server that will be able to respond to client requests
 const { url } = await startStandaloneServer(server, {
   context: async ({ req }) => {
+    // This cache is specific to Appolo server, not to GraphQL
     const { cache } = server;
-    let token;
-    if (req.headers.authorization) {
-      [, token] = req.headers.authorization.split(' ');
-    }
     return {
       req,
-      user: login.getUser(token, req.ip),
+      // If we want to block all the application with authentification
+      // user: login.getUser(req.headers.token, req.ip),
+      user: req.headers.tokenuser,
       dataSources: {
         lyricsdb: new LyricsDbDatasource({
           cache,
@@ -52,5 +51,4 @@ const { url } = await startStandaloneServer(server, {
   listen: { port },
 });
 
-// eslint-disable-next-line no-console
 console.log(`🚀  Server ready at: ${url}`);

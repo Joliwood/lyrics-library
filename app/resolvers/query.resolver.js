@@ -1,9 +1,18 @@
 import { GraphQLError } from 'graphql';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import login from '../services/login.service.js';
 
 export default {
-  async albums(_, __, { dataSources }) {
+  async albums(_, __, { req, user, dataSources }) {
+    const userAuthorized = login.getUser(user, req.ip);
+    if (!userAuthorized) {
+      throw new GraphQLError('Authentication failed', {
+        extensions: {
+          code: 'UNAUTHENTICATED',
+        },
+      });
+    }
     const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
     return rows;
   },
@@ -73,7 +82,6 @@ export default {
     return {
       token,
       expire_at: expireAt,
-
     };
   },
 
