@@ -2,7 +2,7 @@ import * as url from 'url';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const knexConfig = {
 
@@ -17,10 +17,10 @@ const knexConfig = {
       ssl: true,
     },
     migrations: {
-      directory: `${__dirname}/db/migrations`,
+      directory: `${dirname}/db/migrations`,
     },
     seeds: {
-      directory: `${__dirname}/db/seeds`,
+      directory: `${dirname}/db/seeds`,
     },
   },
 
@@ -39,10 +39,10 @@ const knexConfig = {
       max: 10,
     },
     migrations: {
-      directory: `${__dirname}/db/migrations`,
+      directory: `${dirname}/db/migrations`,
     },
     seeds: {
-      directory: `${__dirname}/db/seeds`,
+      directory: `${dirname}/db/seeds`,
     },
   },
 
@@ -61,10 +61,10 @@ const knexConfig = {
       max: 10,
     },
     migrations: {
-      directory: `${__dirname}/db/migrations`,
+      directory: `${dirname}/db/migrations`,
     },
     seeds: {
-      directory: `${__dirname}/db/seeds`,
+      directory: `${dirname}/db/seeds`,
     },
   },
 };

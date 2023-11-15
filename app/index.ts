@@ -1,10 +1,13 @@
 import { ApolloServer } from '@apollo/server';
 // eslint-disable-next-line import/extensions
 import { startStandaloneServer } from '@apollo/server/standalone';
-import './app/helpers/env.loader.js';
-import typeDefs from './app/schemas/typeDefs.js';
-import resolvers from './app/resolvers/index.resolver.js';
-import LyricsDbDatasource from './app/datasources/lyricsdb.datasource.js';
+import './helpers/env.loader.js';
+// import dotenv from 'dotenv';
+import typeDefs from './schemas/typeDefs.js';
+import resolvers from './resolvers/index.resolver.js';
+import LyricsDbDatasource from './datasources/lyricsdb.datasource.js';
+
+// dotenv.config();
 
 // Once we received the 2 parts, we send them to the Apollo server
 // The Appolo server can be considered as a middleware
@@ -21,7 +24,7 @@ const server = new ApolloServer({
 const port = process.env.PGPORT ?? 3000;
 
 // Then we create and launch the HTTP web server that will be able to respond to client requests
-const { url } = await startStandaloneServer(server, {
+const { url } = await startStandaloneServer<any>(server, {
   context: async ({ req }) => {
     // This cache is specific to Appolo server, not to GraphQL
     const { cache } = server;
@@ -48,7 +51,7 @@ const { url } = await startStandaloneServer(server, {
       },
     };
   },
-  listen: { port },
+  listen: { port } as any,
 });
 
 console.log(`🚀  Server ready at: ${url}`);

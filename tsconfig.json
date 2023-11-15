@@ -7,7 +7,7 @@
       "es2023"
     ],
     /* Modules */
-    "module": "node16",
+    "module": "Node16",
     "rootDir": ".",
     "resolveJsonModule": true,
     /* JavaScript Support */
@@ -22,15 +22,27 @@
     "noImplicitAny": true,
     /* Completeness */
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "noEmit": false,
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ]
+    },
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": [
     "./app/**/*",
+    "./data/**/*",
+    "./types/**/*",
+    "knexfile.js",
+    "app/index.ts",
     ".eslintrc.cjs"
   ],
   "exclude": [
-    "./types/**/*",
-    "./data/**/*",
+    "node_modules",
     "./dist/**/*"
   ]
 }
