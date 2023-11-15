@@ -2,12 +2,9 @@ import { ApolloServer } from '@apollo/server';
 // eslint-disable-next-line import/extensions
 import { startStandaloneServer } from '@apollo/server/standalone';
 import './helpers/env.loader.js';
-// import dotenv from 'dotenv';
 import typeDefs from './schemas/typeDefs.js';
 import resolvers from './resolvers/index.resolver.js';
 import LyricsDbDatasource from './datasources/lyricsdb.datasource.js';
-
-// dotenv.config();
 
 // Once we received the 2 parts, we send them to the Apollo server
 // The Appolo server can be considered as a middleware

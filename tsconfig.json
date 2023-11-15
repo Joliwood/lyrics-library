@@ -22,8 +22,7 @@
     "noImplicitAny": true,
     /* Completeness */
     "skipLibCheck": true,
-    "moduleResolution": "node16",
-    "noEmit": false,
+    "moduleResolution": "Node16",
     "paths": {
       "@/*": [
         "./app/*"

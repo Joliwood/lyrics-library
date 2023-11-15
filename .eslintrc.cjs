@@ -18,9 +18,8 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
-    //! WIP
-    // 'import/extensions': 'off',
-    'import/extensions': ['error', 'always'],
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
     'no-underscore-dangle': ['error', { allow: ['__dirname'] }],
     'react/jsx-filename-extension': 'off',
   },

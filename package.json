@@ -7,7 +7,7 @@
   "author": "Guillaume <jolibois.contact@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "start": "ts-node ./dist/app/index.js",
     "dev": "set DEBUG=app:*,knex* && nodemon ./app/index.ts",
     "lint": "eslint .",
@@ -20,6 +20,7 @@
     "@faker-js/faker": "^8.0.2",
     "@nic-jennings/sql-datasource": "^0.0.7",
     "bcrypt": "^5.1.1",
+    "copyfiles": "^2.4.1",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "dotenv": "^16.3.1",
