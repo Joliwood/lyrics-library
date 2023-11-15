@@ -1,5 +1,5 @@
 import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
-import AlbumDatamapper from '../datamappers/album.js';
+import AlbumDatamapper from '../datamappers/album.ts';
 import ArtistDatamapper from '../datamappers/artist.js';
 import SongDatamapper from '../datamappers/song.js';
 

@@ -1,14 +1,15 @@
 {
   "name": "lyrics-library",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
   "author": "Guillaume <jolibois.contact@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "node .",
-    "dev": "set DEBUG=app:*,knex* && nodemon index.js",
+    "dev": "set DEBUG=app:*,knex* && nodemon index.ts",
+    "lint": "eslint .",
     "knex:migration": "knex migrate:make",
     "knex:update": "knex migrate:latest",
     "knex:seed": "knex seed:run"
@@ -31,9 +32,14 @@
     "pg": "^8.11.2"
   },
   "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
     "eslint": "^8.46.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-plugin-import": "^2.28.0",
-    "eslint-plugin-node": "^11.1.0"
+    "eslint-plugin-node": "^11.1.0",
+    "typescript": "^5.2.2"
   }
 }

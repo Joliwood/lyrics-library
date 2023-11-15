@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    /* Projects */
+    /* Language and Environment */
+    "target": "es2022",
+    "lib": [
+      "es2023"
+    ],
+    /* Modules */
+    "module": "node16",
+    "rootDir": ".",
+    "resolveJsonModule": true,
+    /* JavaScript Support */
+    "allowJs": true,
+    /* Emit */
+    "outDir": "./dist",
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    /* Completeness */
+    "skipLibCheck": true,
+    "moduleResolution": "node16"
+  },
+  "include": [
+    "./app/**/*",
+    ".eslintrc.cjs"
+  ],
+  "exclude": [
+    "./types/**/*",
+    "./data/**/*",
+    "./dist/**/*"
+  ]
+}
