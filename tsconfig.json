@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    /* Projects */
+    /* Language and Environment */
+    "target": "es2022",
+    "lib": [
+      "es2023"
+    ],
+    /* Modules */
+    "module": "Node16",
+    "rootDir": ".",
+    "resolveJsonModule": true,
+    /* JavaScript Support */
+    "allowJs": true,
+    /* Emit */
+    "outDir": "./dist",
+    /* Interop Constraints */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    /* Completeness */
+    "skipLibCheck": true,
+    "moduleResolution": "Node16",
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ]
+    },
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "include": [
+    "./app/**/*",
+    "./data/**/*",
+    "./types/**/*",
+    "knexfile.js",
+    "app/index.ts",
+    ".eslintrc.cjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "./dist/**/*"
+  ]
+}

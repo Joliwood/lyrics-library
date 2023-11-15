@@ -4,13 +4,23 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: ['airbnb-base'],
+  extends: [
+    'airbnb-base',
+    'airbnb-typescript',
+  ],
+  plugins: ['import'],
   parserOptions: {
-    ecmaVersion: 'latest',
+    project: `${__dirname}/tsconfig.json`,
   },
+  ignorePatterns: [
+    'node_modules/',
+    'dist/',
+  ],
   rules: {
     'no-console': 'off',
-    'import/extensions': ['error', 'always'],
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
     'no-underscore-dangle': ['error', { allow: ['__dirname'] }],
+    'react/jsx-filename-extension': 'off',
   },
 };
