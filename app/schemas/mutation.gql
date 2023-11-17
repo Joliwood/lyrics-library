@@ -9,4 +9,7 @@ type Mutation {
   updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
 
   addSong(input: SongCreateInput!): Song
+
+  # It will delete his song and his album before
+  deleteArtist(id: Int!): Boolean
 }

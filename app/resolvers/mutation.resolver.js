@@ -23,4 +23,38 @@ export default {
     const row = await dataSources.lyricsdb.artistDatamapper.update(args.id, args.input);
     return row;
   },
+
+  async deleteArtist(_, args, { dataSources }) {
+    // Find all albums to delete with the artist id
+    const albums = await dataSources.lyricsdb.albumDatamapper.findByArtist(args.id);
+
+    // With all album ids, we can find all songs to delete
+    const albumIds = albums.map((album) => album.id);
+
+    // * An optimisation is possible here, we make one request per album, we could make only one
+    // Regroup all promises (one per album) in one promise to regroup songs ids to delete
+    const songsIds = await Promise.all(
+      albumIds.map(async (albumId) => {
+        const songs = await dataSources.lyricsdb.songDatamapper.findByAlbum(albumId);
+        return songs.map((song) => song.id);
+      }),
+    );
+
+    // Merge all arrays album into one single array
+    const SongIdsRegrouped = songsIds.flat();
+
+    if (albumIds.length > 0) {
+      const result = await dataSources.lyricsdb.albumDatamapper.deleteMultiple(albumIds);
+      return result;
+    }
+
+    if (SongIdsRegrouped.length > 0) {
+      const result = await dataSources.lyricsdb.songDatamapper.deleteMultiple(SongIdsRegrouped);
+      return result;
+    }
+
+    const result = await dataSources.lyricsdb.artistDatamapper.delete(args.id);
+
+    return result;
+  },
 };
