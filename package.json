@@ -11,7 +11,7 @@
     "start": "ts-node ./dist/app/index.js",
     "dev": "set DEBUG=app:*,knex* && nodemon --ext js,ts,gql ./app/index.ts",
     "lint": "eslint .",
-    "knex:migration": "knex migrate:make",
+    "knex:migration": "knex migrate:make update_the_name",
     "knex:update": "knex migrate:latest",
     "knex:seed": "knex seed:run"
   },

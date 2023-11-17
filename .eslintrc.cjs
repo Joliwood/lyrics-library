@@ -15,6 +15,7 @@ module.exports = {
   ignorePatterns: [
     'node_modules/',
     'dist/',
+    'db/',
   ],
   rules: {
     'no-console': 'off',

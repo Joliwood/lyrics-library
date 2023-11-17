@@ -1,18 +1,17 @@
 type Song {
   id: Int!
-  "Title of the song"
   title: String!
-  "Duration in seconds of the song"
+  "Duration in second"
   duration: Int!
-  "The Lyrics, if there is in"
+  cover: String
   lyrics: String
-  album_id: Int!
-  album: Album
+  artist: Artist!
 }
 
 input SongCreateInput {
   title: String!
+  cover: String
   duration: Int!
-  album_id: Int!
   lyrics: String
+  artistId: Int!
 }

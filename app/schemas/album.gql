@@ -1,5 +1,6 @@
 type Album {
   id: Int!
+  cover: String
   title: String!
   release_year: Int
   artist: Artist
@@ -9,12 +10,16 @@ type Album {
 
 input AlbumCreateInput {
   title: String!
+  cover: String
+  songIds: [Int!]!
   release_year: Int
   artist_id: Int!
 }
 
 input AlbumUpdateInput {
   title: String
+  cover: String
+  songIds: [Int]
   release_year: Int
   artist_id: Int
 }

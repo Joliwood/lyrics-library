@@ -3,13 +3,17 @@ type Artist {
   # email row exists in table but is visible only to the artist himself
   # email: String
   name: String!
+  favorites: [SongOnAlbum]
+  picture: String
   country: String
   albums: [Album]
+  songs: [Song]
 }
 
 type ArtistUser {
   email: String!
   name: String!
+  picture: String
   country: String
   albums: [Album]
 }
@@ -27,6 +31,9 @@ input LoginInput {
 input ArtistUpdateInput {
   email: String
   password: String
+  picture: String
+  favorites: [SongOnAlbum]
   name: String
   country: String
+  songs: [Song]
 }
