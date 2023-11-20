@@ -16,6 +16,7 @@ exports.up = (knex) => knex.schema
     table.increments('id').primary();
     table.text('title').notNullable();
     table.integer('release_year');
+    table.text('cover');
     table.integer('artist_id').notNullable().references('id').inTable('artist');
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.timestamp('updated_at');
@@ -27,17 +28,19 @@ exports.up = (knex) => knex.schema
     table.text('cover');
     table.text('lyrics');
     table.integer('artist_id').notNullable().references('id').inTable('artist');
-    table.integer('album_id').notNullable().references('id').inTable('album');
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.timestamp('updated_at');
   })
   .createTable('song_on_album', (table) => {
     table.integer('album_id').notNullable().references('id').inTable('album');
     table.integer('song_id').notNullable().references('id').inTable('song');
+    table.integer('position').notNullable();
+    table.primary(['album_id', 'song_id']);
   })
   .createTable('artist_like_song', (table) => {
     table.integer('artist_id').notNullable().references('id').inTable('artist');
     table.integer('song_id').notNullable().references('id').inTable('song');
+    table.primary(['artist_id', 'song_id']);
   });
 
 /**
