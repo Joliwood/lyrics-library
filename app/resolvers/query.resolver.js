@@ -1,28 +1,28 @@
 import { GraphQLError } from 'graphql';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import login from '../services/login.service.js';
+// import login from '../services/login.service.js';
 
 export default {
-  async albums(_, __, { req, user, dataSources }) {
-    const userAuthorized = login.getUser(user, req.ip);
-    if (!userAuthorized) {
-      throw new GraphQLError('Authentication failed', {
-        extensions: {
-          code: 'UNAUTHENTICATED',
-        },
-      });
-    }
-    const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
-    return rows;
-  },
+  // async albums(_, __, { req, user, dataSources }) {
+  //   const userAuthorized = login.getUser(user, req.ip);
+  //   if (!userAuthorized) {
+  //     throw new GraphQLError('Authentication failed', {
+  //       extensions: {
+  //         code: 'UNAUTHENTICATED',
+  //       },
+  //     });
+  //   }
+  //   const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
+  //   return rows;
+  // },
 
-  async album(_, args, { dataSources }) {
-    // All findByPk can be replace here by idsLoader to use same method most of the time
-    // but for single query, it will not improve speed response
-    const row = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(args.id);
-    return row;
-  },
+  // async album(_, args, { dataSources }) {
+  //   // All findByPk can be replace here by idsLoader to use same method most of the time
+  //   // but for single query, it will not improve speed response
+  //   const row = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(args.id);
+  //   return row;
+  // },
 
   async songs(_, __, { dataSources }) {
     const rows = await dataSources.lyricsdb.songDatamapper.findAll();
@@ -34,15 +34,15 @@ export default {
     return row;
   },
 
-  async artists(_, __, { dataSources }) {
-    const rows = await dataSources.lyricsdb.artistDatamapper.findAll();
-    return rows;
-  },
+  // async artists(_, __, { dataSources }) {
+  //   const rows = await dataSources.lyricsdb.artistDatamapper.findAll();
+  //   return rows;
+  // },
 
-  async artist(_, args, { dataSources }) {
-    const row = await dataSources.lyricsdb.artistDatamapper.idsLoader.load(args.id);
-    return row;
-  },
+  // async artist(_, args, { dataSources }) {
+  //   const row = await dataSources.lyricsdb.artistDatamapper.idsLoader.load(args.id);
+  //   return row;
+  // },
 
   async login(_, args, { dataSources, req }) {
     const { email, password } = args.input;

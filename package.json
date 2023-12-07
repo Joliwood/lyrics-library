@@ -1,7 +1,7 @@
 {
   "name": "lyrics-library",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "app/index.ts",
   "type": "module",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
   "author": "Guillaume <jolibois.contact@gmail.com>",
