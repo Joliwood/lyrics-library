@@ -1,8 +1,26 @@
 export type ArtistLikeSongRow = {
-  artist_id: number, song_id: number
+  artist_id: number,
+  song_id: number,
 };
 
-export type AlbumRows = {
+export type SongOnAlbumRow = {
+  album_id: number,
+  song_id: number,
+  position: number,
+};
+
+export type ArtistRow = {
+  id: number,
+  name: string,
+  picture?: string,
+  country?: string,
+  // Sensitive data, only present in profile
+  // email?: string,
+  created_at: Date,
+  updated_at?: Date,
+};
+
+export type AlbumRow = {
   id: number,
   title: string,
   release_year?: number,

@@ -1,3 +1,5 @@
+import type { ArtistRow } from '../../types/index.d.ts';
+
 export default {
   // async album(parent, _, { dataSources }) {
   //   // We can replace findByPk by an idLoader,
@@ -7,6 +9,16 @@ export default {
   //   const rows = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(parent.album_id);
   //   return rows;
   // },
+
+  async artist(parent: any, _: any, { dataSources }: any) {
+    const artist: ArtistRow = await (
+      dataSources
+        .lyricsdb
+        .artistDatamapper
+        .findBySong(parent.id)
+    );
+    return artist;
+  },
 
   async like(parent: any, _: any, { dataSources }: any) {
     const rows = await (
@@ -26,5 +38,15 @@ export default {
         .countBySong(parent.id)
     );
     return count;
+  },
+
+  async songOnAlbum(parent: any, _: any, { dataSources }: any) {
+    const rows = await (
+      dataSources
+        .lyricsdb
+        .songOnAlbumDatamapper
+        .findBySong(parent.id)
+    );
+    return rows;
   },
 };

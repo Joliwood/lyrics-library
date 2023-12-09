@@ -1,8 +1,8 @@
-import type { AlbumRows, ArtistLikeSongRow } from '../../types/index.d.ts';
+import type { AlbumRow, ArtistLikeSongRow } from '../../types/index.d.ts';
 
 export default {
   async albums(parent: any, _: any, { dataSources }: any) {
-    const rows: AlbumRows[] = await (
+    const rows: AlbumRow[] = await (
       dataSources
         .lyricsdb
         .albumDatamapper

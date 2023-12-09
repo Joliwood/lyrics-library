@@ -1,5 +1,5 @@
 type Song {
-  artist: Artist!
+  artist: Artist
   cover: String
   "Duration in second"
   duration: Int!

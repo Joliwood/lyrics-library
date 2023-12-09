@@ -8,7 +8,7 @@ class Song extends CoreDatamapper {
     const rows: SongRow[] = await (
       this.client.query
         .from(this.tableName)
-        .where({ album_id: albumId })
+        .where({ id: albumId })
     );
     return rows;
   }
