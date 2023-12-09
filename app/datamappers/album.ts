@@ -1,10 +1,15 @@
 import CoreDatamapper from './coreDatamapper.js';
+import type { AlbumRows } from '../../types/index.d.ts';
 
 class Album extends CoreDatamapper {
   tableName = 'album';
 
-  async findByArtist(artistId: any) {
-    const rows = await this.client.query.from(this.tableName).where({ artist_id: artistId });
+  async findByArtist(artistId: number) {
+    const rows: AlbumRows[] = await (
+      this.client.query
+        .from(this.tableName)
+        .where({ artist_id: artistId })
+    );
     return rows;
   }
 }
