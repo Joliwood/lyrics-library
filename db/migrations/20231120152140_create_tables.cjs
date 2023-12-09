@@ -8,6 +8,7 @@ exports.up = (knex) => knex.schema
     table.text('name').notNullable();
     table.text('picture');
     table.text('country');
+    table.text('password').notNullable();
     table.text('email').unique();
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable();
     table.timestamp('updated_at');

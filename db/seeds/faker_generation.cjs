@@ -23,8 +23,16 @@ exports.seed = async (knex) => {
       picture: faker.internet.avatar(),
       country: faker.location.country(),
       email: faker.internet.email(),
+      password: faker.internet.password(),
     });
   }
+  artists.push({
+    name: 'admin',
+    picture: faker.internet.avatar(),
+    country: 'France',
+    email: 'admin@gmail.com',
+    password: 'admin',
+  })
   await knex('artist').insert(artists);
 
   // Get the IDs of the inserted artists
