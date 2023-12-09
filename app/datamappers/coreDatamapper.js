@@ -46,6 +46,12 @@ class CoreDatamapper {
     const result = await this.client.query.from(this.tableName).where({ id }).del();
     return result;
   }
+
+  // ids had to be an array of ids = array of numbers
+  async deleteMultiple(ids) {
+    const result = await this.client.query.from(this.tableName).whereIn('id', ids).del();
+    return result;
+  }
 }
 
 export default CoreDatamapper;

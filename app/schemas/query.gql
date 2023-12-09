@@ -1,12 +1,12 @@
 type Query {
-  albums: [Album]
   album(id: Int!): Album
-  artists: [Artist]
+  albums: [Album]
   artist(id: Int!): Artist
-  songs: [Song]
+  artists: [Artist]
   song(id: Int!): Song
+  songs: [Song]
 
-  # Request that allow a JsonWebToken recuperation
+  
   login(input: LoginInput!): JWT
 
   profile: ArtistUser

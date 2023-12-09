@@ -1,0 +1,5 @@
+type SongOnAlbum {
+  album_id: Int!
+  song_id: Int!
+  position: Int!
+}

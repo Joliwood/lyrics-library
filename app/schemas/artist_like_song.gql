@@ -1,0 +1,4 @@
+type ArtistLikeSong {
+  artist_id: Int!
+  song_id: Int!
+}

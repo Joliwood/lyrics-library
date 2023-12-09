@@ -1,20 +1,25 @@
 type Album {
-  id: Int!
-  title: String!
-  release_year: Int
-  artist: Artist
+  artist: Artist!
   artist_id: Int
+  cover: String
+  id: Int!
+  release_year: Int
   songs: [Song]
+  title: String!
 }
 
 input AlbumCreateInput {
-  title: String!
-  release_year: Int
   artist_id: Int!
+  cover: String
+  release_year: Int
+  songIds: [Int!]!
+  title: String!
 }
 
 input AlbumUpdateInput {
-  title: String
-  release_year: Int
   artist_id: Int
+  cover: String
+  release_year: Int
+  songIds: [Int]
+  title: String
 }

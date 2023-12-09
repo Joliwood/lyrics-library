@@ -8,6 +8,8 @@ const schemaNames = [
   'album',
   'artist',
   'song',
+  'song_on_album',
+  'artist_like_song',
   'query',
   'mutation',
 ];
