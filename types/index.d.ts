@@ -1,4 +1,4 @@
-export type ArtistLikeSongRows = {
+export type ArtistLikeSongRow = {
   artist_id: number, song_id: number
 };
 
@@ -12,7 +12,7 @@ export type AlbumRows = {
   updated_at?: Date,
 };
 
-export type SongRows = {
+export type SongRow = {
   id: number,
   title: string,
   duration: number,

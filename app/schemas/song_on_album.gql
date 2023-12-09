@@ -1,5 +1,5 @@
 type SongOnAlbum {
-  id: Int!
   albumId: Int!
+  id: Int!
   songId: Int!
 }

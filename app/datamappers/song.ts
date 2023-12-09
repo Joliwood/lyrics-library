@@ -1,11 +1,11 @@
 import CoreDatamapper from './coreDatamapper.js';
-import type { SongRows } from '../../types/index.d.ts';
+import type { SongRow } from '../../types/index.d.ts';
 
 class Song extends CoreDatamapper {
   tableName = 'song';
 
-  async findByAlbum(albumId: number) {
-    const rows: SongRows[] = await (
+  async findByAlbum(albumId: number): Promise<SongRow[]> {
+    const rows: SongRow[] = await (
       this.client.query
         .from(this.tableName)
         .where({ album_id: albumId })
@@ -13,14 +13,12 @@ class Song extends CoreDatamapper {
     return rows;
   }
 
-  async findByArtist(artistId: number) {
-    const rows: SongRows[] = await (
+  async findByArtist(artistId: number): Promise<SongRow[]> {
+    const rows: SongRow[] = await (
       this.client.query
         .from(this.tableName)
         .where({ artist_id: artistId })
     );
-    console.log(rows);
-
     return rows;
   }
 }

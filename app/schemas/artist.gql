@@ -1,26 +1,26 @@
 type Artist {
-  id: Int!
   # email row exists in table but is visible only to the artist himself
   # email: String
-  name: String!
-  favorites: [ArtistLikeSong]
-  picture: String
-  country: String
   albums: [Album]
+  country: String
+  favorites: [ArtistLikeSong]
+  id: Int!
+  name: String!
+  picture: String
   songs: [Song]
 }
 
 type ArtistUser {
+  albums: [Album]
+  country: String
   email: String!
   name: String!
   picture: String
-  country: String
-  albums: [Album]
 }
 
 type JWT {
-  token: String
   expire_at: String
+  token: String
 }
 
 input LoginInput {

@@ -1,17 +1,20 @@
 type Song {
-  id: Int!
-  title: String!
+  artist: Artist!
+  cover: String
   "Duration in second"
   duration: Int!
-  cover: String
+  id: Int!
   lyrics: String
-  artist: Artist!
+  songOnAlbum: [SongOnAlbum]
+  like: [ArtistLikeSong]
+  nbLike: Int
+  title: String!
 }
 
 input SongCreateInput {
-  title: String!
+  artistId: Int!
   cover: String
   duration: Int!
   lyrics: String
-  artistId: Int!
+  title: String!
 }

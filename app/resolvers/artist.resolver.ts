@@ -1,4 +1,4 @@
-import type { AlbumRows, ArtistLikeSongRows } from '../../types/index.d.ts';
+import type { AlbumRows, ArtistLikeSongRow } from '../../types/index.d.ts';
 
 export default {
   async albums(parent: any, _: any, { dataSources }: any) {
@@ -13,7 +13,7 @@ export default {
 
   // ArtistLikeSong relation
   async favorites(parent: any, _: any, { dataSources }: any) {
-    const rows: ArtistLikeSongRows[] = await (
+    const rows: ArtistLikeSongRow[] = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
