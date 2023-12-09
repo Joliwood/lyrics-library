@@ -1,5 +1,4 @@
 type ArtistLikeSong {
-  id: Int!
-  artistId: Int!
-  songId: Int!
+  artist_id: Int!
+  song_id: Int!
 }
