@@ -37,7 +37,6 @@
   },
   "include": [
     "./app/**/*",
-    "./data/**/*",
     "./types/**/*",
     "knexfile.js",
     "app/index.ts",

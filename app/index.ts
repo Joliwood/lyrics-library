@@ -29,7 +29,7 @@ const { url } = await startStandaloneServer<any>(server, {
       req,
       // If we want to block all the application with authentification
       // user: login.getUser(req.headers.token, req.ip),
-      user: req.headers.tokenuser,
+      user: req.headers.authorization,
       dataSources: {
         lyricsdb: new LyricsDbDatasource({
           cache,
