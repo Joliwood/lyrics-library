@@ -1,23 +1,32 @@
-import type { ArtistLikeSongRow } from '../../types/index.d.ts';
+import type { AlbumRows, ArtistLikeSongRows } from '../../types/index.d.ts';
 
 export default {
   async albums(parent: any, _: any, { dataSources }: any) {
-    //! problem between
-    const rows = await (
+    const rows: AlbumRows[] = await (
       dataSources
         .lyricsdb
         .albumDatamapper
         .findByArtist(parent.id)
     );
-    //! problem between
     return rows;
   },
 
+  // ArtistLikeSong relation
   async favorites(parent: any, _: any, { dataSources }: any) {
-    const rows: ArtistLikeSongRow[] = await (
+    const rows: ArtistLikeSongRows[] = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
+        .findByArtist(parent.id)
+    );
+    return rows;
+  },
+
+  async songs(parent: any, _: any, { dataSources }: any) {
+    const rows = await (
+      dataSources
+        .lyricsdb
+        .songDatamapper
         .findByArtist(parent.id)
     );
     return rows;
