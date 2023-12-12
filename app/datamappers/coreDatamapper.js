@@ -22,10 +22,14 @@ class CoreDatamapper {
     return row;
   }
 
-  async findAll(params) {
+  // = {} to accept default value if no args are passed
+  async findAll({ email, limit } = {}) {
     const query = this.client.query.from(this.tableName);
-    if (params) {
-      query.where(params);
+    if (email) {
+      query.where(email);
+    }
+    if (limit) {
+      query.limit(limit);
     }
     const rows = await query;
     return rows;
