@@ -26,8 +26,8 @@ export default {
     return row;
   },
 
-  async songs(_, __, { dataSources }) {
-    const rows = await dataSources.lyricsdb.songDatamapper.findAll();
+  async songs(_, { limit }, { dataSources }) {
+    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit });
     return rows;
   },
 
