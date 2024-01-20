@@ -13,7 +13,7 @@ export default {
       //     code: 'UNAUTHENTICATED',
       //   },
       // });
-      console.log('Vous n\'êtes pas authentifié mais passons...');
+      console.log("Vous n'êtes pas authentifié mais passons...");
     }
     const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
     return rows;
@@ -22,7 +22,9 @@ export default {
   async album(_, args, { dataSources }) {
     // All findByPk can be replace here by idsLoader to use same method most of the time
     // but for single query, it will not improve speed response
-    const row = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(args.id);
+    const row = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(
+      args.id,
+    );
     return row;
   },
 
@@ -32,7 +34,9 @@ export default {
   },
 
   async song(_, args, { dataSources }) {
-    const row = await dataSources.lyricsdb.songDatamapper.idsLoader.load(args.id);
+    const row = await dataSources.lyricsdb.songDatamapper.idsLoader.load(
+      args.id,
+    );
     return row;
   },
 
@@ -42,15 +46,21 @@ export default {
   },
 
   async artist(_, args, { dataSources }) {
-    const row = await dataSources.lyricsdb.artistDatamapper.idsLoader.load(args.id);
+    const row = await dataSources.lyricsdb.artistDatamapper.idsLoader.load(
+      args.id,
+    );
     return row;
   },
 
   async login(_, args, { dataSources, req }) {
     const { email, password } = args.input;
 
+    console.log('on est sur le bon chemin');
+
     // Use findByEmail to find a user by their email
-    const [user] = await dataSources.lyricsdb.artistDatamapper.findAll({ email });
+    const [user] = await dataSources.lyricsdb.artistDatamapper.findAll({
+      email,
+    });
 
     if (!user) {
       throw new GraphQLError('Authentication failed', {
@@ -80,7 +90,9 @@ export default {
       ip: req.ip,
     };
 
-    const token = jwt.sign(userInfos, process.env.JWT_SECRET, { expiresIn: process.env.JWT_TTL });
+    const token = jwt.sign(userInfos, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_TTL,
+    });
     const expireAt = new Date();
     expireAt.setSeconds(expireAt.getSeconds() + process.env.JWT_TTL);
     return {

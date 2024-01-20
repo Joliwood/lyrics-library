@@ -4,19 +4,12 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: [
-    'airbnb-base',
-    'airbnb-typescript',
-  ],
+  extends: ['airbnb-base', 'airbnb-typescript'],
   plugins: ['import'],
   parserOptions: {
     project: `${__dirname}/tsconfig.json`,
   },
-  ignorePatterns: [
-    'node_modules/',
-    'dist/',
-    'db/',
-  ],
+  ignorePatterns: ['node_modules/', 'dist/', 'db/'],
   rules: {
     'no-console': 'off',
     'import/extensions': 'off',

@@ -26,7 +26,7 @@ class CoreDatamapper {
   async findAll({ email, limit } = {}) {
     const query = this.client.query.from(this.tableName);
     if (email) {
-      query.where(email);
+      query.where({ email });
     }
     if (limit) {
       query.limit(limit);
