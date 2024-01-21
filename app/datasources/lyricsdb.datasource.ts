@@ -5,8 +5,21 @@ import SongDatamapper from '../datamappers/song.js';
 import ArtistLikeSongDatamapper from '../datamappers/artistLikeSong.js';
 import SongOnAlbumDatamapper from '../datamappers/songOnAlbum.js';
 
+import type { CoreDatamapperOptions, LyricsDbDatasourceConfigType } from '../../types/index.d.ts';
+
 export default class LyricsDbDatasource extends BatchedSQLDataSource {
-  constructor(config) {
+  albumDatamapper: AlbumDatamapper;
+
+  artistDatamapper: ArtistDatamapper;
+
+  songDatamapper: SongDatamapper;
+
+  artistLikeSongDatamapper: ArtistLikeSongDatamapper;
+
+  songOnAlbumDatamapper: SongOnAlbumDatamapper;
+
+  // TODO : Define types
+  constructor(config: CoreDatamapperOptions & LyricsDbDatasourceConfigType & { cache: any }) {
     super(config);
     this.albumDatamapper = new AlbumDatamapper(this.db);
     this.artistDatamapper = new ArtistDatamapper(this.db);

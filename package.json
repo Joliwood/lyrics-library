@@ -12,6 +12,7 @@
     "start": "ts-node ./dist/app/index.js",
     "dev": "set DEBUG=app:*,knex* && nodemon --ext js,ts,gql ./app/index.ts",
     "lint": "eslint .",
+    "check:full": "yarn typescript && yarn eslint",
     "knex:migration": "knex migrate:make update_the_name",
     "knex:update": "knex migrate:latest",
     "knex:seed": "knex seed:run"
@@ -35,7 +36,9 @@
     "pg": "^8.11.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.11.0",
