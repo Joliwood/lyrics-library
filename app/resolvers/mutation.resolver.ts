@@ -1,4 +1,6 @@
-export default {
+import type { AlbumRow, MutationResolversType, SongRow } from '../../types/index.d.ts';
+
+const mutationResolvers: MutationResolversType = {
   async addAlbum(_, args, { dataSources }) {
     const row = await dataSources.lyricsdb.albumDatamapper.create(args.input);
     return row;
@@ -29,14 +31,14 @@ export default {
     const albums = await dataSources.lyricsdb.albumDatamapper.findByArtist(args.id);
 
     // With all album ids, we can find all songs to delete
-    const albumIds = albums.map((album) => album.id);
+    const albumIds = albums.map((album: AlbumRow) => album.id);
 
     // * An optimisation is possible here, we make one request per album, we could make only one
     // Regroup all promises (one per album) in one promise to regroup songs ids to delete
     const songsIds = await Promise.all(
-      albumIds.map(async (albumId) => {
+      albumIds.map(async (albumId: AlbumRow['id']) => {
         const songs = await dataSources.lyricsdb.songDatamapper.findByAlbum(albumId);
-        return songs.map((song) => song.id);
+        return songs.map((song: SongRow) => song.id);
       }),
     );
 
@@ -58,3 +60,5 @@ export default {
     return result;
   },
 };
+
+export default mutationResolvers;
