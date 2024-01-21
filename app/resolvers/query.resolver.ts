@@ -3,8 +3,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import login from '../services/login.service.js';
 import isEqual from '../utils/isEqual.js';
+import type { QueryResolversType } from '../../types/index.d.ts';
 
-export default {
+const queryResolvers: QueryResolversType = {
   async albums(_, __, { req, user, dataSources }) {
     const userAuthorized = login.getUser(user, req.ip);
     if (!userAuthorized) {
@@ -55,8 +56,6 @@ export default {
   async login(_, args, { dataSources, req }) {
     const { email, password } = args.input;
 
-    console.log('on est sur le bon chemin');
-
     // Use findByEmail to find a user by their email
     const [user] = await dataSources.lyricsdb.artistDatamapper.findAll({
       email,
@@ -90,11 +89,15 @@ export default {
       ip: req.ip,
     };
 
+    if (process.env.JWT_SECRET == null) {
+      return null;
+    }
+
     const token = jwt.sign(userInfos, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_TTL,
     });
     const expireAt = new Date();
-    expireAt.setSeconds(expireAt.getSeconds() + process.env.JWT_TTL);
+    expireAt.setSeconds(expireAt.getSeconds() + Number(process.env.JWT_TTL));
     return {
       token,
       expire_at: expireAt,
@@ -113,3 +116,5 @@ export default {
     return userDecoded;
   },
 };
+
+export default queryResolvers;
