@@ -77,6 +77,7 @@ type Song {
   like: [ArtistLikeSong]
   nbLike: Int
   title: String!
+  date: String
 }
 
 input SongCreateInput {

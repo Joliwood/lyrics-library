@@ -1,4 +1,4 @@
-import type { CoreDatamapperOptions } from '../../types/index.d.ts';
+import type { CoreDatamapperOptions } from '../../types';
 
 class CoreDatamapper {
   // TODO : Precise tablenames with all tables of the DB

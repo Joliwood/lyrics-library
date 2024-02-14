@@ -1,9 +1,9 @@
 import { GraphQLError } from 'graphql';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import login from '../services/login.service.js';
-import isEqual from '../utils/isEqual.js';
-import type { QueryResolversType } from '../../types/index.d.ts';
+import login from '../services/login.service';
+import isEqual from '../utils/isEqual';
+import type { QueryResolversType } from '../../types';
 
 const queryResolvers: QueryResolversType = {
   async albums(_, __, { req, user, dataSources }) {

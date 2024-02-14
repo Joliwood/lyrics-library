@@ -3,6 +3,7 @@ import * as url from 'url';
 // EOL = End of line adapted for every OS
 import { EOL } from 'os';
 
+// @ts-expect-error
 const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const schemaNames = [
   'album',

@@ -1,5 +1,5 @@
-import CoreDatamapper from './coreDatamapper.js';
-import type { ArtistRow } from '../../types/index.d.ts';
+import CoreDatamapper from './coreDatamapper';
+import type { ArtistRow } from '../../types';
 
 class Artist extends CoreDatamapper {
   tableName = 'artist';

@@ -1,4 +1,4 @@
-import type { SongRow } from '../../types/index.d.ts';
+import type { SongRow } from '../../types';
 
 export default {
   async artist(parent: any, _: any, { dataSources }: any): Promise<SongRow[]> {

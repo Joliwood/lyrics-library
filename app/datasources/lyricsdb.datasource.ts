@@ -1,11 +1,11 @@
 import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
-import AlbumDatamapper from '../datamappers/album.js';
-import ArtistDatamapper from '../datamappers/artist.js';
-import SongDatamapper from '../datamappers/song.js';
-import ArtistLikeSongDatamapper from '../datamappers/artistLikeSong.js';
-import SongOnAlbumDatamapper from '../datamappers/songOnAlbum.js';
+import AlbumDatamapper from '../datamappers/album';
+import ArtistDatamapper from '../datamappers/artist';
+import SongDatamapper from '../datamappers/song';
+import ArtistLikeSongDatamapper from '../datamappers/artistLikeSong';
+import SongOnAlbumDatamapper from '../datamappers/songOnAlbum';
 
-import type { CoreDatamapperOptions, LyricsDbDatasourceConfigType } from '../../types/index.d.ts';
+import type { CoreDatamapperOptions, LyricsDbDatasourceConfigType } from '../../types';
 
 export default class LyricsDbDatasource extends BatchedSQLDataSource {
   albumDatamapper: AlbumDatamapper;

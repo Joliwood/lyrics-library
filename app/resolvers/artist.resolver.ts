@@ -1,4 +1,4 @@
-import type { AlbumRow, ArtistLikeSongRow } from '../../types/index.d.ts';
+import type { AlbumRow, ArtistLikeSongRow } from '../../types';
 
 export default {
   async albums(parent: any, _: any, { dataSources }: any) {

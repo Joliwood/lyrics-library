@@ -1,5 +1,5 @@
-import CoreDatamapper from './coreDatamapper.js';
-import type { SongOnAlbumRow } from '../../types/index.d.ts';
+import CoreDatamapper from './coreDatamapper';
+import type { SongOnAlbumRow } from '../../types';
 
 class SongOnAlbum extends CoreDatamapper {
   tableName = 'song_on_album';

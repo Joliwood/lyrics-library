@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import * as path from 'path';
 import { EOL } from 'os';
 
-const dirname = path.dirname(new URL(import.meta.url).pathname);
+const dirname = path.dirname(__filename);
 
 const schemaNames = [
   'album',
@@ -25,3 +25,5 @@ const outputFilePath = path.join(dirname, '../schemas/generalSchema.gql');
 writeFileSync(outputFilePath, generalSchema, 'utf-8');
 
 console.log(`Merged schema saved to: ${outputFilePath}`);
+
+export default outputFilePath;

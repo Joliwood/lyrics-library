@@ -1,4 +1,4 @@
-import type { AlbumRow, MutationResolversType, SongRow } from '../../types/index.d.ts';
+import type { AlbumRow, MutationResolversType, SongRow } from '../../types';
 
 const mutationResolvers: MutationResolversType = {
   async addAlbum(_, args, { dataSources }) {

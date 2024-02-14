@@ -2,7 +2,7 @@
   "name": "lyrics-library",
   "version": "1.0.0",
   "main": "app/index.ts",
-  "type": "module",
+  "type": "commonjs",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
   "author": "Guillaume <jolibois.contact@gmail.com>",
   "license": "MIT",
@@ -16,10 +16,11 @@
     "start": "ts-node ./dist/app/index.js",
     "dev": "set DEBUG=app:*,knex* && nodemon --ext js,ts,gql ./app/index.ts",
     "lint": "eslint .",
-    "check:full": "yarn typescript && yarn eslint",
+    "check:full": "yarn typescript && yarn lint",
     "knex:migration": "knex migrate:make update_the_name",
     "knex:update": "knex migrate:latest",
-    "knex:seed": "knex seed:run"
+    "knex:seed": "knex seed:run",
+    "typescript": "yarn tsc"
   },
   "dependencies": {
     "@apollo/server": "^4.9.0",
@@ -53,6 +54,6 @@
     "eslint-plugin-node": "^11.1.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   }
 }
