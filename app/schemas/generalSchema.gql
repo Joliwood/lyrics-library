@@ -1,0 +1,129 @@
+type Album {
+  artist: Artist!
+  artist_id: Int
+  cover: String
+  id: Int!
+  release_year: Int
+  songs: [Song]
+  title: String!
+}
+
+input AlbumCreateInput {
+  artist_id: Int!
+  cover: String
+  release_year: Int
+  songIds: [Int!]!
+  title: String!
+}
+
+input AlbumUpdateInput {
+  artist_id: Int
+  cover: String
+  release_year: Int
+  songIds: [Int]
+  title: String
+}
+
+type Artist {
+  # email row exists in table but is visible only to the artist himself
+  # email: String
+  albums: [Album]
+  country: String
+  favorites: [ArtistLikeSong]
+  id: Int!
+  name: String!
+  picture: String
+  songs: [Song]
+}
+
+type ArtistUser {
+  albums: [Album]
+  country: String
+  email: String!
+  password: String!
+  name: String!
+  picture: String
+}
+
+type JWT {
+  expire_at: String
+  token: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input ArtistUpdateInput {
+  email: String
+  password: String
+  picture: String
+  # the favorite input will be in artist_like_song schema
+  # favorites: [SongOnAlbum]
+  name: String
+  country: String
+  # songs: [Song]
+}
+
+type Song {
+  artist: Artist
+  cover: String
+  "Duration in second"
+  duration: Int!
+  id: Int!
+  lyrics: String
+  songOnAlbum: [SongOnAlbum]
+  like: [ArtistLikeSong]
+  nbLike: Int
+  title: String!
+}
+
+input SongCreateInput {
+  artistId: Int!
+  cover: String
+  duration: Int!
+  lyrics: String
+  title: String!
+}
+
+type SongOnAlbum {
+  album_id: Int!
+  song_id: Int!
+  position: Int!
+}
+
+type ArtistLikeSong {
+  artist_id: Int!
+  song_id: Int!
+}
+
+type Query {
+  album(id: Int!): Album
+  albums: [Album]
+  artist(id: Int!): Artist
+  artists: [Artist]
+  song(id: Int!): Song
+  songs(limit: Int): [Song]
+
+  
+  login(input: LoginInput!): JWT
+
+  profile: ArtistUser
+}
+
+type Mutation {
+  addAlbum(input: AlbumCreateInput!): Album
+  # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
+  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
+  #! It must force auth check before delete
+  deleteAlbum(id: Int!): Boolean
+
+  # We must be connected (JWT check) to update his profile
+  updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
+
+  addSong(input: SongCreateInput!): Song
+
+  # It will delete his song and his album before
+  deleteArtist(id: Int!): Boolean
+}
