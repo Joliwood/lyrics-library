@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { compare } from 'bcrypt';
+import { sign, decode } from 'jsonwebtoken';
 import login from '../services/login.service';
 import isEqual from '../utils/isEqual';
 import type { QueryResolversType } from '../../types';
@@ -71,7 +71,7 @@ const queryResolvers: QueryResolversType = {
 
     const isPasswordValid = user.email === 'admin@gmail.com'
       ? isEqual(password, user.password)
-      : await bcrypt.compare(password, user.password);
+      : await compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new GraphQLError('Authentication failed again', {
@@ -93,7 +93,7 @@ const queryResolvers: QueryResolversType = {
       return null;
     }
 
-    const token = jwt.sign(userInfos, process.env.JWT_SECRET, {
+    const token = sign(userInfos, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_TTL,
     });
     const expireAt = new Date();
@@ -112,7 +112,7 @@ const queryResolvers: QueryResolversType = {
         },
       });
     }
-    const userDecoded = jwt.decode(user);
+    const userDecoded = decode(user);
     return userDecoded;
   },
 };

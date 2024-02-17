@@ -1,5 +1,4 @@
 import { ApolloServer } from '@apollo/server';
-// eslint-disable-next-line import/extensions
 import { startStandaloneServer } from '@apollo/server/standalone';
 import './helpers/env.loader';
 import typeDefs from './schemas/typeDefs';
