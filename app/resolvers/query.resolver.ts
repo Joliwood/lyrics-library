@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql';
 import { compare } from 'bcrypt';
 import { sign, decode } from 'jsonwebtoken';
+
 import type { QueryResolversType } from '#types';
 import login from '../services/login.service';
 import isEqual from '../utils/isEqual';
@@ -14,6 +15,7 @@ const Query: QueryResolversType = {
       //     code: 'UNAUTHENTICATED',
       //   },
       // });
+      // eslint-disable-next-line no-console
       console.log("Vous n'êtes pas authentifié mais passons...");
     }
     const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
@@ -29,8 +31,8 @@ const Query: QueryResolversType = {
     return row;
   },
 
-  async songs(_, { limit }, { dataSources }) {
-    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit });
+  async songs(_, { limit, filter }, { dataSources }) {
+    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit, filter });
     return rows;
   },
 

@@ -59,6 +59,7 @@ export type LoginType = {
 export interface CoreDatamapperOptions {
   email?: string;
   limit?: number;
+  filter?: SongFilterInput;
 }
 
 export interface LyricsDbDatasourceConfigType {
@@ -92,4 +93,26 @@ export type QueryResolversType = {
   profile: (parent: any, args: any, context: any) => Promise<string | jwt.JwtPayload | null>;
   // songsOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow[]>;
   // artistsLikeSong: (parent: any, args: any, context: any) => Promise<ArtistLikeSongRow[]>;
+};
+
+// TODO WIP : Take types when we will have generated types
+
+enum Year {
+  YEAR_70,
+  YEAR_80,
+  YEAR_90,
+  YEAR_2000,
+  YEAR_2010,
+}
+
+enum DurationRange {
+  ONE_MINUTE,
+  ONE_TO_THREE_MINUTES,
+  THREE_TO_FIVE_MINUTES,
+  MORE_THAN_FIVE_MINUTES,
+}
+
+type SongFilterInput = {
+  durationFilter: DurationRange
+  yearFilter: Year
 };

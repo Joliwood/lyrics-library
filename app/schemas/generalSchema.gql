@@ -88,6 +88,26 @@ input SongCreateInput {
   title: String!
 }
 
+enum DurationRange {
+  ONE_MINUTE
+  ONE_TO_THREE_MINUTES
+  THREE_TO_FIVE_MINUTES
+  MORE_THAN_FIVE_MINUTES
+}
+
+enum Year {
+  YEAR_70
+  YEAR_80
+  YEAR_90
+  YEAR_2000
+  YEAR_2010
+}
+
+input SongFilterInput {
+  durationFilter: DurationRange
+  yearFilter: Year
+}
+
 type SongOnAlbum {
   album_id: Int!
   song_id: Int!
@@ -105,11 +125,8 @@ type Query {
   artist(id: Int!): Artist
   artists: [Artist]
   song(id: Int!): Song
-  songs(limit: Int): [Song]
-
-  
+  songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
-
   profile: ArtistUser
 }
 

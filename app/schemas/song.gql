@@ -19,3 +19,23 @@ input SongCreateInput {
   lyrics: String
   title: String!
 }
+
+enum DurationRange {
+  ONE_MINUTE
+  ONE_TO_THREE_MINUTES
+  THREE_TO_FIVE_MINUTES
+  MORE_THAN_FIVE_MINUTES
+}
+
+enum Year {
+  YEAR_70
+  YEAR_80
+  YEAR_90
+  YEAR_2000
+  YEAR_2010
+}
+
+input SongFilterInput {
+  durationFilter: DurationRange
+  yearFilter: Year
+}

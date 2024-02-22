@@ -4,10 +4,7 @@ type Query {
   artist(id: Int!): Artist
   artists: [Artist]
   song(id: Int!): Song
-  songs(limit: Int): [Song]
-
-  
+  songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
-
   profile: ArtistUser
 }

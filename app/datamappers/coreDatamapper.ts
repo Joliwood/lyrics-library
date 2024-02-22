@@ -39,12 +39,21 @@ class CoreDatamapper {
   // TODO : Define types
   async findAll(option: CoreDatamapperOptions = {}): Promise<any[]> {
     const query = this.client.query.from(this.tableName);
+
+    console.log('option', option);
+
     if (option.email) {
       query.where({ email: option.email });
     }
+
     if (option.limit) {
       query.limit(option.limit);
     }
+
+    if (option.filter) {
+      query.where(option.filter);
+    }
+
     const rows = await query;
     return rows;
   }
