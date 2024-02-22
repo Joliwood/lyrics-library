@@ -1,11 +1,11 @@
 import { GraphQLError } from 'graphql';
 import { compare } from 'bcrypt';
 import { sign, decode } from 'jsonwebtoken';
+import type { QueryResolversType } from '#types';
 import login from '../services/login.service';
 import isEqual from '../utils/isEqual';
-import type { QueryResolversType } from '../../types';
 
-const queryResolvers: QueryResolversType = {
+const Query: QueryResolversType = {
   async albums(_, __, { req, user, dataSources }) {
     const userAuthorized = login.getUser(user, req.ip);
     if (!userAuthorized) {
@@ -117,4 +117,4 @@ const queryResolvers: QueryResolversType = {
   },
 };
 
-export default queryResolvers;
+export default Query;

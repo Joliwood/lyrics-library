@@ -1,6 +1,6 @@
-import type { SongRow } from '../../types';
+import type { SongRow } from '#types';
 
-export default {
+const Album = {
   async artist(parent: any, _: any, { dataSources }: any): Promise<SongRow[]> {
     // Do not use parent.artist_id for exemple, so the query can be executed
     // from multiple nested queries
@@ -24,3 +24,5 @@ export default {
     return rows;
   },
 };
+
+export default Album;

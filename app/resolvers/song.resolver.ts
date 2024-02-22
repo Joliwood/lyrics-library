@@ -1,6 +1,6 @@
-import type { ArtistRow } from '../../types';
+import type { ArtistRow } from '#types';
 
-export default {
+const Song = {
   // async album(parent, _, { dataSources }) {
   //   // We can replace findByPk by an idLoader,
   //   // so it doesn't execute one query by album, with first().
@@ -50,3 +50,5 @@ export default {
     return rows;
   },
 };
+
+export default Song;

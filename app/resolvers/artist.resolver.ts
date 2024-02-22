@@ -1,6 +1,6 @@
-import type { AlbumRow, ArtistLikeSongRow } from '../../types';
+import type { AlbumRow, ArtistLikeSongRow } from '#types';
 
-export default {
+const Artist = {
   async albums(parent: any, _: any, { dataSources }: any) {
     const rows: AlbumRow[] = await (
       dataSources
@@ -32,3 +32,5 @@ export default {
     return rows;
   },
 };
+
+export default Artist;

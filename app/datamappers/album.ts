@@ -1,7 +1,7 @@
-import CoreDatamapper from './coreDatamapper';
-import type { AlbumRow } from '../../types';
+import { CoreDatamapper } from '#datamappers';
+import type { AlbumRow } from '#types';
 
-class Album extends CoreDatamapper {
+class AlbumDatamapper extends CoreDatamapper {
   tableName: string = 'album';
 
   async findByArtist(artistId: number): Promise<AlbumRow[]> {
@@ -14,4 +14,4 @@ class Album extends CoreDatamapper {
   }
 }
 
-export default Album;
+export default AlbumDatamapper;

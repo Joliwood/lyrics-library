@@ -14,14 +14,17 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    // "noImplicitAny": true,
+    "noImplicitAny": true,
     "paths": {
-      "@/*": [
-        "./app/*"
+      "#datamappers": [
+        "./app/datamappers/"
       ],
-      "@types/*": [
-        "./types/*"
-      ]
+      "#types": [
+        "./types/index.d.ts"
+      ],
+      "#resolvers": [
+        "./app/resolvers/"
+      ],
     },
   },
   "include": [

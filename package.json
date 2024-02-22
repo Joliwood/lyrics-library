@@ -11,13 +11,13 @@
   },
   "scripts": {
     "build": "tsc && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
-    "check:full": "yarn typescript && yarn lint",
+    "check:full": "yarn typescript && yarn eslint",
     "dev": "set DEBUG=app:*,knex* && nodemon --ext ts --exec ts-node ./app/index.ts",
-    "generate:schema": "node ./app/services/schemaMerger.js && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
+    "generate:schema": "ts-node ./app/services/schemaMerger.ts && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "knex:migration": "knex migrate:make update_the_name",
     "knex:seed": "knex seed:run",
     "knex:update": "knex migrate:latest",
-    "lint": "eslint .",
+    "eslint": "eslint .",
     "start": "ts-node ./dist/app/index.js",
     "typescript": "yarn tsc --noEmit"
   },
@@ -36,6 +36,7 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.2",
     "knex": "^2.5.1",
+    "module-alias": "^2.2.3",
     "os": "^0.1.2",
     "pg": "^8.11.2"
   },
@@ -54,5 +55,10 @@
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
+  },
+  "_moduleAliases": {
+    "#datamappers": "./app/datamappers",
+    "#types": "./types/index.d.ts",
+    "#resolvers": "./app/resolvers"
   }
 }

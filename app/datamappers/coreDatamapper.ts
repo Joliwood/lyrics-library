@@ -1,4 +1,4 @@
-import type { CoreDatamapperOptions } from '../../types';
+import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
   // TODO : Precise tablenames with all tables of the DB

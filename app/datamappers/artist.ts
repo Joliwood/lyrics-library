@@ -1,7 +1,7 @@
-import CoreDatamapper from './coreDatamapper';
-import type { ArtistRow } from '../../types';
+import { CoreDatamapper } from '#datamappers';
+import type { ArtistRow } from '#types';
 
-class Artist extends CoreDatamapper {
+class ArtistDatamapper extends CoreDatamapper {
   tableName = 'artist';
 
   async findBySong(songId: number): Promise<ArtistRow> {
@@ -15,4 +15,4 @@ class Artist extends CoreDatamapper {
   }
 }
 
-export default Artist;
+export default ArtistDatamapper;
