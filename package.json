@@ -1,6 +1,6 @@
 {
   "name": "lyrics-library",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "app/index.ts",
   "type": "commonjs",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
@@ -17,6 +17,7 @@
     "knex:migration": "knex migrate:make update_the_name",
     "knex:seed": "knex seed:run",
     "knex:update": "knex migrate:latest",
+
     "eslint": "eslint .",
     "start": "ts-node ./dist/app/index.js",
     "typescript": "yarn tsc --noEmit"
