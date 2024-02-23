@@ -1,3 +1,5 @@
 /node_modules
 .env
 dist
+
+Soundy API - Env.postman_environment.json
