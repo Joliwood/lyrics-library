@@ -2,6 +2,7 @@ import { CoreDatamapper } from '#datamappers';
 import type { AlbumRow } from '#types';
 
 class AlbumDatamapper extends CoreDatamapper {
+
   tableName: string = 'album';
 
   async findByArtist(artistId: number): Promise<AlbumRow[]> {
