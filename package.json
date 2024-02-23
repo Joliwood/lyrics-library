@@ -2,7 +2,7 @@
   "name": "lyrics-library",
   "version": "1.0.0",
   "main": "app/index.ts",
-  "type": "module",
+  "type": "commonjs",
   "repository": "https://github.com/Joliwood/lyrics-library.git",
   "author": "Guillaume <jolibois.contact@gmail.com>",
   "license": "MIT",
@@ -10,15 +10,16 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "az": "tsc && copyfiles ./app/schemas/*.gql schemas/*.gql dist/ && ts-node ./dist/app/index.js",
     "build": "tsc && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
-    "start": "ts-node ./dist/app/index.js",
-    "dev": "set DEBUG=app:*,knex* && nodemon --ext js,ts,gql ./app/index.ts",
-    "lint": "eslint .",
     "check:full": "yarn typescript && yarn eslint",
+    "dev": "set DEBUG=app:*,knex* && nodemon --ext ts --exec ts-node ./app/index.ts",
+    "generate:schema": "ts-node ./app/services/schemaMerger.ts && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "knex:migration": "knex migrate:make update_the_name",
+    "knex:seed": "knex seed:run",
     "knex:update": "knex migrate:latest",
-    "knex:seed": "knex seed:run"
+    "eslint": "eslint .",
+    "start": "ts-node ./dist/app/index.js",
+    "typescript": "yarn tsc --noEmit"
   },
   "dependencies": {
     "@apollo/server": "^4.9.0",
@@ -35,6 +36,7 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.2",
     "knex": "^2.5.1",
+    "module-alias": "^2.2.3",
     "os": "^0.1.2",
     "pg": "^8.11.2"
   },
@@ -51,7 +53,14 @@
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-node": "^11.1.0",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "_moduleAliases": {
+    "#datamappers": "./app/datamappers",
+    "#types": "./types/index.d.ts",
+    "#resolvers": "./app/resolvers",
+    "#enums": "./types/enums.ts",
+    "#utils": "./app/utils"
   }
 }

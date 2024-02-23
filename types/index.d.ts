@@ -1,4 +1,5 @@
 import type Knex from 'knex';
+// import { ReleaseYear, DurationRange } from './enums';
 
 export type ArtistLikeSongRow = {
   artist_id: number,
@@ -59,6 +60,7 @@ export type LoginType = {
 export interface CoreDatamapperOptions {
   email?: string;
   limit?: number;
+  filter?: FilterInput;
 }
 
 export interface LyricsDbDatasourceConfigType {
@@ -92,4 +94,11 @@ export type QueryResolversType = {
   profile: (parent: any, args: any, context: any) => Promise<string | jwt.JwtPayload | null>;
   // songsOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow[]>;
   // artistsLikeSong: (parent: any, args: any, context: any) => Promise<ArtistLikeSongRow[]>;
+};
+
+// TODO WIP : Take types when we will have generated types
+
+type FilterInput = {
+  duration_filter: DurationRange
+  release_year: ReleaseYear
 };

@@ -1,6 +1,6 @@
-import type { AlbumRow, MutationResolversType, SongRow } from '../../types/index.d.ts';
+import type { AlbumRow, MutationResolversType, SongRow } from '#types';
 
-const mutationResolvers: MutationResolversType = {
+const Mutation: MutationResolversType = {
   async addAlbum(_, args, { dataSources }) {
     const row = await dataSources.lyricsdb.albumDatamapper.create(args.input);
     return row;
@@ -61,4 +61,4 @@ const mutationResolvers: MutationResolversType = {
   },
 };
 
-export default mutationResolvers;
+export default Mutation;

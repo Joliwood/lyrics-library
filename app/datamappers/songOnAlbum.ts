@@ -1,7 +1,7 @@
-import CoreDatamapper from './coreDatamapper.js';
-import type { SongOnAlbumRow } from '../../types/index.d.ts';
+import { CoreDatamapper } from '#datamappers';
+import type { SongOnAlbumRow } from '#types';
 
-class SongOnAlbum extends CoreDatamapper {
+class SongOnAlbumDatamapper extends CoreDatamapper {
   tableName = 'song_on_album';
 
   async findBySong(songId: number): Promise<SongOnAlbumRow[]> {
@@ -14,4 +14,4 @@ class SongOnAlbum extends CoreDatamapper {
   }
 }
 
-export default SongOnAlbum;
+export default SongOnAlbumDatamapper;

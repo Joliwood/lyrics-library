@@ -1,49 +1,48 @@
 {
   "compilerOptions": {
-    /* Projects */
-    /* Language and Environment */
-    "target": "es2022",
-    "lib": [
-      "es2023"
-    ],
-    /* Modules */
-    "module": "Node16",
-    "rootDir": ".",
-    "resolveJsonModule": true,
-    /* JavaScript Support */
     "allowJs": true,
-    /* Emit */
-    "outDir": "./dist",
-    /* Interop Constraints */
+    "composite": true,
+    "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    /* Type Checking */
-    "strict": true,
-    "noImplicitAny": true,
-    /* Completeness */
+    "moduleResolution": "Node",
+    // noEmit prevent the compiler from generating files
+    "noEmit": false,
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "rootDir": ".",
     "skipLibCheck": true,
-    "moduleResolution": "Node16",
+    "strict": true,
+    "target": "ESNext",
+    "noImplicitAny": true,
     "paths": {
-      "@/*": [
-        "./app/*"
+      "#datamappers": [
+        "./app/datamappers/"
       ],
-      "@types/*": [
-        "./types/*"
-      ]
+      "#types": [
+        "./types/index.d.ts"
+      ],
+      "#enums": [
+        "./types/enums.ts"
+      ],
+      "#resolvers": [
+        "./app/resolvers/"
+      ],
+      "#utils": [
+        "./app/utils"
+      ],
     },
-  },
-  "ts-node": {
-    "esm": true
   },
   "include": [
     "./app/**/*",
-    "./types/**/*",
-    "knexfile.js",
+    "./types/*",
+    ".eslintrc.cjs",
+    "/**/*.ts",
     "app/index.ts",
-    ".eslintrc.cjs"
+    "knexfile.js",
   ],
   "exclude": [
+    "./dist/**/*",
     "node_modules",
-    "./dist/**/*"
   ]
 }
