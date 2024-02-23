@@ -9,7 +9,7 @@ type Song {
   like: [ArtistLikeSong]
   nbLike: Int
   title: String!
-  date: String
+  # date: String
 }
 
 input SongCreateInput {
@@ -27,15 +27,6 @@ enum DurationRange {
   MORE_THAN_FIVE_MINUTES
 }
 
-enum Year {
-  YEAR_70
-  YEAR_80
-  YEAR_90
-  YEAR_2000
-  YEAR_2010
-}
-
 input SongFilterInput {
-  durationFilter: DurationRange
-  yearFilter: Year
+  duration_filter: DurationRange
 }

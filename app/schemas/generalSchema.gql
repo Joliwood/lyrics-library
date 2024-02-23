@@ -24,6 +24,17 @@ input AlbumUpdateInput {
   title: String
 }
 
+enum ReleaseYear {
+  YEAR_70
+  YEAR_80
+  YEAR_90
+  YEAR_2000
+  YEAR_2010
+}
+
+input AlbumFilterInput {
+  release_year: ReleaseYear
+}
 type Artist {
   # email row exists in table but is visible only to the artist himself
   # email: String
@@ -77,7 +88,7 @@ type Song {
   like: [ArtistLikeSong]
   nbLike: Int
   title: String!
-  date: String
+  # date: String
 }
 
 input SongCreateInput {
@@ -95,17 +106,8 @@ enum DurationRange {
   MORE_THAN_FIVE_MINUTES
 }
 
-enum Year {
-  YEAR_70
-  YEAR_80
-  YEAR_90
-  YEAR_2000
-  YEAR_2010
-}
-
 input SongFilterInput {
-  durationFilter: DurationRange
-  yearFilter: Year
+  duration_filter: DurationRange
 }
 
 type SongOnAlbum {
@@ -121,7 +123,7 @@ type ArtistLikeSong {
 
 type Query {
   album(id: Int!): Album
-  albums: [Album]
+  albums(limit: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
   artists: [Artist]
   song(id: Int!): Song

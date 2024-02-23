@@ -22,14 +22,20 @@
       "#types": [
         "./types/index.d.ts"
       ],
+      "#enums": [
+        "./types/enums.ts"
+      ],
       "#resolvers": [
         "./app/resolvers/"
+      ],
+      "#utils": [
+        "./app/utils"
       ],
     },
   },
   "include": [
     "./app/**/*",
-    "./types/**/*",
+    "./types/*",
     ".eslintrc.cjs",
     "/**/*.ts",
     "app/index.ts",

@@ -1,4 +1,5 @@
 import type Knex from 'knex';
+// import { ReleaseYear, DurationRange } from './enums';
 
 export type ArtistLikeSongRow = {
   artist_id: number,
@@ -59,7 +60,7 @@ export type LoginType = {
 export interface CoreDatamapperOptions {
   email?: string;
   limit?: number;
-  filter?: SongFilterInput;
+  filter?: FilterInput;
 }
 
 export interface LyricsDbDatasourceConfigType {
@@ -97,22 +98,7 @@ export type QueryResolversType = {
 
 // TODO WIP : Take types when we will have generated types
 
-enum Year {
-  YEAR_70,
-  YEAR_80,
-  YEAR_90,
-  YEAR_2000,
-  YEAR_2010,
-}
-
-enum DurationRange {
-  ONE_MINUTE,
-  ONE_TO_THREE_MINUTES,
-  THREE_TO_FIVE_MINUTES,
-  MORE_THAN_FIVE_MINUTES,
-}
-
-type SongFilterInput = {
-  durationFilter: DurationRange
-  yearFilter: Year
+type FilterInput = {
+  duration_filter: DurationRange
+  release_year: ReleaseYear
 };

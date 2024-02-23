@@ -4,10 +4,10 @@ import { sign, decode } from 'jsonwebtoken';
 
 import type { QueryResolversType } from '#types';
 import login from '../services/login.service';
-import isEqual from '../utils/isEqual';
+import { isEqual } from '#utils';
 
 const Query: QueryResolversType = {
-  async albums(_, __, { req, user, dataSources }) {
+  async albums(_, { limit, filter }, { req, user, dataSources }) {
     const userAuthorized = login.getUser(user, req.ip);
     if (!userAuthorized) {
       // throw new GraphQLError('Authentication failed', {
@@ -18,7 +18,7 @@ const Query: QueryResolversType = {
       // eslint-disable-next-line no-console
       console.log("Vous n'êtes pas authentifié mais passons...");
     }
-    const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
+    const rows = await dataSources.lyricsdb.albumDatamapper.findAll({ limit, filter });
     return rows;
   },
 

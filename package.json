@@ -59,6 +59,8 @@
   "_moduleAliases": {
     "#datamappers": "./app/datamappers",
     "#types": "./types/index.d.ts",
-    "#resolvers": "./app/resolvers"
+    "#resolvers": "./app/resolvers",
+    "#enums": "./types/enums.ts",
+    "#utils": "./app/utils"
   }
 }
