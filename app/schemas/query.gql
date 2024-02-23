@@ -1,13 +1,10 @@
 type Query {
   album(id: Int!): Album
-  albums: [Album]
+  albums(limit: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
   artists: [Artist]
   song(id: Int!): Song
-  songs(limit: Int): [Song]
-
-  
+  songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
-
   profile: ArtistUser
 }

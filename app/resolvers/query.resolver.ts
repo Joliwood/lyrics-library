@@ -1,12 +1,13 @@
 import { GraphQLError } from 'graphql';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import login from '../services/login.service.js';
-import isEqual from '../utils/isEqual.js';
-import type { QueryResolversType } from '../../types/index.d.ts';
+import { compare } from 'bcrypt';
+import { sign, decode } from 'jsonwebtoken';
 
-const queryResolvers: QueryResolversType = {
-  async albums(_, __, { req, user, dataSources }) {
+import type { QueryResolversType } from '#types';
+import login from '../services/login.service';
+import { isEqual } from '#utils';
+
+const Query: QueryResolversType = {
+  async albums(_, { limit, filter }, { req, user, dataSources }) {
     const userAuthorized = login.getUser(user, req.ip);
     if (!userAuthorized) {
       // throw new GraphQLError('Authentication failed', {
@@ -14,9 +15,10 @@ const queryResolvers: QueryResolversType = {
       //     code: 'UNAUTHENTICATED',
       //   },
       // });
+      // eslint-disable-next-line no-console
       console.log("Vous n'êtes pas authentifié mais passons...");
     }
-    const rows = await dataSources.lyricsdb.albumDatamapper.findAll();
+    const rows = await dataSources.lyricsdb.albumDatamapper.findAll({ limit, filter });
     return rows;
   },
 
@@ -29,8 +31,8 @@ const queryResolvers: QueryResolversType = {
     return row;
   },
 
-  async songs(_, { limit }, { dataSources }) {
-    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit });
+  async songs(_, { limit, filter }, { dataSources }) {
+    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit, filter });
     return rows;
   },
 
@@ -71,7 +73,7 @@ const queryResolvers: QueryResolversType = {
 
     const isPasswordValid = user.email === 'admin@gmail.com'
       ? isEqual(password, user.password)
-      : await bcrypt.compare(password, user.password);
+      : await compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new GraphQLError('Authentication failed again', {
@@ -93,7 +95,7 @@ const queryResolvers: QueryResolversType = {
       return null;
     }
 
-    const token = jwt.sign(userInfos, process.env.JWT_SECRET, {
+    const token = sign(userInfos, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_TTL,
     });
     const expireAt = new Date();
@@ -112,9 +114,9 @@ const queryResolvers: QueryResolversType = {
         },
       });
     }
-    const userDecoded = jwt.decode(user);
+    const userDecoded = decode(user);
     return userDecoded;
   },
 };
 
-export default queryResolvers;
+export default Query;

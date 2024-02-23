@@ -23,3 +23,15 @@ input AlbumUpdateInput {
   songIds: [Int]
   title: String
 }
+
+enum ReleaseYear {
+  YEAR_70
+  YEAR_80
+  YEAR_90
+  YEAR_2000
+  YEAR_2010
+}
+
+input AlbumFilterInput {
+  release_year: ReleaseYear
+}
