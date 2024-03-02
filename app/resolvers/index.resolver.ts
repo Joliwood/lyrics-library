@@ -7,8 +7,9 @@ import {
   Song,
   SongOnAlbum,
 } from '#resolvers';
+import { Resolvers } from '../../types/__generated_schemas__/graphql';
 
-export default {
+const resolvers: Resolvers = {
   Album,
   Artist,
   ArtistLikeSong,
@@ -17,3 +18,5 @@ export default {
   Song,
   SongOnAlbum,
 };
+
+export default resolvers;
