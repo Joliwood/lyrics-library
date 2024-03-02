@@ -39,7 +39,7 @@
     ".eslintrc.cjs",
     "/**/*.ts",
     "app/index.ts",
-    "knexfile.js", 
+    "knexfile.ts", 
     "codege___n.__ts",
   ],
   "exclude": [

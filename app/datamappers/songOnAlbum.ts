@@ -12,6 +12,16 @@ class SongOnAlbumDatamapper extends CoreDatamapper {
     );
     return songOnAlbums;
   }
+
+  async findByAlbum(albumId: number): Promise<SongOnAlbum[]> {
+    const songOnAlbums: SongOnAlbum[] = await (
+      this.client.query
+        .from(this.tableName)
+        .where({ album_id: albumId })
+    );
+
+    return songOnAlbums;
+  }
 }
 
 export default SongOnAlbumDatamapper;

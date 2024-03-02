@@ -15,9 +15,6 @@ module.exports = {
   ],
   rules: {
     'no-console': 1,
-    // 'import/extensions': 'off',
-    // 'import/no-unresolved': 'off',
-    // 'no-underscore-dangle': ['error', { allow: ['__dirname'] }],
     'react/jsx-filename-extension': 'off',
   },
 };
