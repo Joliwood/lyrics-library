@@ -1,12 +1,14 @@
-import { GraphQLError } from 'graphql';
 import { compare } from 'bcrypt';
-import { sign, decode } from 'jsonwebtoken';
+import { GraphQLError } from 'graphql';
+import { jwtDecode } from 'jwt-decode';
+import { sign } from 'jsonwebtoken';
 
-import type { QueryResolversType } from '#types';
-import login from '../services/login.service';
 import { isEqual } from '#utils';
+import type { QueryResolvers } from '../../types/__generated_schemas__/graphql';
+import login from '../services/login.service';
+import type { ProfileJWT } from '#types';
 
-const Query: QueryResolversType = {
+const Query: QueryResolvers = {
   async albums(_, { limit, filter }, { req, user, dataSources }) {
     const userAuthorized = login.getUser(user, req.ip);
     if (!userAuthorized) {
@@ -83,39 +85,42 @@ const Query: QueryResolversType = {
       });
     }
 
-    const userInfos = {
-      name: user.name,
-      email: user.email,
-      country: user.country,
-      gender: user.gender,
-      ip: req.ip,
-    };
-
     if (process.env.JWT_SECRET == null) {
       return null;
     }
+
+    const userInfos = {
+      id: user.id,
+      ip: req.ip,
+    };
 
     const token = sign(userInfos, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_TTL,
     });
     const expireAt = new Date();
     expireAt.setSeconds(expireAt.getSeconds() + Number(process.env.JWT_TTL));
+
     return {
       token,
-      expire_at: expireAt,
+      expire_at: expireAt.toString(),
     };
   },
 
-  async profile(_, __, { user }) {
-    if (!user) {
+  async profile(_, __, { dataSources, userEncoded }) {
+    if (!userEncoded) {
       throw new GraphQLError('Authentication failed', {
         extensions: {
           code: 'UNAUTHENTICATED',
         },
       });
     }
-    const userDecoded = decode(user);
-    return userDecoded;
+
+    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+    const { id } = userDecoded;
+
+    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk(id);
+
+    return profile;
   },
 };
 

@@ -81,24 +81,31 @@ export type MutationResolversType = {
   // deleteSongOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow>;
 };
 
-// TODO : Define types
-export type QueryResolversType = {
-  artist: (parent: any, args: any, context: any) => Promise<ArtistRow>;
-  artists: (parent: any, args: any, context: any) => Promise<ArtistRow[]>;
-  album: (parent: any, args: any, context: any) => Promise<AlbumRow>;
-  albums: (parent: any, args: any, context: any) => Promise<AlbumRow[]>;
-  song: (parent: any, args: any, context: any) => Promise<SongRow>;
-  songs: (parent: any, args: any, context: any) => Promise<SongRow[]>;
-  // TODO : Define types
-  login: (parent: any, args: any, context: any) => Promise<LoginType | any>;
-  profile: (parent: any, args: any, context: any) => Promise<string | jwt.JwtPayload | null>;
-  // songsOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow[]>;
-  // artistsLikeSong: (parent: any, args: any, context: any) => Promise<ArtistLikeSongRow[]>;
-};
+// // TODO : Define types
+// export type QueryResolversType = {
+//   artist: (parent: any, args: any, context: any) => Promise<ArtistRow>;
+//   artists: (parent: any, args: any, context: any) => Promise<ArtistRow[]>;
+//   album: (parent: any, args: any, context: any) => Promise<AlbumRow>;
+//   albums: (parent: any, args: any, context: any) => Promise<AlbumRow[]>;
+//   song: (parent: any, args: any, context: any) => Promise<SongRow>;
+//   songs: (parent: any, args: any, context: any) => Promise<SongRow[]>;
+//   // TODO : Define types
+//   login: (parent: any, args: any, context: any) => Promise<LoginType | any>;
+//   profile: (parent: any, args: any, context: any) => Promise<string | jwt.JwtPayload | null>;
+//   // songsOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow[]>;
+//   // artistsLikeSong: (parent: any, args: any, context: any) => Promise<ArtistLikeSongRow[]>;
+// };
 
 // TODO WIP : Take types when we will have generated types
 
 type FilterInput = {
   duration_filter: DurationRange
   release_year: ReleaseYear
+};
+
+export type ProfileJWT = {
+  id: number,
+  ip: string,
+  iat: number,
+  exp: number,
 };

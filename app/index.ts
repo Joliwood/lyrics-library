@@ -1,6 +1,7 @@
 import 'module-alias/register';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+
 import './helpers/env.loader';
 import typeDefs from './schemas/typeDefs';
 import resolvers from './resolvers/index.resolver';
@@ -30,7 +31,7 @@ const startServer = async () => {
         req,
         // If we want to block all the application with authentification
         // user: login.getUser(req.headers.token, req.ip),
-        user: req.headers.authorization,
+        userEncoded: req.headers.authorization,
         dataSources: {
           lyricsdb: new LyricsDbDatasource({
             cache,
@@ -52,6 +53,7 @@ const startServer = async () => {
     listen: { port } as any,
   });
 
+  // eslint-disable-next-line no-console
   console.log(`🚀  Server ready at: ${url}`);
 };
 

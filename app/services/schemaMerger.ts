@@ -24,6 +24,7 @@ const generalSchema = schemaNames
 const outputFilePath = path.join(dirname, '../schemas/generalSchema.gql');
 writeFileSync(outputFilePath, generalSchema, 'utf-8');
 
+// eslint-disable-next-line no-console
 console.log(`Merged schema saved to: ${outputFilePath}`);
 
 export default outputFilePath;

@@ -1,6 +1,7 @@
-import type { AlbumRow, MutationResolversType, SongRow } from '#types';
+import type { AlbumRow, SongRow } from '#types';
+import type { MutationResolvers } from '../../types/__generated_schemas__/graphql';
 
-const Mutation: MutationResolversType = {
+const Mutation: MutationResolvers = {
   async addAlbum(_, args, { dataSources }) {
     const row = await dataSources.lyricsdb.albumDatamapper.create(args.input);
     return row;

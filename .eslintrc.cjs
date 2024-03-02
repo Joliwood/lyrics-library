@@ -7,7 +7,12 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
-  ignorePatterns: ['node_modules/', 'dist/', 'db/'],
+  ignorePatterns: [
+    'node_modules/',
+    'dist/',
+    'db/',
+    'types/__generated_schemas__/',
+  ],
   rules: {
     'no-console': 1,
     // 'import/extensions': 'off',
