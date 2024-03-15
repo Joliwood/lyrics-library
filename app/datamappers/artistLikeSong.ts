@@ -30,6 +30,22 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
     );
     return artistLikeSong.length;
   }
+
+  async deleteByArtist(artistId: number): Promise<boolean> {
+    const result = await this.client.query
+      .from(this.tableName)
+      .where({ artist_id: artistId })
+      .del();
+    return result;
+  }
+
+  async deleteBySongs(songIds: number[]): Promise<boolean> {
+    const result = await this.client.query
+      .from(this.tableName)
+      .whereIn('song_id', songIds)
+      .del();
+    return result;
+  }
 }
 
 export default ArtistLikeSongDatamapper;

@@ -1,6 +1,6 @@
 // import type { AlbumRow, SongRow } from '#types';
 import type {
-  Album, MutationResolvers, Song, SongOnAlbum,
+  Album, MutationResolvers,
 } from '../../types/__generated_schemas__/graphql';
 
 const Mutation: MutationResolvers = {
@@ -45,92 +45,55 @@ const Mutation: MutationResolvers = {
   },
 
   async deleteArtist(_, args, { dataSources }) {
+    const artistId = args.id;
+
     // Find all albums to delete with the artist id
     const albums = await dataSources
       .lyricsdb
       .albumDatamapper
-      .findByArtist(args.id);
+      .findByArtist(artistId);
 
     // With all album ids, we can find all songs to delete
     const albumIds: Album['id'][] = albums.map((album: Album) => album.id);
 
-    const songOnAlbumIds = await Promise.all(
-      albumIds.map(async (albumId) => {
-        const rows: SongOnAlbum[] = await dataSources
-          .lyricsdb
-          .songOnAlbumDatamapper
-          .findByAlbum(albumId);
-        return rows.map((row: SongOnAlbum) => row.album_id);
-      }),
-    ).then((result) => result.flat());
+    const songs = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .findByArtist(artistId);
 
-    // const songOnAlbumIds = songOnAlbumIdsToMerge.flat();
+    const songIds = songs.map((song: any) => song.id);
 
-    console.log('songOnAlbumIdsToMerge : ', songOnAlbumIds);
+    await dataSources
+      .lyricsdb
+      .songOnAlbumDatamapper
+      .deleteByAlbum(albumIds);
 
-    // const songOnAlbumIds: number[] = songOnAlbums.flat();
+    await dataSources
+      .lyricsdb
+      .artistLikeSongDatamapper
+      .deleteByArtist(artistId);
 
-    // const songOnAlbumIds: number[] = songOnAlbums.flatMap(
-    //   (albumSongs) => albumSongs.map((albumSong) => albumSong.album_id),
-    // );
+    await dataSources
+      .lyricsdb
+      .artistLikeSongDatamapper
+      .deleteBySongs(songIds);
 
-    // const songOnAlbumIds: number[] = (await Promise.all(
-    //   albumIds.map(
-    //     async (albumId) => (
-    //       await dataSources.lyricsdb.songOnAlbumDatamapper.findByAlbum(albumId)).map(
-    //       (song: any) => song.album_id,
-    //     ),
-    //   ),
-    // )).flat();
+    await dataSources
+      .lyricsdb
+      .albumDatamapper
+      .deleteMultiple(albumIds);
 
-    console.log('songOnAlbumIds : ', songOnAlbumIds);
+    await dataSources
+      .lyricsdb
+      .songDatamapper
+      .deleteMultiple(songIds);
 
-    // * An optimisation is possible here, we make one request per album, we could make only one
-    // Regroup all promises (one per album) in one promise to regroup songs ids to delete
-    const songsIds = await Promise.all(
-      albumIds.map(async (albumId) => {
-        const songs: Song[] = await dataSources
-          .lyricsdb
-          .songDatamapper
-          .findByAlbum(albumId);
-        return songs.map((song: Song) => song.id);
-      }),
-    );
-
-    // Merge all arrays album into one single array
-    const SongIdsRegrouped = songsIds.flat();
-    const songOnAlbumIdsRegrouped = songOnAlbumIds.flat();
-
-    if (songOnAlbumIdsRegrouped.length > 0) {
-      const result = await dataSources
-        .lyricsdb
-        .songOnAlbumDatamapper
-        .deleteMultiple(songOnAlbumIdsRegrouped);
-      return result;
-    }
-
-    if (albumIds.length > 0) {
-      const result = await dataSources
-        .lyricsdb
-        .albumDatamapper
-        .deleteMultiple(albumIds);
-      return result;
-    }
-
-    if (SongIdsRegrouped.length > 0) {
-      const result = await dataSources
-        .lyricsdb
-        .songDatamapper
-        .deleteMultiple(SongIdsRegrouped);
-      return result;
-    }
-
-    const result = await dataSources
+    const artistToDelete = await dataSources
       .lyricsdb
       .artistDatamapper
-      .delete(args.id);
+      .delete(artistId);
 
-    return result;
+    return artistToDelete;
   },
 };
 

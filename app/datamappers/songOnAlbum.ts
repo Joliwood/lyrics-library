@@ -19,8 +19,12 @@ class SongOnAlbumDatamapper extends CoreDatamapper {
         .from(this.tableName)
         .where({ album_id: albumId })
     );
-
     return songOnAlbums;
+  }
+
+  async deleteByAlbum(albumIds: number[]): Promise<boolean> {
+    const result = await this.client.query.from(this.tableName).whereIn('album_id', albumIds).del();
+    return result;
   }
 }
 
