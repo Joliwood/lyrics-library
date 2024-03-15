@@ -1,27 +1,28 @@
-import type { SongRow } from '#types';
+import type { AlbumResolvers } from '../../types/__generated_schemas__/graphql';
 
-const Album = {
-  async artist(parent: any, _: any, { dataSources }: any): Promise<SongRow[]> {
+const Album: AlbumResolvers = {
+  async artist(parent, _, { dataSources }) {
     // Do not use parent.artist_id for exemple, so the query can be executed
     // from multiple nested queries
-    const row: SongRow[] = await (
+    const artist = await (
       dataSources
         .lyricsdb
         .artistDatamapper
         .idsLoader
         .load(parent.id)
     );
-    return row;
+
+    return artist;
   },
 
-  async songs(parent: any, _: any, { dataSources }: any): Promise<SongRow[]> {
-    const rows: SongRow[] = await (
+  async songs(parent, _, { dataSources }) {
+    const songs = await (
       dataSources
         .lyricsdb
         .songDatamapper
         .findByAlbum(parent.id)
     );
-    return rows;
+    return songs;
   },
 };
 

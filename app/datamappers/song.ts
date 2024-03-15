@@ -1,25 +1,25 @@
 import { CoreDatamapper } from '#datamappers';
-import type { SongRow } from '#types';
+import type { Song } from '../../types/__generated_schemas__/graphql';
 
 class SongDatamapper extends CoreDatamapper {
   tableName = 'song';
 
-  async findByAlbum(albumId: number): Promise<SongRow[]> {
-    const rows: SongRow[] = await (
+  async findByAlbum(albumId: number): Promise<Song[]> {
+    const songs: Song[] = await (
       this.client.query
         .from(this.tableName)
         .where({ id: albumId })
     );
-    return rows;
+    return songs;
   }
 
-  async findByArtist(artistId: number): Promise<SongRow[]> {
-    const rows: SongRow[] = await (
+  async findByArtist(artistId: number): Promise<Song[]> {
+    const songs: Song[] = await (
       this.client.query
         .from(this.tableName)
         .where({ artist_id: artistId })
     );
-    return rows;
+    return songs;
   }
 }
 

@@ -1,6 +1,6 @@
 import { convertFromMinuteToSecond, getIndexFromEnumValue } from '#utils';
 import { DurationRange, ReleaseYear } from '#enums';
-import { type CoreDatamapperOptions } from '#types';
+import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
   // TODO : Precise tablenames with all tables of the DB

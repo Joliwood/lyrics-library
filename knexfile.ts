@@ -1,8 +1,8 @@
-import * as url from 'url';
+import * as path from 'path';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const dirname = path.dirname(__filename);
 
 const knexConfig = {
 
