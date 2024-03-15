@@ -1,8 +1,8 @@
-import type { AlbumRow, ArtistLikeSongRow } from '#types';
+import type { ArtistResolvers } from '../../types/__generated_schemas__/graphql';
 
-const Artist = {
-  async albums(parent: any, _: any, { dataSources }: any) {
-    const rows: AlbumRow[] = await (
+const Artist: ArtistResolvers = {
+  async albums(parent, _, { dataSources }) {
+    const rows = await (
       dataSources
         .lyricsdb
         .albumDatamapper
@@ -12,8 +12,8 @@ const Artist = {
   },
 
   // ArtistLikeSong relation
-  async favorites(parent: any, _: any, { dataSources }: any) {
-    const rows: ArtistLikeSongRow[] = await (
+  async favorites(parent, _, { dataSources }) {
+    const rows = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
@@ -22,7 +22,7 @@ const Artist = {
     return rows;
   },
 
-  async songs(parent: any, _: any, { dataSources }: any) {
+  async songs(parent, _, { dataSources }) {
     const rows = await (
       dataSources
         .lyricsdb

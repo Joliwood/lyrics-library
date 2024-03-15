@@ -1,6 +1,11 @@
-import type { ArtistRow } from '#types';
+import type {
+  SongResolvers,
+  Artist,
+  ArtistLikeSong,
+  SongOnAlbum,
+} from '../../types/__generated_schemas__/graphql';
 
-const Song = {
+const Song: SongResolvers = {
   // async album(parent, _, { dataSources }) {
   //   // We can replace findByPk by an idLoader,
   //   // so it doesn't execute one query by album, with first().
@@ -10,8 +15,8 @@ const Song = {
   //   return rows;
   // },
 
-  async artist(parent: any, _: any, { dataSources }: any) {
-    const artist: ArtistRow = await (
+  async artist(parent, _, { dataSources }) {
+    const artist: Artist = await (
       dataSources
         .lyricsdb
         .artistDatamapper
@@ -20,34 +25,34 @@ const Song = {
     return artist;
   },
 
-  async like(parent: any, _: any, { dataSources }: any) {
-    const rows = await (
+  async like(parent, _, { dataSources }) {
+    const likes: ArtistLikeSong[] = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
         .findBySong(parent.id)
     );
-    return rows;
+    return likes;
   },
 
-  async nbLike(parent: any, _: any, { dataSources }: any): Promise<number> {
-    const count: number = await (
+  async nbLike(parent, _, { dataSources }) {
+    const nbLike: number = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
         .countBySong(parent.id)
     );
-    return count;
+    return nbLike;
   },
 
-  async songOnAlbum(parent: any, _: any, { dataSources }: any) {
-    const rows = await (
+  async songOnAlbum(parent, _, { dataSources }) {
+    const songOnAlbum: SongOnAlbum[] = await (
       dataSources
         .lyricsdb
         .songOnAlbumDatamapper
         .findBySong(parent.id)
     );
-    return rows;
+    return songOnAlbum;
   },
 };
 
