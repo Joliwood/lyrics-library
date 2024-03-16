@@ -12,4 +12,6 @@ type Mutation {
 
   # It will delete his song and his album before
   deleteArtist(id: Int!): Boolean
+
+  deleteSongs(ids: [Int!]!): Boolean
 }
