@@ -76,25 +76,10 @@ export type MutationResolversType = {
   deleteAlbum: (parent: any, args: any, context: any) => Promise<AlbumRow>;
   addSong: (parent: any, args: any, context: any) => Promise<SongRow>;
   // updateSong: (parent: any, args: any, context: any) => Promise<SongRow>;
-  // deleteSong: (parent: any, args: any, context: any) => Promise<SongRow>;
+  deleteSongs: (parent: any, args: any, context: any) => Promise<boolean>;
   // createSongOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow>;
   // deleteSongOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow>;
 };
-
-// // TODO : Define types
-// export type QueryResolversType = {
-//   artist: (parent: any, args: any, context: any) => Promise<ArtistRow>;
-//   artists: (parent: any, args: any, context: any) => Promise<ArtistRow[]>;
-//   album: (parent: any, args: any, context: any) => Promise<AlbumRow>;
-//   albums: (parent: any, args: any, context: any) => Promise<AlbumRow[]>;
-//   song: (parent: any, args: any, context: any) => Promise<SongRow>;
-//   songs: (parent: any, args: any, context: any) => Promise<SongRow[]>;
-//   // TODO : Define types
-//   login: (parent: any, args: any, context: any) => Promise<LoginType | any>;
-//   profile: (parent: any, args: any, context: any) => Promise<string | jwt.JwtPayload | null>;
-//   // songsOnAlbum: (parent: any, args: any, context: any) => Promise<SongOnAlbumRow[]>;
-//   // artistsLikeSong: (parent: any, args: any, context: any) => Promise<ArtistLikeSongRow[]>;
-// };
 
 // TODO WIP : Take types when we will have generated types
 

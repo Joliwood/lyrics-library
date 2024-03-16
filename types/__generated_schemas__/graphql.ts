@@ -106,6 +106,7 @@ export type Mutation = {
   addSong?: Maybe<Song>;
   deleteAlbum?: Maybe<Scalars['Boolean']['output']>;
   deleteArtist?: Maybe<Scalars['Boolean']['output']>;
+  deleteSongs?: Maybe<Scalars['Boolean']['output']>;
   updateAlbum?: Maybe<Album>;
   updateArtist?: Maybe<Artist>;
 };
@@ -128,6 +129,11 @@ export type MutationDeleteAlbumArgs = {
 
 export type MutationDeleteArtistArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteSongsArgs = {
+  ids: Array<Scalars['Int']['input']>;
 };
 
 
@@ -393,6 +399,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addSong?: Resolver<Maybe<ResolversTypes['Song']>, ParentType, ContextType, RequireFields<MutationAddSongArgs, 'input'>>;
   deleteAlbum?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteAlbumArgs, 'id'>>;
   deleteArtist?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteArtistArgs, 'id'>>;
+  deleteSongs?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteSongsArgs, 'ids'>>;
   updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'id' | 'input'>>;
   updateArtist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<MutationUpdateArtistArgs, 'id' | 'input'>>;
 };
