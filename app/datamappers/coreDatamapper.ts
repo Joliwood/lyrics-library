@@ -115,6 +115,11 @@ class CoreDatamapper {
     const result = await this.client.query.from(this.tableName).whereIn('id', ids).del();
     return result;
   }
+
+  async deleteMultipleAssociations(label: string, ids: number[]): Promise<any> {
+    const result = await this.client.query.from(this.tableName).whereIn(label, ids).del();
+    return result;
+  }
 }
 
 export default CoreDatamapper;

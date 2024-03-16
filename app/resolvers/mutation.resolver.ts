@@ -1,4 +1,3 @@
-// import type { AlbumRow, SongRow } from '#types';
 import type {
   Album, MutationResolvers,
 } from '../../types/__generated_schemas__/graphql';
@@ -94,6 +93,27 @@ const Mutation: MutationResolvers = {
       .delete(artistId);
 
     return artistToDelete;
+  },
+
+  async deleteSongs(_, args, { dataSources }) {
+    const songIds = args.ids;
+
+    await dataSources
+      .lyricsdb
+      .artistLikeSongDatamapper
+      .deleteMultipleAssociations('song_id', songIds);
+
+    await dataSources
+      .lyricsdb
+      .songOnAlbumDatamapper
+      .deleteMultipleAssociations('song_id', songIds);
+
+    const songToDelete = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .deleteMultiple(songIds);
+
+    return songToDelete;
   },
 };
 
