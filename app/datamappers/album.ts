@@ -1,5 +1,6 @@
-import { CoreDatamapper } from '#datamappers';
 import type { Album } from '../../types/__generated_schemas__/graphql';
+
+import { CoreDatamapper } from '#datamappers';
 
 class AlbumDatamapper extends CoreDatamapper {
   tableName: string = 'album';

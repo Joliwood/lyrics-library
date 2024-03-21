@@ -1,5 +1,6 @@
-import { CoreDatamapper } from '#datamappers';
 import type { ArtistLikeSong } from '../../types/__generated_schemas__/graphql';
+
+import { CoreDatamapper } from '#datamappers';
 
 class ArtistLikeSongDatamapper extends CoreDatamapper {
   tableName = 'artist_like_song';
@@ -43,6 +44,14 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
     const result = await this.client.query
       .from(this.tableName)
       .whereIn('song_id', songIds)
+      .del();
+    return result;
+  }
+
+  async unlikeSong(artistId: number, songId: number): Promise<boolean> {
+    const result = await this.client.query
+      .from(this.tableName)
+      .where({ artist_id: artistId, song_id: songId })
       .del();
     return result;
   }

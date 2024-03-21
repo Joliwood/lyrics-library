@@ -3,9 +3,10 @@ import { GraphQLError } from 'graphql';
 import { jwtDecode } from 'jwt-decode';
 import { sign } from 'jsonwebtoken';
 
-import { isEqual } from '#utils';
 import type { QueryResolvers } from '../../types/__generated_schemas__/graphql';
 import login from '../services/login.service';
+
+import { isEqual } from '#utils';
 import type { ProfileJWT } from '#types';
 
 const Query: QueryResolvers = {

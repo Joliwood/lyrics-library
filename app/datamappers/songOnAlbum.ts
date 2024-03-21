@@ -1,5 +1,6 @@
+import { type SongOnAlbum } from '../../types/__generated_schemas__/graphql';
+
 import { CoreDatamapper } from '#datamappers';
-import { SongOnAlbum } from '../../types/__generated_schemas__/graphql';
 
 class SongOnAlbumDatamapper extends CoreDatamapper {
   tableName = 'song_on_album';
