@@ -1,6 +1,10 @@
+import { jwtDecode } from 'jwt-decode';
+
 import type {
   Album, MutationResolvers,
 } from '../../types/__generated_schemas__/graphql';
+
+import { type ProfileJWT } from '#types';
 
 const Mutation: MutationResolvers = {
   async addAlbum(_, args, { dataSources }) {
@@ -114,6 +118,50 @@ const Mutation: MutationResolvers = {
       .deleteMultiple(songIds);
 
     return songToDelete;
+  },
+
+  async likeSong(_, args, { dataSources, userEncoded }) {
+    if (userEncoded == null) {
+      throw new Error('You must be logged in to like a song');
+    }
+
+    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+
+    const songId = args.id;
+    const artistId = userDecoded.id;
+
+    try {
+      await dataSources
+        .lyricsdb
+        .artistLikeSongDatamapper
+        .create({ song_id: songId, artist_id: artistId });
+
+      return true;
+    } catch (error) {
+      throw new Error('You have already liked this song');
+    }
+  },
+
+  async unlikeSong(_, args, { dataSources, userEncoded }) {
+    if (userEncoded == null) {
+      throw new Error('You must be logged in to unlike a song');
+    }
+
+    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+
+    const songId = args.id;
+    const artistId = userDecoded.id;
+
+    const result = await dataSources
+      .lyricsdb
+      .artistLikeSongDatamapper
+      .unlikeSong(artistId, songId);
+
+    if (!result) {
+      throw new Error('You have not liked this song');
+    }
+
+    return true;
   },
 };
 

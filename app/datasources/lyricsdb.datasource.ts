@@ -1,4 +1,5 @@
 import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+
 import {
   AlbumDatamapper,
   ArtistDatamapper,
