@@ -87,7 +87,11 @@ const Query: QueryResolvers = {
     }
 
     if (process.env.JWT_SECRET == null) {
-      return null;
+      throw new GraphQLError('JWT_SECRET not provided', {
+        extensions: {
+          code: 'ENV_SETUP',
+        },
+      });
     }
 
     const userInfos = {

@@ -43,7 +43,7 @@ const startServer = async () => {
                 password: process.env.PG_PASSWORD,
                 port: process.env.PG_PORT,
                 host: process.env.PG_HOST,
-                ssl: true,
+                ssl: process.env.PG_SSL_OPTION === 'true',
               },
             },
           }),
