@@ -18,7 +18,8 @@
     "generate:schema": "ts-node ./app/services/schemaMerger.ts && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "knex:migration": "knex migrate:make update_the_name",
     "knex:seed": "knex seed:run",
-    "knex:update": "knex migrate:latest",
+    "knex:update:dev": "knex migrate:latest --env development",
+    "knex:update:local": "knex migrate:latest --env local",
     "start": "ts-node ./dist/app/index.js",
     "typescript": "yarn tsc --noEmit"
   },
