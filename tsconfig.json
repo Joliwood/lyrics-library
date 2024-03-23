@@ -1,20 +1,20 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "composite": true,
     "declaration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
     "moduleResolution": "Node",
-    // noEmit prevent the compiler from generating files
-    "noEmit": false,
+    "noEmit": true,
     "outDir": "./dist",
     "resolveJsonModule": true,
     "rootDir": ".",
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "noImplicitAny": true,
     "paths": {
       "#datamappers": [
         "./app/datamappers/"
