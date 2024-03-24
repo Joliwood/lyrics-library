@@ -219,6 +219,7 @@ export type Song = {
   /** Duration in second */
   duration: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
+  isLiked?: Maybe<Scalars['Boolean']['output']>;
   like?: Maybe<Array<Maybe<ArtistLikeSong>>>;
   lyrics?: Maybe<Scalars['String']['output']>;
   nbLike?: Maybe<Scalars['Int']['output']>;
@@ -434,6 +435,7 @@ export type SongResolvers<ContextType = any, ParentType extends ResolversParentT
   cover?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  isLiked?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   like?: Resolver<Maybe<Array<Maybe<ResolversTypes['ArtistLikeSong']>>>, ParentType, ContextType>;
   lyrics?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nbLike?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;

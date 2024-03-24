@@ -1,9 +1,13 @@
+import { jwtDecode } from 'jwt-decode';
+
 import type {
   SongResolvers,
   Artist,
   ArtistLikeSong,
   SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
+
+import { type ProfileJWT } from '#types';
 
 const Song: SongResolvers = {
   // async album(parent, _, { dataSources }) {
@@ -53,6 +57,24 @@ const Song: SongResolvers = {
         .findBySong(parent.id)
     );
     return songOnAlbum;
+  },
+
+  async isLiked(parent, _, { dataSources, userEncoded }) {
+    if (!userEncoded) {
+      return null;
+    }
+
+    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+    const userId = userDecoded.id;
+    const songId = parent.id;
+
+    const isLiked: boolean = await (
+      dataSources
+        .lyricsdb
+        .artistLikeSongDatamapper
+        .isLiked({ songId, userId })
+    );
+    return isLiked;
   },
 };
 

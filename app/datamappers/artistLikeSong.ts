@@ -55,6 +55,21 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
       .del();
     return result;
   }
+
+  async isLiked({ userId, songId }: { userId: number, songId: number }): Promise<boolean> {
+    const artistLikeSong: ArtistLikeSong[] = await (
+      this.client.query
+        .from(this.tableName)
+        .where({ artist_id: userId, song_id: songId })
+        .first()
+    );
+
+    if (!artistLikeSong) {
+      return false;
+    }
+
+    return true;
+  }
 }
 
 export default ArtistLikeSongDatamapper;

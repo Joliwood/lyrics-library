@@ -89,6 +89,7 @@ type Song {
   nbLike: Int
   title: String!
   # date: String
+  isLiked: Boolean
 }
 
 input SongCreateInput {
