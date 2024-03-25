@@ -10,13 +10,8 @@ module.exports = {
   ignorePatterns: [
     'node_modules/',
     'dist/',
-    'db/',
     'types/__generated_schemas__/',
   ],
-  // rules: {
-  //   'no-console': 1,
-  //   'react/jsx-filename-extension': 'off',
-  // },
   rules: {
     'react/jsx-filename-extension': 'off',
     'no-console': 1,

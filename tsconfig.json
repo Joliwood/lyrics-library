@@ -44,6 +44,7 @@
     "./types/*",
     ".eslintrc.js",
     "/**/*.ts",
+    "./db/**/*",
     "app/index.ts",
     "knexfile.ts", 
     "codege___n.__ts",
