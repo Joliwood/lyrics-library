@@ -8,6 +8,7 @@ type Song {
   songOnAlbum: [SongOnAlbum]
   like: [ArtistLikeSong]
   nbLike: Int
+  release_year: Int
   title: String!
   # date: String
   isLiked: Boolean
@@ -19,6 +20,7 @@ input SongCreateInput {
   duration: Int!
   lyrics: String
   title: String!
+  release_year: Int
 }
 
 enum DurationRange {
