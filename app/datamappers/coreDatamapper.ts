@@ -1,20 +1,21 @@
-import { convertFromMinuteToSecond, getIndexFromEnumValue } from '#utils';
-import { DurationRange, ReleaseYear } from '#enums';
+import { type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+
+import {
+  getDurationFilterQuery,
+  getReleaseYearFilterQuery,
+} from '#utils';
+import { TableNamesEnum } from '#enums';
 import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
-  // TODO : Precise tablenames with all tables of the DB
-  tableName: string | undefined;
-
-  // TODO : Define types
   idsLoader: any;
 
-  // TODO : Define types
-  client: any;
-
-  // TODO : Precise client type
-  constructor(client: any) {
+  constructor(
+    public readonly client: BatchedSQLDataSource['db'],
+    public tableName: TableNamesEnum,
+  ) {
     this.client = client;
+    this.tableName = tableName;
   }
 
   // Normaly this method should be called in the constructor but this.tableName is not defined yet
@@ -24,7 +25,7 @@ class CoreDatamapper {
     this.idsLoader = this.client.query
       .from(this.tableName)
       // TODO : Define types
-      .batch(async (query: any, ids: number[]) => {
+      .batch(async (query, ids) => {
         const rows = await query.whereIn('id', ids);
         // TODO : Define types
         return ids.map((id) => rows.find((row: any) => row.id === id));
@@ -41,53 +42,42 @@ class CoreDatamapper {
   // TODO : Define types
   async findAll(option: CoreDatamapperOptions = {}): Promise<any[]> {
     const query = this.client.query.from(this.tableName);
+    const { email, limit, filter } = option;
 
-    if (option.email) {
-      query.where({ email: option.email });
+    if (email) {
+      query.where({ email });
     }
 
-    if (option.limit) {
-      query.limit(option.limit);
+    if (limit) {
+      query.limit(limit);
     }
 
-    if (option.filter?.duration_filter === DurationRange.ONE_MINUTE) {
-      query.where('duration', '<=', convertFromMinuteToSecond(1));
+    if (filter) {
+      const {
+        duration_filter: durationFilter,
+        release_year: releaseYear,
+        name: title,
+      } = filter;
+
+      if (durationFilter) {
+        await getDurationFilterQuery(query, filter);
+      }
+
+      if (releaseYear) {
+        await getReleaseYearFilterQuery(query, filter);
+      }
+
+      if (
+        // Only song and album tables have title column
+        title && (
+          this.tableName === TableNamesEnum.SONG || this.tableName === TableNamesEnum.ALBUM
+        )) {
+        query.whereILike('title', `${title}%`);
+      }
     }
 
-    if (option.filter?.duration_filter === DurationRange.ONE_TO_THREE_MINUTES) {
-      query.whereBetween('duration', [convertFromMinuteToSecond(1), convertFromMinuteToSecond(3)]);
-    }
-
-    if (option.filter?.duration_filter === DurationRange.THREE_TO_FIVE_MINUTES) {
-      query.whereBetween('duration', [convertFromMinuteToSecond(3), convertFromMinuteToSecond(5)]);
-    }
-
-    if (option.filter?.duration_filter === DurationRange.MORE_THAN_FIVE_MINUTES) {
-      query.where('duration', '>=', convertFromMinuteToSecond(5));
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_70)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_70, ReleaseYear.YEAR_80]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_80)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_80, ReleaseYear.YEAR_90]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_90)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_90, ReleaseYear.YEAR_2000]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2000)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_2000, ReleaseYear.YEAR_2010]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2010)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_2010, ReleaseYear.YEAR_2010 + 10]);
-    }
-
-    const rows = await query;
-    return rows;
+    const rowsFiltered = await query;
+    return rowsFiltered;
   }
 
   // We have to add [] to the row with .returning('*') so it returns all we ask in the query

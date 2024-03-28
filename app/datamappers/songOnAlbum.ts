@@ -3,8 +3,6 @@ import { type SongOnAlbum } from '../../types/__generated_schemas__/graphql';
 import { CoreDatamapper } from '#datamappers';
 
 class SongOnAlbumDatamapper extends CoreDatamapper {
-  tableName = 'song_on_album';
-
   async findBySong(songId: number): Promise<SongOnAlbum[]> {
     const songOnAlbums: SongOnAlbum[] = await (
       this.client.query
@@ -25,7 +23,12 @@ class SongOnAlbumDatamapper extends CoreDatamapper {
 
   async deleteByAlbum(albumIds: number[]): Promise<boolean> {
     const result = await this.client.query.from(this.tableName).whereIn('album_id', albumIds).del();
-    return result;
+
+    if (result) {
+      return true;
+    }
+
+    return false;
   }
 }
 
