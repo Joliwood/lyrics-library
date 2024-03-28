@@ -3,8 +3,6 @@ import type { ArtistLikeSong } from '../../types/__generated_schemas__/graphql';
 import { CoreDatamapper } from '#datamappers';
 
 class ArtistLikeSongDatamapper extends CoreDatamapper {
-  tableName = 'artist_like_song';
-
   async findByArtist(artistId: number): Promise<ArtistLikeSong[]> {
     const artistLikeSong: ArtistLikeSong[] = await (
       this.client.query
@@ -37,7 +35,12 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
       .from(this.tableName)
       .where({ artist_id: artistId })
       .del();
-    return result;
+
+    if (result) {
+      return true;
+    }
+
+    return false;
   }
 
   async deleteBySongs(songIds: number[]): Promise<boolean> {
@@ -45,7 +48,12 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
       .from(this.tableName)
       .whereIn('song_id', songIds)
       .del();
-    return result;
+
+    if (result) {
+      return true;
+    }
+
+    return false;
   }
 
   async unlikeSong(artistId: number, songId: number): Promise<boolean> {
@@ -53,7 +61,12 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
       .from(this.tableName)
       .where({ artist_id: artistId, song_id: songId })
       .del();
-    return result;
+
+    if (result) {
+      return true;
+    }
+
+    return false;
   }
 
   async isLiked({ userId, songId }: { userId: number, songId: number }): Promise<boolean> {

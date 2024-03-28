@@ -11,7 +11,6 @@ const startServer = async () => {
 // Once we received the 2 parts, we send them to the Apollo server
 // The Appolo server can be considered as a middleware
   const server = new ApolloServer({
-  // The typeDefs regroups all schemas
     typeDefs,
     resolvers,
   // cors: {
@@ -20,12 +19,11 @@ const startServer = async () => {
   // },
   });
 
-  const port = process.env.PGPORT ?? 3000;
+  const port = process.env.PGPORT;
 
   // Then we create and launch the HTTP web server that will be able to respond to client requests
   const { url } = await startStandaloneServer<any>(server, {
     context: async ({ req }) => {
-    // This cache is specific to Appolo server, not to GraphQL
       const { cache } = server;
       return {
         req,
@@ -50,7 +48,7 @@ const startServer = async () => {
         },
       };
     },
-    listen: { port } as any,
+    listen: { port: Number(port || 3000) },
   });
 
   // eslint-disable-next-line no-console
