@@ -39,7 +39,7 @@ exports.seed = async (knex) => {
     albums.push({
       title: faker.word.words(),
       cover: faker.image.url(),
-      release_year: faker.number.int({ min: 1901, max: 2099 }),
+      release_year: faker.number.int({ min: 1901, max: 2024 }),
       artist_id: artistIds[faker.number.int(
         { min: 0, max: artistIds.length - 1 },
       )],
@@ -58,6 +58,7 @@ exports.seed = async (knex) => {
       title: faker.music.songName(),
       duration: faker.number.int({ min: 30, max: 300 }),
       cover: faker.image.url(),
+      release_year: faker.number.int({ min: 1901, max: 2024 }),
       lyrics: faker.lorem.text(),
       artist_id: faker.number.int({ min: 1, max: NB_ARTISTS }),
     });
