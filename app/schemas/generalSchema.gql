@@ -94,7 +94,6 @@ type Song {
 }
 
 input SongCreateInput {
-  artistId: Int!
   cover: String
   duration: Int!
   lyrics: String

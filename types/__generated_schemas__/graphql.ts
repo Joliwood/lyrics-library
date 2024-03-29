@@ -223,15 +223,16 @@ export type Song = {
   like?: Maybe<Array<Maybe<ArtistLikeSong>>>;
   lyrics?: Maybe<Scalars['String']['output']>;
   nbLike?: Maybe<Scalars['Int']['output']>;
+  release_year?: Maybe<Scalars['Int']['output']>;
   songOnAlbum?: Maybe<Array<Maybe<SongOnAlbum>>>;
   title: Scalars['String']['output'];
 };
 
 export type SongCreateInput = {
-  artistId: Scalars['Int']['input'];
   cover?: InputMaybe<Scalars['String']['input']>;
   duration: Scalars['Int']['input'];
   lyrics?: InputMaybe<Scalars['String']['input']>;
+  release_year?: InputMaybe<Scalars['Int']['input']>;
   title: Scalars['String']['input'];
 };
 
@@ -440,6 +441,7 @@ export type SongResolvers<ContextType = any, ParentType extends ResolversParentT
   like?: Resolver<Maybe<Array<Maybe<ResolversTypes['ArtistLikeSong']>>>, ParentType, ContextType>;
   lyrics?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nbLike?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  release_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   songOnAlbum?: Resolver<Maybe<Array<Maybe<ResolversTypes['SongOnAlbum']>>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

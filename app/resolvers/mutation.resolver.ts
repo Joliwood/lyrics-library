@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { jwtDecode } from 'jwt-decode';
 
 import type {
@@ -8,19 +9,19 @@ import { type ProfileJWT } from '#types';
 
 const Mutation: MutationResolvers = {
   async addAlbum(_, args, { dataSources }) {
-    const row = await dataSources
+    const album = await dataSources
       .lyricsdb
       .albumDatamapper
       .create(args.input);
-    return row;
+    return album;
   },
 
   async updateAlbum(_, args, { dataSources }) {
-    const row = await dataSources
+    const album = await dataSources
       .lyricsdb
       .albumDatamapper
       .update(args.id, args.input);
-    return row;
+    return album;
   },
 
   async deleteAlbum(_, args, { dataSources }) {
@@ -31,20 +32,38 @@ const Mutation: MutationResolvers = {
     return result;
   },
 
-  async addSong(_, args, { dataSources }) {
-    const row = await dataSources
+  async addSong(_, args, { dataSources, userEncoded }) {
+    const {
+      cover, duration, lyrics, title,
+    } = args.input;
+
+    if (userEncoded == null) {
+      throw new Error('You must be logged in to like a song');
+    }
+
+    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+    const artistId = userDecoded.id;
+
+    const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create(args.input);
-    return row;
+      .create({
+        artist_id: artistId,
+        cover,
+        duration,
+        lyrics,
+        title,
+      });
+
+    return song;
   },
 
   async updateArtist(_, args, { dataSources }) {
-    const row = await dataSources
+    const artist = await dataSources
       .lyricsdb
       .artistDatamapper
       .update(args.id, args.input);
-    return row;
+    return artist;
   },
 
   async deleteArtist(_, args, { dataSources }) {
