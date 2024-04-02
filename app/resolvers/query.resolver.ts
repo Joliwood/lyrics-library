@@ -6,6 +6,8 @@ import { sign } from 'jsonwebtoken';
 import type { QueryResolvers } from '../../types/__generated_schemas__/graphql';
 import login from '../services/login.service';
 
+// import { type GraphQLContext } from '..';
+
 import { isEqual } from '#utils';
 import type { ProfileJWT } from '#types';
 
@@ -34,8 +36,8 @@ const Query: QueryResolvers = {
     return row;
   },
 
-  async songs(_, { limit, filter }, { dataSources }) {
-    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit, filter });
+  async songs(_, { limit, filter }, { dataSources, userEncoded }) {
+    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit, filter, userEncoded });
     return rows;
   },
 

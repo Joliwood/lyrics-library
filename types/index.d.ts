@@ -3,10 +3,12 @@ import { type QueryBuilder, type Config } from 'knex';
 export interface CoreDatamapperOptions {
   email?: string;
   limit?: number;
+  userEncoded?: string;
   filter?: {
     duration_filter: DurationRange
     release_year: ReleaseYear
     name: string
+    liked: boolean
   };
 }
 

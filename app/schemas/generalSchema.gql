@@ -111,6 +111,7 @@ enum DurationRange {
 input SongFilterInput {
   duration_filter: DurationRange
   name: String
+  liked: Boolean
 }
 
 type SongOnAlbum {

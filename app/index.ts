@@ -7,10 +7,18 @@ import typeDefs from './schemas/typeDefs';
 import resolvers from './resolvers/index.resolver';
 import LyricsDbDatasource from './datasources/lyricsdb.datasource';
 
+export interface GraphQLContext {
+  req?: any;
+  userEncoded?: string;
+  dataSources: {
+    lyricsdb: LyricsDbDatasource;
+  };
+}
+
 const startServer = async () => {
 // Once we received the 2 parts, we send them to the Apollo server
 // The Appolo server can be considered as a middleware
-  const server = new ApolloServer({
+  const server = new ApolloServer<GraphQLContext>({
     typeDefs,
     resolvers,
   // cors: {
@@ -22,7 +30,7 @@ const startServer = async () => {
   const port = process.env.PGPORT;
 
   // Then we create and launch the HTTP web server that will be able to respond to client requests
-  const { url } = await startStandaloneServer<any>(server, {
+  const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => {
       const { cache } = server;
       return {
@@ -49,6 +57,9 @@ const startServer = async () => {
       };
     },
     listen: { port: Number(port || 3000) },
+    // context: async ({ req, res }) => ({
+    //   authScope: getScope(req.headers.authorization),
+    // }),
   });
 
   // eslint-disable-next-line no-console

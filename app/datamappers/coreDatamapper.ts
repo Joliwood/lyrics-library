@@ -1,11 +1,13 @@
 import { type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
 
+import { jwtDecode } from 'jwt-decode';
+
 import {
   getDurationFilterQuery,
   getReleaseYearFilterQuery,
 } from '#utils';
 import { TableNamesEnum } from '#enums';
-import type { CoreDatamapperOptions } from '#types';
+import type { CoreDatamapperOptions, ProfileJWT } from '#types';
 
 class CoreDatamapper {
   idsLoader: any;
@@ -42,7 +44,12 @@ class CoreDatamapper {
   // TODO : Define types
   async findAll(option: CoreDatamapperOptions = {}): Promise<any[]> {
     const query = this.client.query.from(this.tableName);
-    const { email, limit, filter } = option;
+    const {
+      email,
+      filter,
+      limit,
+      userEncoded,
+    } = option;
 
     if (email) {
       query.where({ email });
@@ -57,6 +64,7 @@ class CoreDatamapper {
         duration_filter: durationFilter,
         release_year: releaseYear,
         name: title,
+        liked,
       } = filter;
 
       if (durationFilter) {
@@ -65,6 +73,16 @@ class CoreDatamapper {
 
       if (releaseYear) {
         await getReleaseYearFilterQuery(query, filter);
+      }
+
+      if (userEncoded && this.tableName === TableNamesEnum.SONG && liked !== undefined) {
+        const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+        const artistId = userDecoded.id;
+        await query.join(
+          'artist_like_song',
+          'song.id',
+          'artist_like_song.song_id',
+        ).where('artist_like_song.artist_id', artistId);
       }
 
       if (

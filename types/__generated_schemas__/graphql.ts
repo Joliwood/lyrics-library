@@ -238,6 +238,7 @@ export type SongCreateInput = {
 
 export type SongFilterInput = {
   duration_filter?: InputMaybe<DurationRange>;
+  liked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
 };
 
