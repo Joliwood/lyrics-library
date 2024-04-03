@@ -1,13 +1,12 @@
 import { type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
 
-import { jwtDecode } from 'jwt-decode';
-
 import {
   getDurationFilterQuery,
   getReleaseYearFilterQuery,
+  getLikedFilterQuery,
 } from '#utils';
 import { TableNamesEnum } from '#enums';
-import type { CoreDatamapperOptions, ProfileJWT } from '#types';
+import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
   idsLoader: any;
@@ -75,14 +74,12 @@ class CoreDatamapper {
         await getReleaseYearFilterQuery(query, filter);
       }
 
-      if (userEncoded && this.tableName === TableNamesEnum.SONG && liked !== undefined) {
-        const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-        const artistId = userDecoded.id;
-        await query.join(
-          'artist_like_song',
-          'song.id',
-          'artist_like_song.song_id',
-        ).where('artist_like_song.artist_id', artistId);
+      if (
+        liked !== undefined
+        && userEncoded
+        && this.tableName === TableNamesEnum.SONG
+      ) {
+        await getLikedFilterQuery(query, userEncoded, liked);
       }
 
       if (

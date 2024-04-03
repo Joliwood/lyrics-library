@@ -1,7 +1,9 @@
 import { type Knex } from 'knex';
 
+import { jwtDecode } from 'jwt-decode';
+
 import { DurationRange, ReleaseYear } from '#enums';
-import { type CoreDatamapperOptions } from '#types';
+import { type ProfileJWT, type CoreDatamapperOptions } from '#types';
 import { convertFromMinuteToSecond } from '#utils';
 
 export function getIndexFromEnumValue(
@@ -62,4 +64,30 @@ export function getReleaseYearFilterQuery(
   }
 
   return null;
+}
+
+export function getLikedFilterQuery(
+  query: Knex.QueryBuilder,
+  userEncoded: string | undefined,
+  liked: boolean,
+) {
+  if (!userEncoded) {
+    return null;
+  }
+
+  const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
+  const artistId = userDecoded.id;
+
+  if (liked) {
+    return query.join(
+      'artist_like_song',
+      'song.id',
+      'artist_like_song.song_id',
+    ).where('artist_like_song.artist_id', artistId);
+  }
+  return query.join(
+    'artist_like_song',
+    'song.id',
+    'artist_like_song.song_id',
+  ).whereNot('artist_like_song.artist_id', artistId);
 }
