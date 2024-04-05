@@ -122,7 +122,7 @@ const Query: QueryResolvers = {
       });
     }
 
-    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk({ id: userId });
+    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk(userId);
 
     return profile;
   },

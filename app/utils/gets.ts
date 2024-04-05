@@ -71,7 +71,7 @@ export function getLikedFilterQuery(
 ) {
   const artistId = checkAuthentification({ userEncoded });
 
-  if (artistId) {
+  if (artistId == null) {
     return null;
   }
 

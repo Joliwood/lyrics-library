@@ -57,10 +57,16 @@ const Mutation: MutationResolvers = {
   },
 
   async updateArtist(_, args, { dataSources, userEncoded }) {
+    const artistId = checkAuthentification({ userEncoded });
+
+    if (artistId == null) {
+      throw new Error('You must be logged in to update an artist');
+    }
+
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
-      .update(args.id, args.input);
+      .update(artistId, args.input);
     return artist;
   },
 

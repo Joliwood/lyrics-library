@@ -1,6 +1,7 @@
 import type { Album } from '../../types/__generated_schemas__/graphql';
 
 import { CoreDatamapper } from '#datamappers';
+import { checkAuthentification } from '#utils';
 
 class AlbumDatamapper extends CoreDatamapper {
   async findByArtist(artistId: number): Promise<Album[]> {
@@ -19,7 +20,7 @@ class AlbumDatamapper extends CoreDatamapper {
       songIds,
       title,
     } = input;
-    const artistId = checkAuthentification(userEncoded);
+    const artistId = checkAuthentification({ userEncoded });
 
     const albums = await
     this.client.query

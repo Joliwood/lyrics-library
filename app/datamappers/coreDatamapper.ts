@@ -75,7 +75,7 @@ class CoreDatamapper {
       }
 
       if (
-        liked !== undefined
+        liked != null
         && userEncoded
         && this.tableName === TableNamesEnum.SONG
       ) {
