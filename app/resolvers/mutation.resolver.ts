@@ -8,11 +8,11 @@ import type {
 import { type ProfileJWT } from '#types';
 
 const Mutation: MutationResolvers = {
-  async addAlbum(_, args, { dataSources }) {
+  async addAlbum(_, args, { dataSources, userEncoded }) {
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .create(args.input);
+      .createAlbum(args.input, userEncoded);
     return album;
   },
 

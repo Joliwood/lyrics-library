@@ -9,7 +9,8 @@ type Album {
 }
 
 input AlbumCreateInput {
-  artist_id: Int!
+  # WIP - Intégrer au context header
+  # artist_id: Int!
   cover: String
   release_year: Int
   songIds: [Int!]!
