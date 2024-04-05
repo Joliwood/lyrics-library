@@ -3,10 +3,12 @@ import { type IncomingMessage } from 'http';
 import { type QueryBuilder } from 'knex';
 
 import {
-  // type Query as QueryType,
+  type DurationRange,
+  type ReleaseYear,
   type QueryAlbumsArgs,
   type QueryLoginArgs,
   type QuerySongsArgs,
+  type InputMaybe,
 } from './__generated_schemas__/graphql';
 
 import type {
@@ -17,21 +19,31 @@ import type {
   SongOnAlbumDatamapper,
 } from '#datamappers';
 
-// export interface CoreDatamapperOptions {
-//   email?: string;
-//   limit: InputMaybe<number>;
-//   userEncoded?: string;
-//   filter?: {
-//     duration_filter: DurationRange
-//     release_year: ReleaseYear
-//     name: string
-//     liked: boolean
-//   };
-// }
+export interface CoreDatamapperOptions {
+  email?: string;
+  limit: InputMaybe<number>;
+  userEncoded?: string;
+  filter?: {
+    duration_filter: DurationRange
+    release_year: ReleaseYear
+    name: string
+    liked: boolean
+  };
+}
 
-// export interface LyricsDbDatasourceConfigType {
-//   knexConfig: Config;
-// }
+export interface LyricsDbDatasourceConfigType {
+  knexConfig: {
+    client: string;
+    connection: {
+      user?: string;
+      database?: string;
+      password?: string;
+      port?: string;
+      host?: string;
+      ssl: boolean;
+    };
+  }
+}
 
 export type ProfileJWT = {
   id: number,
@@ -85,7 +97,7 @@ export type AllFindAllArgs<TQueryArgs = Partial<
 & QueryAlbumsArgs
 & QueryLoginArgs['input']
 & QuerySongsArgs
->> = TQueryArgs;
+> | undefined> = TQueryArgs;
 
 // export type AllFindAllResult<KQueryResult =
 // | QueryType['albums']
@@ -95,3 +107,10 @@ export type AllFindAllArgs<TQueryArgs = Partial<
 // export type AllFindById = Artist;
 // export type AllCreate = Artist;
 // export type AllUpdate = Artist;
+
+export type FilterTypes = {
+  duration_filter: DurationRange
+  release_year: ReleaseYear
+  name: string
+  liked: boolean
+};

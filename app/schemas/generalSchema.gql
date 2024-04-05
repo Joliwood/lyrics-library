@@ -49,6 +49,7 @@ type Artist {
 }
 
 type ArtistUser {
+  id: Int!
   albums: [Album]
   country: String
   email: String!

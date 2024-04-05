@@ -1,8 +1,5 @@
 import type {
   SongResolvers,
-  Artist,
-  ArtistLikeSong,
-  SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
@@ -19,7 +16,7 @@ const Song: SongResolvers<GraphQLContext> = {
   // },
 
   async artist(parent, _, { dataSources }) {
-    const artist: Artist = await (
+    const artist = await (
       dataSources
         .lyricsdb
         .artistDatamapper
@@ -29,7 +26,7 @@ const Song: SongResolvers<GraphQLContext> = {
   },
 
   async like(parent, _, { dataSources }) {
-    const likes: ArtistLikeSong[] = await (
+    const likes = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
@@ -39,7 +36,7 @@ const Song: SongResolvers<GraphQLContext> = {
   },
 
   async nbLike(parent, _, { dataSources }) {
-    const nbLike: number = await (
+    const nbLike = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
@@ -49,7 +46,7 @@ const Song: SongResolvers<GraphQLContext> = {
   },
 
   async songOnAlbum(parent, _, { dataSources }) {
-    const songOnAlbum: SongOnAlbum[] = await (
+    const songOnAlbum = await (
       dataSources
         .lyricsdb
         .songOnAlbumDatamapper
@@ -67,7 +64,7 @@ const Song: SongResolvers<GraphQLContext> = {
 
     const songId = parent.id;
 
-    const isLiked: boolean = await (
+    const isLiked = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper

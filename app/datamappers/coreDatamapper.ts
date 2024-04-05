@@ -10,16 +10,17 @@ import { type AllFindAllArgs } from '#types';
 // import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
-  idsLoader: BatchedLoader<number, any>;
+  // TODO - Define types
+  idsLoader: BatchedLoader<number, any> | any;
 
   constructor(
     public readonly client: BatchedSQLDataSource['db'],
     public tableName: TableNamesEnum,
-    idsLoader: CoreDatamapper['idsLoader'],
+    // public idsLoader: BatchedLoader<number, any>,
   ) {
     this.client = client;
     this.tableName = tableName;
-    this.idsLoader = idsLoader;
+    // this.idsLoader = idsLoader;
   }
 
   // Normaly this method should be called in the constructor but this.tableName is not defined yet
@@ -32,7 +33,7 @@ class CoreDatamapper {
       // : { id: number }[]
       .batch(async (query, ids) => {
         const rows: any = await query.whereIn('id', ids);
-        console.log(rows);
+        // console.log(rows);
 
         return ids.map((id) => rows.find((row: any) => row.id === id));
       });
@@ -47,20 +48,22 @@ class CoreDatamapper {
   // = {} to accept default value if no args are passed
   // TODO : Define types
   async findAll<TQueryArgs extends AllFindAllArgs, KQueryResult>(
-    args: TQueryArgs & { userEncoded?: string },
-  ): Promise<KQueryResult> {
+    args?: TQueryArgs & { userEncoded?: string },
+    // TODO - Change | any
+  ): Promise<KQueryResult | any> {
     const query = this.client.query.from(this.tableName);
 
     const {
-      email,
+      // email,
       filter,
       limit,
       userEncoded,
-    } = args;
+    } = args || {};
 
-    if (email) {
-      query.where({ email });
-    }
+    // WIP
+    // if (email) {
+    //   query.where({ email });
+    // }
 
     if (limit) {
       query.limit(limit);
@@ -75,11 +78,11 @@ class CoreDatamapper {
       } = filter;
 
       if (durationFilter) {
-        await getDurationFilterQuery(query, filter);
+        await getDurationFilterQuery(query, durationFilter);
       }
 
       if (releaseYear) {
-        await getReleaseYearFilterQuery(query, filter);
+        await getReleaseYearFilterQuery(query, releaseYear);
       }
 
       if (

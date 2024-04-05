@@ -23,7 +23,7 @@ export default class LyricsDbDatasource extends BatchedSQLDataSource {
     // WIP - To delete cache I think
     config: CoreDatamapperOptions & LyricsDbDatasourceConfigType & { cache: any },
   ) {
-    super(config);
+    super(config.knexConfig);
     const { db: client } = this;
 
     this.albumDatamapper = new AlbumDatamapper(

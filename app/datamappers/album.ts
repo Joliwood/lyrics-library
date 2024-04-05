@@ -13,7 +13,7 @@ class AlbumDatamapper extends CoreDatamapper {
     return albums;
   }
 
-  async createAlbum(input: any, userEncoded: string): Promise<Album> {
+  async createAlbum(input: any, userEncoded: string | undefined): Promise<Album> {
     const {
       cover,
       release_year: ReleaseYear,

@@ -5,6 +5,8 @@ import { sign } from 'jsonwebtoken';
 import {
   type QueryResolvers,
   type Album,
+  type Song,
+  type Artist,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification, isEqual } from '#utils';
@@ -13,53 +15,74 @@ import { type GraphQLContext } from '#types';
 const Query: QueryResolvers<GraphQLContext> = {
   async albums(_, args, { dataSources }) {
     const { limit, filter } = args;
+
     const rows = await dataSources
       .lyricsdb
       .albumDatamapper
       .findAll<typeof args, Album[]>({ limit, filter });
+
     return rows;
   },
 
   async album(_, args, { dataSources }) {
     // All findByPk can be replace here by idsLoader to use same method most of the time
     // but for single query, it will not improve speed response
-    const row = await dataSources.lyricsdb.albumDatamapper.idsLoader.load(
-      args.id,
-    );
+    const row = await dataSources
+      .lyricsdb
+      .albumDatamapper
+      .idsLoader
+      .load(args.id);
+
     return row;
   },
 
-  async songs(_, { limit, filter }, { dataSources, userEncoded }) {
-    const rows = await dataSources.lyricsdb.songDatamapper.findAll({ limit, filter, userEncoded });
+  async songs(_, args, { dataSources, userEncoded }) {
+    const { limit, filter } = args;
+    const rows = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .findAll<typeof args, Song[]>({ limit, filter, userEncoded });
+
     return rows;
   },
 
   async song(_, args, { dataSources }) {
-    const row = await dataSources.lyricsdb.songDatamapper.idsLoader.load(
-      args.id,
-    );
+    const songId = args.id;
+    const row = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .idsLoader
+      .load(songId);
+
     return row;
   },
 
   async artists(_, __, { dataSources }) {
-    const rows = await dataSources.lyricsdb.artistDatamapper.findAll({});
+    const rows = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findAll<undefined, Artist[]>();
+
     return rows;
   },
 
   async artist(_, args, { dataSources }) {
-    const row = await dataSources.lyricsdb.artistDatamapper.idsLoader.load(
-      args.id,
-    );
+    const row = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .idsLoader
+      .load(args.id);
+
     return row;
   },
 
   async login(_, args, { dataSources }) {
-    const { email, password } = args.input;
-
-    // Use findByEmail to find a user by their email
-    const [user] = await dataSources.lyricsdb.artistDatamapper.findAll({
+    const {
       email,
-    });
+      password,
+    } = args.input;
+
+    const user = await dataSources.lyricsdb.artistDatamapper.findByEmail(email);
 
     if (!user) {
       throw new GraphQLError('Authentication failed', {
@@ -116,7 +139,10 @@ const Query: QueryResolvers<GraphQLContext> = {
       });
     }
 
-    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk(userId);
+    const profile = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByPk(userId);
 
     return profile;
   },

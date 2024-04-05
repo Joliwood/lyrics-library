@@ -29,6 +29,7 @@ const startServer = async () => {
         dataSources: {
           lyricsdb: new LyricsDbDatasource({
             cache,
+            limit: 1000,
             knexConfig: {
               client: 'pg',
               connection: {
