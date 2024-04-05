@@ -16,14 +16,24 @@ class AlbumDatamapper extends CoreDatamapper {
   }
 
   async createAlbum(input: any, userEncoded: string): Promise<Album> {
-    const { songIds, title } = input;
+    const {
+      cover,
+      release_year: ReleaseYear,
+      songIds,
+      title,
+    } = input;
     const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
     const artistId = userDecoded.id;
 
     const albums = await
     this.client.query
       .from(this.tableName)
-      .insert({ title, artist_id: artistId })
+      .insert({
+        title,
+        artist_id: artistId,
+        cover,
+        release_year: ReleaseYear,
+      })
       .returning<Album[]>('*');
 
     const albumCreated = albums[0];
