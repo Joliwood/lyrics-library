@@ -1,5 +1,3 @@
-import { jwtDecode } from 'jwt-decode';
-
 import type {
   SongResolvers,
   Artist,
@@ -7,7 +5,7 @@ import type {
   SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
-import { type ProfileJWT } from '#types';
+import { checkAuthentification } from '#utils';
 
 const Song: SongResolvers = {
   // async album(parent, _, { dataSources }) {
@@ -60,12 +58,12 @@ const Song: SongResolvers = {
   },
 
   async isLiked(parent, _, { dataSources, userEncoded }) {
-    if (!userEncoded) {
+    const userId = checkAuthentification({ userEncoded });
+
+    if (userId == null) {
       return null;
     }
 
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-    const userId = userDecoded.id;
     const songId = parent.id;
 
     const isLiked: boolean = await (

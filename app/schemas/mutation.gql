@@ -5,7 +5,7 @@ type Mutation {
   #! It must force auth check before delete
   deleteAlbum(id: Int!): Boolean
   # We must be connected (JWT check) to update his profile
-  updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
+  updateArtist(input: ArtistUpdateInput!): Artist
   addSong(input: SongCreateInput!): Song
   # It will delete his song and his album before
   deleteArtist(id: Int!): Boolean
