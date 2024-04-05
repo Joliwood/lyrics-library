@@ -1,10 +1,8 @@
 import { type Knex } from 'knex';
 
-import { jwtDecode } from 'jwt-decode';
-
 import { DurationRange, ReleaseYear } from '#enums';
-import { type ProfileJWT, type CoreDatamapperOptions } from '#types';
-import { convertFromMinuteToSecond } from '#utils';
+import { type CoreDatamapperOptions } from '#types';
+import { checkAuthentification, convertFromMinuteToSecond } from '#utils';
 
 export function getIndexFromEnumValue(
   enumType: { [x: string]: any },
@@ -71,12 +69,11 @@ export function getLikedFilterQuery(
   userEncoded: string | undefined,
   liked: boolean,
 ) {
-  if (!userEncoded) {
+  const artistId = checkAuthentification({ userEncoded });
+
+  if (artistId) {
     return null;
   }
-
-  const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-  const artistId = userDecoded.id;
 
   if (liked) {
     return query.join(

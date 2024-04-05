@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { jwtDecode } from 'jwt-decode';
 
 import type {
   Album, MutationResolvers,
 } from '../../types/__generated_schemas__/graphql';
 
-import { type ProfileJWT } from '#types';
+import { checkAuthentification } from '#utils';
 
 const Mutation: MutationResolvers = {
   async addAlbum(_, args, { dataSources, userEncoded }) {
@@ -37,12 +36,11 @@ const Mutation: MutationResolvers = {
       cover, duration, lyrics, title,
     } = args.input;
 
-    if (userEncoded == null) {
-      throw new Error('You must be logged in to like a song');
-    }
+    const artistId = checkAuthentification({ userEncoded });
 
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-    const artistId = userDecoded.id;
+    if (artistId == null) {
+      throw new Error('You must be logged in to add a song');
+    }
 
     const song = await dataSources
       .lyricsdb
@@ -58,7 +56,7 @@ const Mutation: MutationResolvers = {
     return song;
   },
 
-  async updateArtist(_, args, { dataSources }) {
+  async updateArtist(_, args, { dataSources, userEncoded }) {
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
@@ -140,14 +138,13 @@ const Mutation: MutationResolvers = {
   },
 
   async likeSong(_, args, { dataSources, userEncoded }) {
-    if (userEncoded == null) {
+    const artistId = checkAuthentification({ userEncoded });
+
+    if (artistId == null) {
       throw new Error('You must be logged in to like a song');
     }
 
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-
     const songId = args.id;
-    const artistId = userDecoded.id;
 
     try {
       await dataSources
@@ -162,14 +159,13 @@ const Mutation: MutationResolvers = {
   },
 
   async unlikeSong(_, args, { dataSources, userEncoded }) {
-    if (userEncoded == null) {
+    const artistId = checkAuthentification({ userEncoded });
+
+    if (artistId == null) {
       throw new Error('You must be logged in to unlike a song');
     }
 
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-
     const songId = args.id;
-    const artistId = userDecoded.id;
 
     const result = await dataSources
       .lyricsdb

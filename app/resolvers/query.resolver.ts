@@ -1,6 +1,5 @@
 import { compare } from 'bcrypt';
 import { GraphQLError } from 'graphql';
-import { jwtDecode } from 'jwt-decode';
 import { sign } from 'jsonwebtoken';
 
 import type { QueryResolvers } from '../../types/__generated_schemas__/graphql';
@@ -8,8 +7,7 @@ import login from '../services/login.service';
 
 // import { type GraphQLContext } from '..';
 
-import { isEqual } from '#utils';
-import type { ProfileJWT } from '#types';
+import { checkAuthentification, isEqual } from '#utils';
 
 const Query: QueryResolvers = {
   async albums(_, { limit, filter }, { req, user, dataSources }) {
@@ -114,7 +112,9 @@ const Query: QueryResolvers = {
   },
 
   async profile(_, __, { dataSources, userEncoded }) {
-    if (!userEncoded) {
+    const userId = checkAuthentification({ userEncoded });
+
+    if (!userId) {
       throw new GraphQLError('Authentication failed', {
         extensions: {
           code: 'UNAUTHENTICATED',
@@ -122,10 +122,7 @@ const Query: QueryResolvers = {
       });
     }
 
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-    const { id } = userDecoded;
-
-    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk(id);
+    const profile = await dataSources.lyricsdb.artistDatamapper.findByPk({ id: userId });
 
     return profile;
   },

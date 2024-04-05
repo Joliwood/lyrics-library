@@ -1,9 +1,6 @@
-import { jwtDecode } from 'jwt-decode';
-
 import type { Album } from '../../types/__generated_schemas__/graphql';
 
 import { CoreDatamapper } from '#datamappers';
-import { type ProfileJWT } from '#types';
 
 class AlbumDatamapper extends CoreDatamapper {
   async findByArtist(artistId: number): Promise<Album[]> {
@@ -22,8 +19,7 @@ class AlbumDatamapper extends CoreDatamapper {
       songIds,
       title,
     } = input;
-    const userDecoded = jwtDecode<ProfileJWT>(userEncoded);
-    const artistId = userDecoded.id;
+    const artistId = checkAuthentification(userEncoded);
 
     const albums = await
     this.client.query
