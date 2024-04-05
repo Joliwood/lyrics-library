@@ -5,8 +5,9 @@ import type {
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
+import { type GraphQLContext } from '#types';
 
-const Mutation: MutationResolvers = {
+const Mutation: MutationResolvers<GraphQLContext> = {
   async addAlbum(_, args, { dataSources, userEncoded }) {
     const album = await dataSources
       .lyricsdb
@@ -15,11 +16,30 @@ const Mutation: MutationResolvers = {
     return album;
   },
 
-  async updateAlbum(_, args, { dataSources }) {
+  async updateAlbum(_, args, { dataSources, userEncoded }) {
+    const artistId = checkAuthentification({ userEncoded });
+    if (artistId == null) {
+      throw new Error('You must be logged in to update an album');
+    }
+
+    if (args.input.artist_id !== artistId) {
+      throw new Error('You can only update your own albums');
+    }
+
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
       .update(args.id, args.input);
+
+    // TODO - If in the input we have new songs to add, we must add on song_on_album table
+
+    // if (args.input.songIds) {
+    //   await dataSources
+    //     .lyricsdb
+    //     .songOnAlbumDatamapper
+    //     .deleteMultipleAssociations(args.id, args.input.songs);
+    // }
+
     return album;
   },
 

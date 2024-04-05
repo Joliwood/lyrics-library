@@ -6,8 +6,9 @@ import type {
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
+import { type GraphQLContext } from '#types';
 
-const Song: SongResolvers = {
+const Song: SongResolvers<GraphQLContext> = {
   // async album(parent, _, { dataSources }) {
   //   // We can replace findByPk by an idLoader,
   //   // so it doesn't execute one query by album, with first().

@@ -39,6 +39,7 @@ export type AlbumFilterInput = {
 };
 
 export type AlbumUpdateInput = {
+  album_id: Scalars['Int']['input'];
   artist_id?: InputMaybe<Scalars['Int']['input']>;
   cover?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<Scalars['Int']['input']>;

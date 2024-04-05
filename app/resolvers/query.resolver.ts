@@ -2,26 +2,21 @@ import { compare } from 'bcrypt';
 import { GraphQLError } from 'graphql';
 import { sign } from 'jsonwebtoken';
 
-import type { QueryResolvers } from '../../types/__generated_schemas__/graphql';
-import login from '../services/login.service';
-
-// import { type GraphQLContext } from '..';
+import {
+  type QueryResolvers,
+  type Album,
+} from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification, isEqual } from '#utils';
+import { type GraphQLContext } from '#types';
 
-const Query: QueryResolvers = {
-  async albums(_, { limit, filter }, { req, user, dataSources }) {
-    const userAuthorized = login.getUser(user, req.ip);
-    if (!userAuthorized) {
-      // throw new GraphQLError('Authentication failed', {
-      //   extensions: {
-      //     code: 'UNAUTHENTICATED',
-      //   },
-      // });
-      // eslint-disable-next-line no-console
-      console.log("Vous n'êtes pas authentifié mais passons...");
-    }
-    const rows = await dataSources.lyricsdb.albumDatamapper.findAll({ limit, filter });
+const Query: QueryResolvers<GraphQLContext> = {
+  async albums(_, args, { dataSources }) {
+    const { limit, filter } = args;
+    const rows = await dataSources
+      .lyricsdb
+      .albumDatamapper
+      .findAll<typeof args, Album[]>({ limit, filter });
     return rows;
   },
 
@@ -47,7 +42,7 @@ const Query: QueryResolvers = {
   },
 
   async artists(_, __, { dataSources }) {
-    const rows = await dataSources.lyricsdb.artistDatamapper.findAll();
+    const rows = await dataSources.lyricsdb.artistDatamapper.findAll({});
     return rows;
   },
 
@@ -58,7 +53,7 @@ const Query: QueryResolvers = {
     return row;
   },
 
-  async login(_, args, { dataSources, req }) {
+  async login(_, args, { dataSources }) {
     const { email, password } = args.input;
 
     // Use findByEmail to find a user by their email
@@ -96,7 +91,6 @@ const Query: QueryResolvers = {
 
     const userInfos = {
       id: user.id,
-      ip: req.ip,
     };
 
     const token = sign(userInfos, process.env.JWT_SECRET, {

@@ -1,6 +1,8 @@
 import type { ArtistResolvers } from '../../types/__generated_schemas__/graphql';
 
-const Artist: ArtistResolvers = {
+import { type GraphQLContext } from '#types';
+
+const Artist: ArtistResolvers<GraphQLContext> = {
   async albums(parent, _, { dataSources }) {
     const rows = await (
       dataSources

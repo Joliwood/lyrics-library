@@ -1,4 +1,5 @@
 import 'module-alias/register';
+
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
@@ -7,36 +8,23 @@ import typeDefs from './schemas/typeDefs';
 import resolvers from './resolvers/index.resolver';
 import LyricsDbDatasource from './datasources/lyricsdb.datasource';
 
-export interface GraphQLContext {
-  req?: any;
-  userEncoded?: string;
-  dataSources: {
-    lyricsdb: LyricsDbDatasource;
-  };
-}
+import { type GraphQLContext } from '#types';
 
 const startServer = async () => {
-// Once we received the 2 parts, we send them to the Apollo server
-// The Appolo server can be considered as a middleware
   const server = new ApolloServer<GraphQLContext>({
     typeDefs,
     resolvers,
-  // cors: {
-  //   origin: true, // Allow requests from any origin
-  //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  // },
+    // cors: {
+    //   origin: true, // Allow requests from any origin
+    //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    // },
   });
 
-  const port = process.env.PGPORT;
-
-  // Then we create and launch the HTTP web server that will be able to respond to client requests
-  const { url } = await startStandaloneServer(server, {
+  const { url } = await startStandaloneServer<GraphQLContext>(server, {
     context: async ({ req }) => {
       const { cache } = server;
       return {
         req,
-        // If we want to block all the application with authentification
-        // user: login.getUser(req.headers.token, req.ip),
         userEncoded: req.headers.authorization,
         dataSources: {
           lyricsdb: new LyricsDbDatasource({
@@ -56,7 +44,7 @@ const startServer = async () => {
         },
       };
     },
-    listen: { port: Number(port || 3000) },
+    listen: { port: Number(process.env.PGPORT || 3000) },
     // context: async ({ req, res }) => ({
     //   authScope: getScope(req.headers.authorization),
     // }),

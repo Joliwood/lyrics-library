@@ -9,8 +9,6 @@ type Album {
 }
 
 input AlbumCreateInput {
-  # WIP - Intégrer au context header
-  # artist_id: Int!
   cover: String
   release_year: Int
   songIds: [Int!]!
@@ -18,6 +16,8 @@ input AlbumCreateInput {
 }
 
 input AlbumUpdateInput {
+  album_id: Int!
+  # We provide the artist id to save one req on back to check album id / artist id
   artist_id: Int
   cover: String
   release_year: Int

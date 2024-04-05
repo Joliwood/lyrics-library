@@ -1,4 +1,4 @@
-import { type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+import { type BatchedLoader, type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
 
 import {
   getDurationFilterQuery,
@@ -6,17 +6,20 @@ import {
   getLikedFilterQuery,
 } from '#utils';
 import { TableNamesEnum } from '#enums';
-import type { CoreDatamapperOptions } from '#types';
+import { type AllFindAllArgs } from '#types';
+// import type { CoreDatamapperOptions } from '#types';
 
 class CoreDatamapper {
-  idsLoader: any;
+  idsLoader: BatchedLoader<number, any>;
 
   constructor(
     public readonly client: BatchedSQLDataSource['db'],
     public tableName: TableNamesEnum,
+    idsLoader: CoreDatamapper['idsLoader'],
   ) {
     this.client = client;
     this.tableName = tableName;
+    this.idsLoader = idsLoader;
   }
 
   // Normaly this method should be called in the constructor but this.tableName is not defined yet
@@ -26,9 +29,11 @@ class CoreDatamapper {
     this.idsLoader = this.client.query
       .from(this.tableName)
       // TODO : Define types
+      // : { id: number }[]
       .batch(async (query, ids) => {
-        const rows = await query.whereIn('id', ids);
-        // TODO : Define types
+        const rows: any = await query.whereIn('id', ids);
+        console.log(rows);
+
         return ids.map((id) => rows.find((row: any) => row.id === id));
       });
   }
@@ -41,14 +46,17 @@ class CoreDatamapper {
 
   // = {} to accept default value if no args are passed
   // TODO : Define types
-  async findAll(option: CoreDatamapperOptions = {}): Promise<any[]> {
+  async findAll<TQueryArgs extends AllFindAllArgs, KQueryResult>(
+    args: TQueryArgs & { userEncoded?: string },
+  ): Promise<KQueryResult> {
     const query = this.client.query.from(this.tableName);
+
     const {
       email,
       filter,
       limit,
       userEncoded,
-    } = option;
+    } = args;
 
     if (email) {
       query.where({ email });
