@@ -6,6 +6,7 @@ import {
   type ArtistLikeSong,
   type MutationResolvers,
   type Song,
+  // type SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
@@ -14,10 +15,13 @@ import { AssociationsToDelete } from '#enums';
 
 const Mutation: MutationResolvers<GraphQLContext> = {
   async addAlbum(_, args, { dataSources, userEncoded }) {
+    const { input } = args;
+
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .createAlbum(args.input, userEncoded);
+      .createAlbum(input, userEncoded);
+
     return album;
   },
 
@@ -38,12 +42,12 @@ const Mutation: MutationResolvers<GraphQLContext> = {
 
     // TODO - If in the input we have new songs to add, we must add on song_on_album table
 
-    // if (args.input.songIds) {
-    //   await dataSources
-    //     .lyricsdb
-    //     .songOnAlbumDatamapper
-    //     .deleteMultipleAssociations(args.id, args.input.songs);
-    // }
+    if (args.input.songIds) {
+      await dataSources
+        .lyricsdb
+        .songOnAlbumDatamapper
+        .deleteMultipleAssociations(AssociationsToDelete.AlbumId, [args.input.album_id]);
+    }
 
     return album;
   },
