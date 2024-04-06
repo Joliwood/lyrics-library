@@ -110,6 +110,7 @@ class CoreDatamapper {
     input: TQueryArgs,
   ): Promise<KQueryResult> {
     const [result]: KQueryResult[] = await this.client.query
+    // WIP - Bug here for the update album
       .from(this.tableName)
       .update(input)
       .where({ id })

@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import { GraphQLError } from 'graphql';
+
 import {
   type Artist,
   type Album,
   type ArtistLikeSong,
   type MutationResolvers,
   type Song,
+  type SongOnAlbum,
   // type SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
@@ -27,27 +30,53 @@ const Mutation: MutationResolvers<GraphQLContext> = {
 
   async updateAlbum(_, args, { dataSources, userEncoded }) {
     const artistId = checkAuthentification({ userEncoded });
+    const {
+      albumId,
+      albumArtistId,
+      input,
+    } = args;
+
+    const {
+      cover,
+      release_year,
+      title,
+      songIds,
+    } = input;
+
     if (artistId == null) {
-      throw new Error('You must be logged in to update an album');
+      throw new GraphQLError('You must be logged in to update an album');
     }
 
-    if (args.input.artist_id !== artistId) {
-      throw new Error('You can only update your own albums');
+    if (albumArtistId !== artistId) {
+      throw new GraphQLError('You can only update your own albums');
+    }
+
+    if (songIds != null) {
+      await dataSources
+        .lyricsdb
+        .songOnAlbumDatamapper
+        .deleteByAlbum([albumId]);
+
+      if (songIds.length > 0) {
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const [index, songId] of songIds.entries()) {
+          await dataSources
+            .lyricsdb
+            .songOnAlbumDatamapper
+            .create<SongOnAlbum, SongOnAlbum>({
+            // TODO - Change the songId and remove the InputMaybe
+            song_id: songId as number,
+            album_id: albumId,
+            position: index + 1,
+          });
+        }
+      }
     }
 
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .update<typeof args['input'], Album>(args.id, args.input);
-
-    // TODO - If in the input we have new songs to add, we must add on song_on_album table
-
-    if (args.input.songIds) {
-      await dataSources
-        .lyricsdb
-        .songOnAlbumDatamapper
-        .deleteMultipleAssociations(AssociationsToDelete.AlbumId, [args.input.album_id]);
-    }
+      .update<typeof args['input'], Album>(albumId, { cover, release_year, title });
 
     return album;
   },

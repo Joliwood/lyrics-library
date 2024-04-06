@@ -39,8 +39,6 @@ export type AlbumFilterInput = {
 };
 
 export type AlbumUpdateInput = {
-  album_id: Scalars['Int']['input'];
-  artist_id?: InputMaybe<Scalars['Int']['input']>;
   cover?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<Scalars['Int']['input']>;
   songIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
@@ -151,7 +149,8 @@ export type MutationUnlikeSongArgs = {
 
 
 export type MutationUpdateAlbumArgs = {
-  id: Scalars['Int']['input'];
+  albumArtistId: Scalars['Int']['input'];
+  albumId: Scalars['Int']['input'];
   input: AlbumUpdateInput;
 };
 
@@ -421,7 +420,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteSongs?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteSongsArgs, 'ids'>>;
   likeSong?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLikeSongArgs, 'id'>>;
   unlikeSong?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUnlikeSongArgs, 'id'>>;
-  updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'id' | 'input'>>;
+  updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'albumArtistId' | 'albumId' | 'input'>>;
   updateArtist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<MutationUpdateArtistArgs, 'input'>>;
 };
 

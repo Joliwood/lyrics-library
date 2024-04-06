@@ -16,9 +16,9 @@ input AlbumCreateInput {
 }
 
 input AlbumUpdateInput {
-  album_id: Int!
+  # album_id: Int!
   # We provide the artist id to save one req on back to check album id / artist id
-  artist_id: Int
+  # artist_id: Int
   cover: String
   release_year: Int
   songIds: [Int]
@@ -143,7 +143,7 @@ type Query {
 type Mutation {
   addAlbum(input: AlbumCreateInput!): Album
   # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
-  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
+  updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
   #! It must force auth check before delete
   deleteAlbum(id: Int!): Boolean
   # We must be connected (JWT check) to update his profile

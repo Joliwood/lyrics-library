@@ -10,6 +10,7 @@ import {
   type QuerySongsArgs,
   type ReleaseYear,
   type SongCreateInput,
+  type SongOnAlbum,
 } from './__generated_schemas__/graphql';
 
 import type {
@@ -59,6 +60,7 @@ export type AllFindAllArgs<TQueryArgs = Partial<
 export type AllCreateInputs<TQueryArgs =
 | ArtistLikeSong
 | SongCreateInput
+| SongOnAlbum
 ,> = TQueryArgs;
 
 export type AllUpdateInputs<TQueryArgs = Partial<
