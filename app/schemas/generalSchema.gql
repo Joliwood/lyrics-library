@@ -81,6 +81,7 @@ input ArtistUpdateInput {
 
 type Song {
   artist: Artist
+  artist_id: Int
   cover: String
   "Duration in second"
   duration: Int!
@@ -96,6 +97,7 @@ type Song {
 }
 
 input SongCreateInput {
+  artist_id: Int
   cover: String
   duration: Int!
   lyrics: String

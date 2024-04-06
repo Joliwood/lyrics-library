@@ -215,6 +215,7 @@ export enum ReleaseYear {
 export type Song = {
   __typename?: 'Song';
   artist?: Maybe<Artist>;
+  artist_id?: Maybe<Scalars['Int']['output']>;
   cover?: Maybe<Scalars['String']['output']>;
   /** Duration in second */
   duration: Scalars['Int']['output'];
@@ -229,6 +230,7 @@ export type Song = {
 };
 
 export type SongCreateInput = {
+  artist_id?: InputMaybe<Scalars['Int']['input']>;
   cover?: InputMaybe<Scalars['String']['input']>;
   duration: Scalars['Int']['input'];
   lyrics?: InputMaybe<Scalars['String']['input']>;
@@ -436,6 +438,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type SongResolvers<ContextType = any, ParentType extends ResolversParentTypes['Song'] = ResolversParentTypes['Song']> = {
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType>;
+  artist_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   cover?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

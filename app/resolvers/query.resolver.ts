@@ -7,6 +7,7 @@ import {
   type Album,
   type Song,
   type Artist,
+  type ArtistUser,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification, isEqual } from '#utils';
@@ -142,7 +143,7 @@ const Query: QueryResolvers<GraphQLContext> = {
     const profile = await dataSources
       .lyricsdb
       .artistDatamapper
-      .findByPk(userId);
+      .findByPk<ArtistUser>(userId);
 
     return profile;
   },

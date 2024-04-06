@@ -5,7 +5,6 @@ import { type Knex } from 'knex';
 import { DurationRange, ReleaseYear } from '../../types/__generated_schemas__/graphql';
 
 // import { ReleaseYear } from '#enums';
-// import { type CoreDatamapperOptions } from '#types';
 import { checkAuthentification, convertFromMinuteToSecond } from '#utils';
 // import { type FilterTypes } from '#types';
 

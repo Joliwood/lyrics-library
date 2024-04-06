@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type {
-  Album, MutationResolvers,
+import {
+  type Artist,
+  type Album,
+  type ArtistLikeSong,
+  type MutationResolvers,
+  type Song,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
 import { type GraphQLContext } from '#types';
+import { AssociationsToDelete } from '#enums';
 
 const Mutation: MutationResolvers<GraphQLContext> = {
   async addAlbum(_, args, { dataSources, userEncoded }) {
@@ -29,7 +34,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .update(args.id, args.input);
+      .update<typeof args['input'], Album>(args.id, args.input);
 
     // TODO - If in the input we have new songs to add, we must add on song_on_album table
 
@@ -53,7 +58,10 @@ const Mutation: MutationResolvers<GraphQLContext> = {
 
   async addSong(_, args, { dataSources, userEncoded }) {
     const {
-      cover, duration, lyrics, title,
+      cover,
+      duration,
+      lyrics,
+      title,
     } = args.input;
 
     const artistId = checkAuthentification({ userEncoded });
@@ -65,13 +73,13 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create({
-        artist_id: artistId,
-        cover,
-        duration,
-        lyrics,
-        title,
-      });
+      .create<typeof args['input'], Song>({
+      artist_id: artistId,
+      cover,
+      duration,
+      lyrics,
+      title,
+    });
 
     return song;
   },
@@ -86,7 +94,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
-      .update(artistId, args.input);
+      .update<typeof args['input'], Artist>(artistId, args.input);
     return artist;
   },
 
@@ -148,12 +156,12 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     await dataSources
       .lyricsdb
       .artistLikeSongDatamapper
-      .deleteMultipleAssociations('song_id', songIds);
+      .deleteMultipleAssociations(AssociationsToDelete.SongId, songIds);
 
     await dataSources
       .lyricsdb
       .songOnAlbumDatamapper
-      .deleteMultipleAssociations('song_id', songIds);
+      .deleteMultipleAssociations(AssociationsToDelete.SongId, songIds);
 
     const songToDelete = await dataSources
       .lyricsdb
@@ -176,7 +184,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       await dataSources
         .lyricsdb
         .artistLikeSongDatamapper
-        .create({ song_id: songId, artist_id: artistId });
+        .create<ArtistLikeSong, ArtistLikeSong>({ song_id: songId, artist_id: artistId });
 
       return true;
     } catch (error) {

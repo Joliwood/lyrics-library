@@ -10,7 +10,8 @@ import LyricsDbDatasource from './datasources/lyricsdb.datasource';
 
 import { type GraphQLContext } from '#types';
 
-const startServer = async () => {
+// Immediately Invoked Function Expression (IIFE)
+(async () => {
   const server = new ApolloServer<GraphQLContext>({
     typeDefs,
     resolvers,
@@ -19,6 +20,10 @@ const startServer = async () => {
     //   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     // },
   });
+
+  const connectionUrl = `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`;
+  const sslConfig = process.env.PG_SSL_OPTION === 'true' ? '?ssl=true' : '';
+  const fullConnectionUrl = connectionUrl + sslConfig;
 
   const { url } = await startStandaloneServer<GraphQLContext>(server, {
     context: async ({ req }) => {
@@ -29,33 +34,17 @@ const startServer = async () => {
         dataSources: {
           lyricsdb: new LyricsDbDatasource({
             cache,
-            limit: 1000,
             knexConfig: {
               client: 'pg',
-              connection: {
-                user: process.env.PG_USER,
-                database: process.env.PG_DATABASE,
-                password: process.env.PG_PASSWORD,
-                port: process.env.PG_PORT,
-                host: process.env.PG_HOST,
-                ssl: process.env.PG_SSL_OPTION === 'true',
-              },
+              connection: fullConnectionUrl,
             },
           }),
         },
       };
     },
     listen: { port: Number(process.env.PGPORT || 3000) },
-    // context: async ({ req, res }) => ({
-    //   authScope: getScope(req.headers.authorization),
-    // }),
   });
 
   // eslint-disable-next-line no-console
   console.log(`🚀  Server ready at: ${url}`);
-};
-
-// Immediately Invoked Function Expression (IIFE)
-(async () => {
-  await startServer();
 })();

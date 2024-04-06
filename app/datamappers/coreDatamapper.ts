@@ -4,23 +4,20 @@ import {
   getDurationFilterQuery,
   getReleaseYearFilterQuery,
   getLikedFilterQuery,
+  checkIfDeleted,
 } from '#utils';
-import { TableNamesEnum } from '#enums';
-import { type AllFindAllArgs } from '#types';
-// import type { CoreDatamapperOptions } from '#types';
+import { type AssociationsToDelete, TableNamesEnum } from '#enums';
+import { type AllUpdateInputs, type AllCreateInputs, type AllFindAllArgs } from '#types';
 
 class CoreDatamapper {
-  // TODO - Define types
-  idsLoader: BatchedLoader<number, any> | any;
+  idsLoader!: BatchedLoader<number, any>;
 
   constructor(
     public readonly client: BatchedSQLDataSource['db'],
     public tableName: TableNamesEnum,
-    // public idsLoader: BatchedLoader<number, any>,
   ) {
     this.client = client;
     this.tableName = tableName;
-    // this.idsLoader = idsLoader;
   }
 
   // Normaly this method should be called in the constructor but this.tableName is not defined yet
@@ -29,41 +26,31 @@ class CoreDatamapper {
     // This idsLoader allows to order all results by id, for every query request
     this.idsLoader = this.client.query
       .from(this.tableName)
-      // TODO : Define types
-      // : { id: number }[]
       .batch(async (query, ids) => {
-        const rows: any = await query.whereIn('id', ids);
-        // console.log(rows);
-
+        const rows = await query.whereIn('id', ids);
         return ids.map((id) => rows.find((row: any) => row.id === id));
       });
   }
 
-  // TODO : Define types
-  async findByPk(id: number): Promise<any> {
-    const row = await this.client.query.from(this.tableName).where({ id }).first();
+  async findByPk<KQueryResult>(id: number): Promise<KQueryResult> {
+    const row = await this.client.query
+      .from(this.tableName)
+      .where({ id })
+      .first();
+
     return row;
   }
 
-  // = {} to accept default value if no args are passed
-  // TODO : Define types
   async findAll<TQueryArgs extends AllFindAllArgs, KQueryResult>(
     args?: TQueryArgs & { userEncoded?: string },
-    // TODO - Change | any
-  ): Promise<KQueryResult | any> {
+  ): Promise<KQueryResult> {
     const query = this.client.query.from(this.tableName);
 
     const {
-      // email,
       filter,
       limit,
       userEncoded,
     } = args || {};
-
-    // WIP
-    // if (email) {
-    //   query.where({ email });
-    // }
 
     if (limit) {
       query.limit(limit);
@@ -102,39 +89,60 @@ class CoreDatamapper {
       }
     }
 
-    const rowsFiltered = await query;
+    const rowsFiltered = await query as KQueryResult;
+
     return rowsFiltered;
   }
 
-  // We have to add [] to the row with .returning('*') so it returns all we ask in the query
-  // TODO : Define types
-  async create(inputData: Record<string, any>): Promise<any> {
-    const [row] = await this.client.query.from(this.tableName).insert(inputData).returning('*');
-    return row;
-  }
+  async create<TQueryArgs extends AllCreateInputs, KQueryResult>(
+    input: TQueryArgs,
+  ): Promise<KQueryResult> {
+    const [result]: KQueryResult[] = await this.client.query
+      .from(this.tableName)
+      .insert(input)
+      .returning('*');
 
-  // TODO : Define types
-  async update(id: number, inputData: Record<string, any>): Promise<any> {
-    const [row] = await this.client.query.from(this.tableName).update(inputData).where({ id }).returning('*');
-    return row;
-  }
-
-  // TODO : Define types
-  async delete(id: number): Promise<any> {
-    const result = await this.client.query.from(this.tableName).where({ id }).del();
     return result;
   }
 
-  // ids had to be an array of ids = array of numbers
-  // TODO : Define types
-  async deleteMultiple(ids: number[]): Promise<any> {
-    const result = await this.client.query.from(this.tableName).whereIn('id', ids).del();
+  async update<TQueryArgs extends AllUpdateInputs, KQueryResult>(
+    id: number,
+    input: TQueryArgs,
+  ): Promise<KQueryResult> {
+    const [result]: KQueryResult[] = await this.client.query
+      .from(this.tableName)
+      .update(input)
+      .where({ id })
+      .returning('*');
+
     return result;
   }
 
-  async deleteMultipleAssociations(label: string, ids: number[]): Promise<any> {
-    const result = await this.client.query.from(this.tableName).whereIn(label, ids).del();
-    return result;
+  async delete(id: number) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .where({ id })
+      .del();
+
+    return checkIfDeleted({ result });
+  }
+
+  async deleteMultiple(ids: number[]) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .whereIn('id', ids)
+      .del();
+
+    return checkIfDeleted({ result });
+  }
+
+  async deleteMultipleAssociations(label: AssociationsToDelete, ids: number[]) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .whereIn(label, ids)
+      .del();
+
+    return checkIfDeleted({ result });
   }
 }
 
