@@ -39,7 +39,6 @@ export type AlbumFilterInput = {
 };
 
 export type AlbumUpdateInput = {
-  artist_id?: InputMaybe<Scalars['Int']['input']>;
   cover?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<Scalars['Int']['input']>;
   songIds?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
@@ -76,6 +75,7 @@ export type ArtistUser = {
   albums?: Maybe<Array<Maybe<Album>>>;
   country?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
   picture?: Maybe<Scalars['String']['output']>;
@@ -149,7 +149,8 @@ export type MutationUnlikeSongArgs = {
 
 
 export type MutationUpdateAlbumArgs = {
-  id: Scalars['Int']['input'];
+  albumArtistId: Scalars['Int']['input'];
+  albumId: Scalars['Int']['input'];
   input: AlbumUpdateInput;
 };
 
@@ -213,6 +214,7 @@ export enum ReleaseYear {
 export type Song = {
   __typename?: 'Song';
   artist?: Maybe<Artist>;
+  artist_id?: Maybe<Scalars['Int']['output']>;
   cover?: Maybe<Scalars['String']['output']>;
   /** Duration in second */
   duration: Scalars['Int']['output'];
@@ -227,6 +229,7 @@ export type Song = {
 };
 
 export type SongCreateInput = {
+  artist_id?: InputMaybe<Scalars['Int']['input']>;
   cover?: InputMaybe<Scalars['String']['input']>;
   duration: Scalars['Int']['input'];
   lyrics?: InputMaybe<Scalars['String']['input']>;
@@ -396,6 +399,7 @@ export type ArtistUserResolvers<ContextType = any, ParentType extends ResolversP
   albums?: Resolver<Maybe<Array<Maybe<ResolversTypes['Album']>>>, ParentType, ContextType>;
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   picture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -416,7 +420,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteSongs?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteSongsArgs, 'ids'>>;
   likeSong?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLikeSongArgs, 'id'>>;
   unlikeSong?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUnlikeSongArgs, 'id'>>;
-  updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'id' | 'input'>>;
+  updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'albumArtistId' | 'albumId' | 'input'>>;
   updateArtist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<MutationUpdateArtistArgs, 'input'>>;
 };
 
@@ -433,6 +437,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type SongResolvers<ContextType = any, ParentType extends ResolversParentTypes['Song'] = ResolversParentTypes['Song']> = {
   artist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType>;
+  artist_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   cover?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   duration?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;

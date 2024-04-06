@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/lines-between-class-members */
-import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+import { BatchedSQLDataSource, type BatchedSQLDataSourceProps } from '@nic-jennings/sql-datasource';
 
 import {
   AlbumDatamapper,
@@ -8,7 +8,6 @@ import {
   SongDatamapper,
   SongOnAlbumDatamapper,
 } from '#datamappers';
-import { type CoreDatamapperOptions, type LyricsDbDatasourceConfigType } from '#types';
 import { TableNamesEnum } from '#enums';
 
 export default class LyricsDbDatasource extends BatchedSQLDataSource {
@@ -18,10 +17,8 @@ export default class LyricsDbDatasource extends BatchedSQLDataSource {
   songDatamapper: SongDatamapper;
   songOnAlbumDatamapper: SongOnAlbumDatamapper;
 
-  // TODO : Define types
   constructor(
-    // WIP - To delete cache I think
-    config: CoreDatamapperOptions & LyricsDbDatasourceConfigType & { cache: any },
+    config: BatchedSQLDataSourceProps,
   ) {
     super(config);
     const { db: client } = this;

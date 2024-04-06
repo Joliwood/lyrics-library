@@ -1,6 +1,8 @@
 import type { AlbumResolvers } from '../../types/__generated_schemas__/graphql';
 
-const Album: AlbumResolvers = {
+import { type GraphQLContext } from '#types';
+
+const Album: AlbumResolvers<GraphQLContext> = {
   async artist(parent, _, { dataSources }) {
     // Do not use parent.artist_id for exemple, so the query can be executed
     // from multiple nested queries

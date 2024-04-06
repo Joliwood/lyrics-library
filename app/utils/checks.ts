@@ -6,7 +6,7 @@ type CheckAuthentificationArgs = {
   userEncoded: string | undefined;
 };
 
-function checkAuthentification(args: CheckAuthentificationArgs): number | null {
+export function checkAuthentification(args: CheckAuthentificationArgs): number | null {
   const { userEncoded } = args;
 
   if (userEncoded === undefined) {
@@ -19,4 +19,16 @@ function checkAuthentification(args: CheckAuthentificationArgs): number | null {
   return userId;
 }
 
-export default checkAuthentification;
+type CheckIfDeletedArgs = {
+  result: number;
+};
+
+export function checkIfDeleted(args: CheckIfDeletedArgs): boolean {
+  const { result } = args;
+
+  if (result === 0) {
+    return false;
+  }
+
+  return true;
+}

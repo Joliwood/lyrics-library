@@ -1,8 +1,12 @@
 import { type Knex } from 'knex';
 
-import { DurationRange, ReleaseYear } from '#enums';
-import { type CoreDatamapperOptions } from '#types';
+// import { type SongFilterInput } from '../../types/__generated_schemas__/graphql';
+
+import { DurationRange, ReleaseYear } from '../../types/__generated_schemas__/graphql';
+
+// import { ReleaseYear } from '#enums';
 import { checkAuthentification, convertFromMinuteToSecond } from '#utils';
+// import { type FilterTypes } from '#types';
 
 export function getIndexFromEnumValue(
   enumType: { [x: string]: any },
@@ -16,21 +20,21 @@ export function getIndexFromEnumValue(
 
 export function getDurationFilterQuery(
   query: Knex.QueryBuilder,
-  filter: CoreDatamapperOptions['filter'],
+  durationFilter: DurationRange,
 ) {
-  if (filter?.duration_filter === DurationRange.ONE_MINUTE) {
+  if (durationFilter === DurationRange.OneMinute) {
     return query.where('duration', '<=', convertFromMinuteToSecond(1));
   }
 
-  if (filter?.duration_filter === DurationRange.ONE_TO_THREE_MINUTES) {
+  if (durationFilter === DurationRange.OneToThreeMinutes) {
     return query.whereBetween('duration', [convertFromMinuteToSecond(1), convertFromMinuteToSecond(3)]);
   }
 
-  if (filter?.duration_filter === DurationRange.THREE_TO_FIVE_MINUTES) {
+  if (durationFilter === DurationRange.ThreeToFiveMinutes) {
     return query.whereBetween('duration', [convertFromMinuteToSecond(3), convertFromMinuteToSecond(5)]);
   }
 
-  if (filter?.duration_filter === DurationRange.MORE_THAN_FIVE_MINUTES) {
+  if (durationFilter === DurationRange.MoreThanFiveMinutes) {
     return query.where('duration', '>=', convertFromMinuteToSecond(5));
   }
 
@@ -39,26 +43,26 @@ export function getDurationFilterQuery(
 
 export function getReleaseYearFilterQuery(
   query: Knex.QueryBuilder,
-  filter: CoreDatamapperOptions['filter'],
+  releaseYear: ReleaseYear,
 ) {
-  if (filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_70)) {
-    return query.whereBetween('release_year', [ReleaseYear.YEAR_70, ReleaseYear.YEAR_80]);
+  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_70)) {
+    return query.whereBetween('release_year', [ReleaseYear.Year_70, ReleaseYear.Year_80]);
   }
 
-  if (filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_80)) {
-    return query.whereBetween('release_year', [ReleaseYear.YEAR_80, ReleaseYear.YEAR_90]);
+  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_80)) {
+    return query.whereBetween('release_year', [ReleaseYear.Year_80, ReleaseYear.Year_90]);
   }
 
-  if (filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_90)) {
-    return query.whereBetween('release_year', [ReleaseYear.YEAR_90, ReleaseYear.YEAR_2000]);
+  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_90)) {
+    return query.whereBetween('release_year', [ReleaseYear.Year_90, ReleaseYear.Year_2000]);
   }
 
-  if (filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2000)) {
-    return query.whereBetween('release_year', [ReleaseYear.YEAR_2000, ReleaseYear.YEAR_2010]);
+  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_2000)) {
+    return query.whereBetween('release_year', [ReleaseYear.Year_2000, ReleaseYear.Year_2010]);
   }
 
-  if (filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2010)) {
-    return query.whereBetween('release_year', [ReleaseYear.YEAR_2010, ReleaseYear.YEAR_2010 + 10]);
+  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_2010)) {
+    return query.whereBetween('release_year', [ReleaseYear.Year_2010, ReleaseYear.Year_2010 + 10]);
   }
 
   return null;

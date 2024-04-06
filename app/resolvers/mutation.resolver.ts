@@ -1,25 +1,83 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type {
-  Album, MutationResolvers,
+import { GraphQLError } from 'graphql';
+
+import {
+  type Artist,
+  type Album,
+  type ArtistLikeSong,
+  type MutationResolvers,
+  type Song,
+  type SongOnAlbum,
+  // type SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
+import { type GraphQLContext } from '#types';
+import { AssociationsToDelete } from '#enums';
 
-const Mutation: MutationResolvers = {
+const Mutation: MutationResolvers<GraphQLContext> = {
   async addAlbum(_, args, { dataSources, userEncoded }) {
+    const { input } = args;
+
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .createAlbum(args.input, userEncoded);
+      .createAlbum(input, userEncoded);
+
     return album;
   },
 
-  async updateAlbum(_, args, { dataSources }) {
+  async updateAlbum(_, args, { dataSources, userEncoded }) {
+    const artistId = checkAuthentification({ userEncoded });
+    const {
+      albumId,
+      albumArtistId,
+      input,
+    } = args;
+
+    const {
+      cover,
+      release_year,
+      title,
+      songIds,
+    } = input;
+
+    if (artistId == null) {
+      throw new GraphQLError('You must be logged in to update an album');
+    }
+
+    if (albumArtistId !== artistId) {
+      throw new GraphQLError('You can only update your own albums');
+    }
+
+    if (songIds != null) {
+      await dataSources
+        .lyricsdb
+        .songOnAlbumDatamapper
+        .deleteByAlbum([albumId]);
+
+      if (songIds.length > 0) {
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const [index, songId] of songIds.entries()) {
+          await dataSources
+            .lyricsdb
+            .songOnAlbumDatamapper
+            .create<SongOnAlbum, SongOnAlbum>({
+            // TODO - Change the songId and remove the InputMaybe
+            song_id: songId as number,
+            album_id: albumId,
+            position: index + 1,
+          });
+        }
+      }
+    }
+
     const album = await dataSources
       .lyricsdb
       .albumDatamapper
-      .update(args.id, args.input);
+      .update<typeof args['input'], Album>(albumId, { cover, release_year, title });
+
     return album;
   },
 
@@ -33,7 +91,10 @@ const Mutation: MutationResolvers = {
 
   async addSong(_, args, { dataSources, userEncoded }) {
     const {
-      cover, duration, lyrics, title,
+      cover,
+      duration,
+      lyrics,
+      title,
     } = args.input;
 
     const artistId = checkAuthentification({ userEncoded });
@@ -45,13 +106,13 @@ const Mutation: MutationResolvers = {
     const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create({
-        artist_id: artistId,
-        cover,
-        duration,
-        lyrics,
-        title,
-      });
+      .create<typeof args['input'], Song>({
+      artist_id: artistId,
+      cover,
+      duration,
+      lyrics,
+      title,
+    });
 
     return song;
   },
@@ -66,7 +127,7 @@ const Mutation: MutationResolvers = {
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
-      .update(artistId, args.input);
+      .update<typeof args['input'], Artist>(artistId, args.input);
     return artist;
   },
 
@@ -128,12 +189,12 @@ const Mutation: MutationResolvers = {
     await dataSources
       .lyricsdb
       .artistLikeSongDatamapper
-      .deleteMultipleAssociations('song_id', songIds);
+      .deleteMultipleAssociations(AssociationsToDelete.SongId, songIds);
 
     await dataSources
       .lyricsdb
       .songOnAlbumDatamapper
-      .deleteMultipleAssociations('song_id', songIds);
+      .deleteMultipleAssociations(AssociationsToDelete.SongId, songIds);
 
     const songToDelete = await dataSources
       .lyricsdb
@@ -156,7 +217,7 @@ const Mutation: MutationResolvers = {
       await dataSources
         .lyricsdb
         .artistLikeSongDatamapper
-        .create({ song_id: songId, artist_id: artistId });
+        .create<ArtistLikeSong, ArtistLikeSong>({ song_id: songId, artist_id: artistId });
 
       return true;
     } catch (error) {

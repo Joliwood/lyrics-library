@@ -1,6 +1,7 @@
 import type { ArtistLikeSong } from '../../types/__generated_schemas__/graphql';
 
 import { CoreDatamapper } from '#datamappers';
+import { AssociationsToDelete } from '#enums';
 
 class ArtistLikeSongDatamapper extends CoreDatamapper {
   async findByArtist(artistId: number): Promise<ArtistLikeSong[]> {
@@ -46,7 +47,7 @@ class ArtistLikeSongDatamapper extends CoreDatamapper {
   async deleteBySongs(songIds: number[]): Promise<boolean> {
     const result = await this.client.query
       .from(this.tableName)
-      .whereIn('song_id', songIds)
+      .whereIn(AssociationsToDelete.SongId, songIds)
       .del();
 
     if (result) {

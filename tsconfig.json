@@ -26,7 +26,7 @@
         "./app/datamappers/"
       ],
       "#types": [
-        "./types/index.d.ts"
+        "./types/types.ts"
       ],
       "#enums": [
         "./types/enums.ts"
@@ -49,6 +49,7 @@
     "knexfile.ts", 
     "codege___n.__ts",
   ],
+  "typeDefinitions": "./types/index.d.ts",
   "exclude": [
     "./dist/**/*",
     "node_modules",
