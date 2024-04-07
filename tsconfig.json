@@ -1,26 +1,32 @@
 {
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "composite": true,
     "declaration": true,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node",
-    // noEmit prevent the compiler from generating files
-    "noEmit": false,
-    "outDir": "./dist",
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
     "resolveJsonModule": true,
-    "rootDir": ".",
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "noEmit": true,
+    "outDir": "./dist",
+    "rootDir": ".",
     "paths": {
       "#datamappers": [
         "./app/datamappers/"
       ],
       "#types": [
-        "./types/index.d.ts"
+        "./types/types.ts"
       ],
       "#enums": [
         "./types/enums.ts"
@@ -36,12 +42,14 @@
   "include": [
     "./app/**/*",
     "./types/*",
-    ".eslintrc.cjs",
+    ".eslintrc.js",
     "/**/*.ts",
+    "./db/**/*",
     "app/index.ts",
     "knexfile.ts", 
     "codege___n.__ts",
   ],
+  "typeDefinitions": "./types/index.d.ts",
   "exclude": [
     "./dist/**/*",
     "node_modules",

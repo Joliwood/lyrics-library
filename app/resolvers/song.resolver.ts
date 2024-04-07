@@ -1,11 +1,11 @@
 import type {
   SongResolvers,
-  Artist,
-  ArtistLikeSong,
-  SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
-const Song: SongResolvers = {
+import { checkAuthentification } from '#utils';
+import { type GraphQLContext } from '#types';
+
+const Song: SongResolvers<GraphQLContext> = {
   // async album(parent, _, { dataSources }) {
   //   // We can replace findByPk by an idLoader,
   //   // so it doesn't execute one query by album, with first().
@@ -16,7 +16,7 @@ const Song: SongResolvers = {
   // },
 
   async artist(parent, _, { dataSources }) {
-    const artist: Artist = await (
+    const artist = await (
       dataSources
         .lyricsdb
         .artistDatamapper
@@ -26,7 +26,7 @@ const Song: SongResolvers = {
   },
 
   async like(parent, _, { dataSources }) {
-    const likes: ArtistLikeSong[] = await (
+    const likes = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
@@ -36,7 +36,7 @@ const Song: SongResolvers = {
   },
 
   async nbLike(parent, _, { dataSources }) {
-    const nbLike: number = await (
+    const nbLike = await (
       dataSources
         .lyricsdb
         .artistLikeSongDatamapper
@@ -46,13 +46,31 @@ const Song: SongResolvers = {
   },
 
   async songOnAlbum(parent, _, { dataSources }) {
-    const songOnAlbum: SongOnAlbum[] = await (
+    const songOnAlbum = await (
       dataSources
         .lyricsdb
         .songOnAlbumDatamapper
         .findBySong(parent.id)
     );
     return songOnAlbum;
+  },
+
+  async isLiked(parent, _, { dataSources, userEncoded }) {
+    const userId = checkAuthentification({ userEncoded });
+
+    if (userId == null) {
+      return null;
+    }
+
+    const songId = parent.id;
+
+    const isLiked = await (
+      dataSources
+        .lyricsdb
+        .artistLikeSongDatamapper
+        .isLiked({ songId, userId })
+    );
+    return isLiked;
   },
 };
 

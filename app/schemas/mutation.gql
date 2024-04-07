@@ -1,17 +1,17 @@
 type Mutation {
+  # -- Create -- #
   addAlbum(input: AlbumCreateInput!): Album
-  # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
-  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
-  #! It must force auth check before delete
-  deleteAlbum(id: Int!): Boolean
-
-  # We must be connected (JWT check) to update his profile
-  updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
-
   addSong(input: SongCreateInput!): Song
-
-  # It will delete his song and his album before
+  # -- Update -- #
+  updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
+  updateArtist(input: ArtistUpdateInput!): Artist
+  updateSong(songId: Int!, input: SongUpdateInput!): Song
+  # -- Delete -- #
+  deleteAlbum(id: Int!): Boolean
   deleteArtist(id: Int!): Boolean
-
   deleteSongs(ids: [Int!]!): Boolean
+  # -- Others -- #
+  likeSong(id: Int!): Boolean
+  unlikeSong(id: Int!): Boolean
 }
+ 
