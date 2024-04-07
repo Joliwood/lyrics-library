@@ -110,6 +110,7 @@ export type Mutation = {
   unlikeSong?: Maybe<Scalars['Boolean']['output']>;
   updateAlbum?: Maybe<Album>;
   updateArtist?: Maybe<Artist>;
+  updateSong?: Maybe<Song>;
 };
 
 
@@ -157,6 +158,12 @@ export type MutationUpdateAlbumArgs = {
 
 export type MutationUpdateArtistArgs = {
   input: ArtistUpdateInput;
+};
+
+
+export type MutationUpdateSongArgs = {
+  input: SongUpdateInput;
+  songId: Scalars['Int']['input'];
 };
 
 export type Query = {
@@ -250,6 +257,14 @@ export type SongOnAlbum = {
   song_id: Scalars['Int']['output'];
 };
 
+export type SongUpdateInput = {
+  cover?: InputMaybe<Scalars['String']['input']>;
+  duration?: InputMaybe<Scalars['Int']['input']>;
+  lyrics?: InputMaybe<Scalars['String']['input']>;
+  release_year?: InputMaybe<Scalars['Int']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -341,6 +356,7 @@ export type ResolversTypes = {
   SongCreateInput: SongCreateInput;
   SongFilterInput: SongFilterInput;
   SongOnAlbum: ResolverTypeWrapper<SongOnAlbum>;
+  SongUpdateInput: SongUpdateInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
 
@@ -364,6 +380,7 @@ export type ResolversParentTypes = {
   SongCreateInput: SongCreateInput;
   SongFilterInput: SongFilterInput;
   SongOnAlbum: SongOnAlbum;
+  SongUpdateInput: SongUpdateInput;
   String: Scalars['String']['output'];
 };
 
@@ -422,6 +439,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   unlikeSong?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationUnlikeSongArgs, 'id'>>;
   updateAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationUpdateAlbumArgs, 'albumArtistId' | 'albumId' | 'input'>>;
   updateArtist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<MutationUpdateArtistArgs, 'input'>>;
+  updateSong?: Resolver<Maybe<ResolversTypes['Song']>, ParentType, ContextType, RequireFields<MutationUpdateSongArgs, 'input' | 'songId'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

@@ -36,3 +36,11 @@ input SongFilterInput {
   name: String
   liked: Boolean
 }
+
+input SongUpdateInput {
+  cover: String
+  duration: Int
+  lyrics: String
+  title: String
+  release_year: Int
+}
