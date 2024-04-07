@@ -245,6 +245,17 @@ const Mutation: MutationResolvers<GraphQLContext> = {
 
     return true;
   },
+
+  async updateSong(_, args, { dataSources }) {
+    const { songId, input } = args;
+
+    const song = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .update<typeof input, Song>(songId, args.input);
+
+    return song;
+  },
 };
 
 export default Mutation;
