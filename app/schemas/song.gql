@@ -1,5 +1,6 @@
 type Song {
   artist: Artist
+  artist_id: Int
   cover: String
   "Duration in second"
   duration: Int!
@@ -8,16 +9,19 @@ type Song {
   songOnAlbum: [SongOnAlbum]
   like: [ArtistLikeSong]
   nbLike: Int
+  release_year: Int
   title: String!
   # date: String
+  isLiked: Boolean
 }
 
 input SongCreateInput {
-  artistId: Int!
+  artist_id: Int
   cover: String
   duration: Int!
   lyrics: String
   title: String!
+  release_year: Int
 }
 
 enum DurationRange {
@@ -29,4 +33,14 @@ enum DurationRange {
 
 input SongFilterInput {
   duration_filter: DurationRange
+  name: String
+  liked: Boolean
+}
+
+input SongUpdateInput {
+  cover: String
+  duration: Int
+  lyrics: String
+  title: String
+  release_year: Int
 }

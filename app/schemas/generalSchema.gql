@@ -9,7 +9,6 @@ type Album {
 }
 
 input AlbumCreateInput {
-  artist_id: Int!
   cover: String
   release_year: Int
   songIds: [Int!]!
@@ -17,7 +16,9 @@ input AlbumCreateInput {
 }
 
 input AlbumUpdateInput {
-  artist_id: Int
+  # album_id: Int!
+  # We provide the artist id to save one req on back to check album id / artist id
+  # artist_id: Int
   cover: String
   release_year: Int
   songIds: [Int]
@@ -48,6 +49,7 @@ type Artist {
 }
 
 type ArtistUser {
+  id: Int!
   albums: [Album]
   country: String
   email: String!
@@ -79,6 +81,7 @@ input ArtistUpdateInput {
 
 type Song {
   artist: Artist
+  artist_id: Int
   cover: String
   "Duration in second"
   duration: Int!
@@ -87,16 +90,19 @@ type Song {
   songOnAlbum: [SongOnAlbum]
   like: [ArtistLikeSong]
   nbLike: Int
+  release_year: Int
   title: String!
   # date: String
+  isLiked: Boolean
 }
 
 input SongCreateInput {
-  artistId: Int!
+  artist_id: Int
   cover: String
   duration: Int!
   lyrics: String
   title: String!
+  release_year: Int
 }
 
 enum DurationRange {
@@ -108,6 +114,16 @@ enum DurationRange {
 
 input SongFilterInput {
   duration_filter: DurationRange
+  name: String
+  liked: Boolean
+}
+
+input SongUpdateInput {
+  cover: String
+  duration: Int
+  lyrics: String
+  title: String
+  release_year: Int
 }
 
 type SongOnAlbum {
@@ -133,19 +149,19 @@ type Query {
 }
 
 type Mutation {
+  # -- Create -- #
   addAlbum(input: AlbumCreateInput!): Album
-  # Même si aucun champ n'est obligatoire dans le update, on force l'utilisateur à modifier quelque chose au minimum
-  updateAlbum(id: Int!, input: AlbumUpdateInput!): Album
-  #! It must force auth check before delete
-  deleteAlbum(id: Int!): Boolean
-
-  # We must be connected (JWT check) to update his profile
-  updateArtist(id: Int!, input: ArtistUpdateInput!): Artist
-
   addSong(input: SongCreateInput!): Song
-
-  # It will delete his song and his album before
+  # -- Update -- #
+  updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
+  updateArtist(input: ArtistUpdateInput!): Artist
+  updateSong(songId: Int!, input: SongUpdateInput!): Song
+  # -- Delete -- #
+  deleteAlbum(id: Int!): Boolean
   deleteArtist(id: Int!): Boolean
-
   deleteSongs(ids: [Int!]!): Boolean
+  # -- Others -- #
+  likeSong(id: Int!): Boolean
+  unlikeSong(id: Int!): Boolean
 }
+ 

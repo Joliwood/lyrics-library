@@ -1,20 +1,23 @@
-import { convertFromMinuteToSecond, getIndexFromEnumValue } from '#utils';
-import { DurationRange, ReleaseYear } from '#enums';
-import type { CoreDatamapperOptions } from '#types';
+import { type BatchedLoader, type BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+
+import {
+  getDurationFilterQuery,
+  getReleaseYearFilterQuery,
+  getLikedFilterQuery,
+  checkIfDeleted,
+} from '#utils';
+import { type AssociationsToDelete, TableNamesEnum } from '#enums';
+import { type AllUpdateInputs, type AllCreateInputs, type AllFindAllArgs } from '#types';
 
 class CoreDatamapper {
-  // TODO : Precise tablenames with all tables of the DB
-  tableName: string | undefined;
+  idsLoader!: BatchedLoader<number, any>;
 
-  // TODO : Define types
-  idsLoader: any;
-
-  // TODO : Define types
-  client: any;
-
-  // TODO : Precise client type
-  constructor(client: any) {
+  constructor(
+    public readonly client: BatchedSQLDataSource['db'],
+    public tableName: TableNamesEnum,
+  ) {
     this.client = client;
+    this.tableName = tableName;
   }
 
   // Normaly this method should be called in the constructor but this.tableName is not defined yet
@@ -23,102 +26,124 @@ class CoreDatamapper {
     // This idsLoader allows to order all results by id, for every query request
     this.idsLoader = this.client.query
       .from(this.tableName)
-      // TODO : Define types
-      .batch(async (query: any, ids: number[]) => {
+      .batch(async (query, ids) => {
         const rows = await query.whereIn('id', ids);
-        // TODO : Define types
         return ids.map((id) => rows.find((row: any) => row.id === id));
       });
   }
 
-  // TODO : Define types
-  async findByPk(id: number): Promise<any> {
-    const row = await this.client.query.from(this.tableName).where({ id }).first();
+  async findByPk<KQueryResult>(id: number): Promise<KQueryResult> {
+    const row = await this.client.query
+      .from(this.tableName)
+      .where({ id })
+      .first();
+
     return row;
   }
 
-  // = {} to accept default value if no args are passed
-  // TODO : Define types
-  async findAll(option: CoreDatamapperOptions = {}): Promise<any[]> {
+  async findAll<TQueryArgs extends AllFindAllArgs, KQueryResult>(
+    args?: TQueryArgs & { userEncoded?: string },
+  ): Promise<KQueryResult> {
     const query = this.client.query.from(this.tableName);
 
-    if (option.email) {
-      query.where({ email: option.email });
+    const {
+      filter,
+      limit,
+      userEncoded,
+    } = args || {};
+
+    if (limit) {
+      query.limit(limit);
     }
 
-    if (option.limit) {
-      query.limit(option.limit);
+    if (filter) {
+      const {
+        duration_filter: durationFilter,
+        release_year: releaseYear,
+        name: title,
+        liked,
+      } = filter;
+
+      if (durationFilter) {
+        await getDurationFilterQuery(query, durationFilter);
+      }
+
+      if (releaseYear) {
+        await getReleaseYearFilterQuery(query, releaseYear);
+      }
+
+      if (
+        liked != null
+        && userEncoded
+        && this.tableName === TableNamesEnum.SONG
+      ) {
+        await getLikedFilterQuery(query, userEncoded, liked);
+      }
+
+      if (
+        // Only song and album tables have title column
+        title && (
+          this.tableName === TableNamesEnum.SONG || this.tableName === TableNamesEnum.ALBUM
+        )) {
+        query.whereILike('title', `${title}%`);
+      }
     }
 
-    if (option.filter?.duration_filter === DurationRange.ONE_MINUTE) {
-      query.where('duration', '<=', convertFromMinuteToSecond(1));
-    }
+    const rowsFiltered = await query as KQueryResult;
 
-    if (option.filter?.duration_filter === DurationRange.ONE_TO_THREE_MINUTES) {
-      query.whereBetween('duration', [convertFromMinuteToSecond(1), convertFromMinuteToSecond(3)]);
-    }
-
-    if (option.filter?.duration_filter === DurationRange.THREE_TO_FIVE_MINUTES) {
-      query.whereBetween('duration', [convertFromMinuteToSecond(3), convertFromMinuteToSecond(5)]);
-    }
-
-    if (option.filter?.duration_filter === DurationRange.MORE_THAN_FIVE_MINUTES) {
-      query.where('duration', '>=', convertFromMinuteToSecond(5));
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_70)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_70, ReleaseYear.YEAR_80]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_80)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_80, ReleaseYear.YEAR_90]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_90)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_90, ReleaseYear.YEAR_2000]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2000)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_2000, ReleaseYear.YEAR_2010]);
-    }
-
-    if (option.filter?.release_year === getIndexFromEnumValue(ReleaseYear, ReleaseYear.YEAR_2010)) {
-      query.whereBetween('release_year', [ReleaseYear.YEAR_2010, ReleaseYear.YEAR_2010 + 10]);
-    }
-
-    const rows = await query;
-    return rows;
+    return rowsFiltered;
   }
 
-  // We have to add [] to the row with .returning('*') so it returns all we ask in the query
-  // TODO : Define types
-  async create(inputData: Record<string, any>): Promise<any> {
-    const [row] = await this.client.query.from(this.tableName).insert(inputData).returning('*');
-    return row;
-  }
+  async create<TQueryArgs extends AllCreateInputs, KQueryResult>(
+    input: TQueryArgs,
+  ): Promise<KQueryResult> {
+    const [result]: KQueryResult[] = await this.client.query
+      .from(this.tableName)
+      .insert(input)
+      .returning('*');
 
-  // TODO : Define types
-  async update(id: number, inputData: Record<string, any>): Promise<any> {
-    const [row] = await this.client.query.from(this.tableName).update(inputData).where({ id }).returning('*');
-    return row;
-  }
-
-  // TODO : Define types
-  async delete(id: number): Promise<any> {
-    const result = await this.client.query.from(this.tableName).where({ id }).del();
     return result;
   }
 
-  // ids had to be an array of ids = array of numbers
-  // TODO : Define types
-  async deleteMultiple(ids: number[]): Promise<any> {
-    const result = await this.client.query.from(this.tableName).whereIn('id', ids).del();
+  async update<TQueryArgs extends AllUpdateInputs, KQueryResult>(
+    id: number,
+    input: TQueryArgs,
+  ): Promise<KQueryResult> {
+    const [result]: KQueryResult[] = await this.client.query
+    // WIP - Bug here for the update album
+      .from(this.tableName)
+      .update(input)
+      .where({ id })
+      .returning('*');
+
     return result;
   }
 
-  async deleteMultipleAssociations(label: string, ids: number[]): Promise<any> {
-    const result = await this.client.query.from(this.tableName).whereIn(label, ids).del();
-    return result;
+  async delete(id: number) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .where({ id })
+      .del();
+
+    return checkIfDeleted({ result });
+  }
+
+  async deleteMultiple(ids: number[]) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .whereIn('id', ids)
+      .del();
+
+    return checkIfDeleted({ result });
+  }
+
+  async deleteMultipleAssociations(label: AssociationsToDelete, ids: number[]) {
+    const result = await this.client.query
+      .from(this.tableName)
+      .whereIn(label, ids)
+      .del();
+
+    return checkIfDeleted({ result });
   }
 }
 

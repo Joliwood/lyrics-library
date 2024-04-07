@@ -1,3 +1,5 @@
+import { type Resolvers } from '../../types/__generated_schemas__/graphql';
+
 import {
   Album,
   Artist,
@@ -7,7 +9,6 @@ import {
   Song,
   SongOnAlbum,
 } from '#resolvers';
-import { Resolvers } from '../../types/__generated_schemas__/graphql';
 
 const resolvers: Resolvers = {
   Album,

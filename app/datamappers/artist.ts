@@ -1,14 +1,26 @@
+import {
+  type Artist,
+  type ArtistUser,
+} from '../../types/__generated_schemas__/graphql';
+
 import { CoreDatamapper } from '#datamappers';
-import type { Artist } from '../../types/__generated_schemas__/graphql';
 
 class ArtistDatamapper extends CoreDatamapper {
-  tableName = 'artist';
-
-  async findBySong(songId: number): Promise<Artist> {
+  async findBySong(songId: number) {
     const artist: Artist = await (
       this.client.query
         .from(this.tableName)
         .where({ id: songId })
+        .first()
+    );
+    return artist;
+  }
+
+  async findByEmail(email: string) {
+    const artist: ArtistUser = await (
+      this.client.query
+        .from(this.tableName)
+        .where({ email })
         .first()
     );
     return artist;

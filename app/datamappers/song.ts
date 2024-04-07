@@ -1,9 +1,8 @@
-import { CoreDatamapper } from '#datamappers';
 import type { Song } from '../../types/__generated_schemas__/graphql';
 
-class SongDatamapper extends CoreDatamapper {
-  tableName = 'song';
+import { CoreDatamapper } from '#datamappers';
 
+class SongDatamapper extends CoreDatamapper {
   async findByAlbum(albumId: number): Promise<Song[]> {
     const songs: Song[] = await (
       this.client.query

@@ -1,4 +1,6 @@
-import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource';
+/* eslint-disable @typescript-eslint/lines-between-class-members */
+import { BatchedSQLDataSource, type BatchedSQLDataSourceProps } from '@nic-jennings/sql-datasource';
+
 import {
   AlbumDatamapper,
   ArtistDatamapper,
@@ -6,28 +8,50 @@ import {
   SongDatamapper,
   SongOnAlbumDatamapper,
 } from '#datamappers';
-import type { CoreDatamapperOptions, LyricsDbDatasourceConfigType } from '#types';
+import { TableNamesEnum } from '#enums';
 
 export default class LyricsDbDatasource extends BatchedSQLDataSource {
   albumDatamapper: AlbumDatamapper;
-
   artistDatamapper: ArtistDatamapper;
-
   artistLikeSongDatamapper: ArtistLikeSongDatamapper;
-
   songDatamapper: SongDatamapper;
-
   songOnAlbumDatamapper: SongOnAlbumDatamapper;
 
-  // TODO : Define types
-  constructor(config: CoreDatamapperOptions & LyricsDbDatasourceConfigType & { cache: any }) {
+  constructor(
+    config: BatchedSQLDataSourceProps,
+  ) {
     super(config);
-    this.albumDatamapper = new AlbumDatamapper(this.db);
-    this.artistDatamapper = new ArtistDatamapper(this.db);
-    this.artistLikeSongDatamapper = new ArtistLikeSongDatamapper(this.db);
-    this.songDatamapper = new SongDatamapper(this.db);
-    this.songOnAlbumDatamapper = new SongOnAlbumDatamapper(this.db);
+    const { db: client } = this;
 
+    this.albumDatamapper = new AlbumDatamapper(
+      client,
+      TableNamesEnum.ALBUM,
+    );
+
+    this.artistDatamapper = new ArtistDatamapper(
+      client,
+      TableNamesEnum.ARTIST,
+    );
+
+    this.artistLikeSongDatamapper = new ArtistLikeSongDatamapper(
+      client,
+      TableNamesEnum.ARTIST_LIKE_SONG,
+    );
+
+    this.songDatamapper = new SongDatamapper(
+      client,
+      TableNamesEnum.SONG,
+    );
+
+    this.songOnAlbumDatamapper = new SongOnAlbumDatamapper(
+      client,
+      TableNamesEnum.SONG_ON_ALBUM,
+    );
+
+    this.initDatamappers();
+  }
+
+  private initDatamappers() {
     this.albumDatamapper.init();
     this.artistDatamapper.init();
     this.artistLikeSongDatamapper.init();
