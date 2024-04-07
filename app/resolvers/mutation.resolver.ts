@@ -82,6 +82,15 @@ const Mutation: MutationResolvers<GraphQLContext> = {
   },
 
   async deleteAlbum(_, args, { dataSources }) {
+    const songOnAlbumsToDelete = await dataSources
+      .lyricsdb
+      .songOnAlbumDatamapper
+      .deleteByAlbum([args.id]);
+
+    if (!songOnAlbumsToDelete) {
+      throw new GraphQLError('Could not delete the songs on the album');
+    }
+
     const result = await dataSources
       .lyricsdb
       .albumDatamapper
