@@ -1,5 +1,5 @@
 type Album {
-  artist: Artist!
+  artist: Artist
   artist_id: Int
   cover: String
   id: Int!

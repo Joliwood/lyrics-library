@@ -40,3 +40,7 @@ input ArtistUpdateInput {
   country: String
   # songs: [Song]
 }
+
+input ArtistFilterInput {
+  name: String
+}

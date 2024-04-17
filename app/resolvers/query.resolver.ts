@@ -17,24 +17,24 @@ const Query: QueryResolvers<GraphQLContext> = {
   async albums(_, args, { dataSources }) {
     const { limit, filter } = args;
 
-    const rows = await dataSources
+    const albums = await dataSources
       .lyricsdb
       .albumDatamapper
       .findAll<typeof args, Album[]>({ limit, filter });
 
-    return rows;
+    return albums;
   },
 
   async album(_, args, { dataSources }) {
     // All findByPk can be replace here by idsLoader to use same method most of the time
     // but for single query, it will not improve speed response
-    const row = await dataSources
+    const album = await dataSources
       .lyricsdb
       .albumDatamapper
       .idsLoader
       .load(args.id);
 
-    return row;
+    return album;
   },
 
   async songs(_, args, { dataSources, userEncoded }) {

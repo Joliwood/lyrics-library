@@ -1,5 +1,5 @@
 type Album {
-  artist: Artist!
+  artist: Artist
   artist_id: Int
   cover: String
   id: Int!
@@ -79,6 +79,9 @@ input ArtistUpdateInput {
   # songs: [Song]
 }
 
+input ArtistFilterInput {
+  name: String
+}
 type Song {
   artist: Artist
   artist_id: Int
@@ -141,7 +144,7 @@ type Query {
   album(id: Int!): Album
   albums(limit: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
-  artists: [Artist]
+  artists(limit: Int, filter: ArtistFilterInput): [Artist]
   song(id: Int!): Song
   songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
