@@ -9,6 +9,7 @@ import {
   type MutationResolvers,
   type Song,
   type SongOnAlbum,
+  type ArtistCreateInput,
   // type SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
@@ -255,6 +256,29 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       .update<typeof input, Song>(songId, args.input);
 
     return song;
+  },
+
+  async addArtist(_, args, { dataSources }) {
+    const {
+      country,
+      email,
+      name,
+      password,
+      picture,
+    } = args.input;
+
+    const artist = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .create<ArtistCreateInput, Artist>({
+      country,
+      email,
+      name,
+      password,
+      picture,
+    });
+
+    return artist;
   },
 };
 

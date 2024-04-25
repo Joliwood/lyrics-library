@@ -35,4 +35,5 @@ enum ReleaseYear {
 
 input AlbumFilterInput {
   release_year: ReleaseYear
+  name: String
 }

@@ -44,3 +44,11 @@ input ArtistUpdateInput {
 input ArtistFilterInput {
   name: String
 }
+
+input ArtistCreateInput {
+  email: String!
+  password: String!
+  name: String!
+  country: String
+  picture: String
+}

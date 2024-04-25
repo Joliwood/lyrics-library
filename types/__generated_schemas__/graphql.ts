@@ -35,6 +35,7 @@ export type AlbumCreateInput = {
 };
 
 export type AlbumFilterInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<ReleaseYear>;
 };
 
@@ -54,6 +55,14 @@ export type Artist = {
   name: Scalars['String']['output'];
   picture?: Maybe<Scalars['String']['output']>;
   songs?: Maybe<Array<Maybe<Song>>>;
+};
+
+export type ArtistCreateInput = {
+  country?: InputMaybe<Scalars['String']['input']>;
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  picture?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ArtistFilterInput = {
@@ -106,6 +115,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAlbum?: Maybe<Album>;
+  addArtist?: Maybe<Artist>;
   addSong?: Maybe<Song>;
   deleteAlbum?: Maybe<Scalars['Boolean']['output']>;
   deleteArtist?: Maybe<Scalars['Boolean']['output']>;
@@ -120,6 +130,11 @@ export type Mutation = {
 
 export type MutationAddAlbumArgs = {
   input: AlbumCreateInput;
+};
+
+
+export type MutationAddArtistArgs = {
+  input: ArtistCreateInput;
 };
 
 
@@ -351,6 +366,7 @@ export type ResolversTypes = {
   AlbumFilterInput: AlbumFilterInput;
   AlbumUpdateInput: AlbumUpdateInput;
   Artist: ResolverTypeWrapper<Artist>;
+  ArtistCreateInput: ArtistCreateInput;
   ArtistFilterInput: ArtistFilterInput;
   ArtistLikeSong: ResolverTypeWrapper<ArtistLikeSong>;
   ArtistUpdateInput: ArtistUpdateInput;
@@ -378,6 +394,7 @@ export type ResolversParentTypes = {
   AlbumFilterInput: AlbumFilterInput;
   AlbumUpdateInput: AlbumUpdateInput;
   Artist: Artist;
+  ArtistCreateInput: ArtistCreateInput;
   ArtistFilterInput: ArtistFilterInput;
   ArtistLikeSong: ArtistLikeSong;
   ArtistUpdateInput: ArtistUpdateInput;
@@ -443,6 +460,7 @@ export type JwtResolvers<ContextType = any, ParentType extends ResolversParentTy
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addAlbum?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<MutationAddAlbumArgs, 'input'>>;
+  addArtist?: Resolver<Maybe<ResolversTypes['Artist']>, ParentType, ContextType, RequireFields<MutationAddArtistArgs, 'input'>>;
   addSong?: Resolver<Maybe<ResolversTypes['Song']>, ParentType, ContextType, RequireFields<MutationAddSongArgs, 'input'>>;
   deleteAlbum?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteAlbumArgs, 'id'>>;
   deleteArtist?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteArtistArgs, 'id'>>;
