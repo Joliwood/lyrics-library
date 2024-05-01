@@ -7,7 +7,8 @@ class SongDatamapper extends CoreDatamapper {
     const songs: Song[] = await (
       this.client.query
         .from(this.tableName)
-        .where({ id: albumId })
+        .join('song_on_album', 'song.id', 'song_on_album.song_id')
+        .where({ 'song_on_album.album_id': albumId })
     );
     return songs;
   }

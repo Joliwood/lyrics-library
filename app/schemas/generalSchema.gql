@@ -1,5 +1,5 @@
 type Album {
-  artist: Artist!
+  artist: Artist
   artist_id: Int
   cover: String
   id: Int!
@@ -35,6 +35,7 @@ enum ReleaseYear {
 
 input AlbumFilterInput {
   release_year: ReleaseYear
+  name: String
 }
 type Artist {
   # email row exists in table but is visible only to the artist himself
@@ -79,6 +80,17 @@ input ArtistUpdateInput {
   # songs: [Song]
 }
 
+input ArtistFilterInput {
+  name: String
+}
+
+input ArtistCreateInput {
+  email: String!
+  password: String!
+  name: String!
+  country: String
+  picture: String
+}
 type Song {
   artist: Artist
   artist_id: Int
@@ -141,7 +153,7 @@ type Query {
   album(id: Int!): Album
   albums(limit: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
-  artists: [Artist]
+  artists(limit: Int, filter: ArtistFilterInput): [Artist]
   song(id: Int!): Song
   songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
@@ -152,14 +164,18 @@ type Mutation {
   # -- Create -- #
   addAlbum(input: AlbumCreateInput!): Album
   addSong(input: SongCreateInput!): Song
+  addArtist(input: ArtistCreateInput!): Artist
+
   # -- Update -- #
   updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
   updateArtist(input: ArtistUpdateInput!): Artist
   updateSong(songId: Int!, input: SongUpdateInput!): Song
+
   # -- Delete -- #
   deleteAlbum(id: Int!): Boolean
   deleteArtist(id: Int!): Boolean
   deleteSongs(ids: [Int!]!): Boolean
+
   # -- Others -- #
   likeSong(id: Int!): Boolean
   unlikeSong(id: Int!): Boolean

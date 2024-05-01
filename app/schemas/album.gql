@@ -1,5 +1,5 @@
 type Album {
-  artist: Artist!
+  artist: Artist
   artist_id: Int
   cover: String
   id: Int!
@@ -35,4 +35,5 @@ enum ReleaseYear {
 
 input AlbumFilterInput {
   release_year: ReleaseYear
+  name: String
 }
