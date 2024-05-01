@@ -2,7 +2,7 @@ type Query {
   album(id: Int!): Album
   albums(limit: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
-  artists: [Artist]
+  artists(limit: Int, filter: ArtistFilterInput): [Artist]
   song(id: Int!): Song
   songs(limit: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT

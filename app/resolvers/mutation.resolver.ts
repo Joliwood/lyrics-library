@@ -9,7 +9,7 @@ import {
   type MutationResolvers,
   type Song,
   type SongOnAlbum,
-  // type SongOnAlbum,
+  type ArtistCreateInput,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
@@ -264,6 +264,51 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       .update<typeof input, Song>(songId, args.input);
 
     return song;
+  },
+
+  async addArtist(_, args, { dataSources }) {
+    const {
+      country,
+      email,
+      name,
+      password,
+      picture,
+    } = args.input;
+
+    const existingArtistName = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByName(name);
+
+    if (existingArtistName) {
+      throw new GraphQLError('An artist with this name already exists', {
+        extensions: { code: 'ARTIST_NAME_ALREADY_EXISTS' },
+      });
+    }
+
+    const existingArtistEmail = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByEmail(email);
+
+    if (existingArtistEmail) {
+      throw new GraphQLError('An artist with this email already exists', {
+        extensions: { code: 'ARTIST_EMAIL_ALREADY_EXISTS' },
+      });
+    }
+
+    const artist = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .create<ArtistCreateInput, Artist>({
+      country,
+      email,
+      name,
+      password,
+      picture,
+    });
+
+    return artist;
   },
 };
 

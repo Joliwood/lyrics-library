@@ -24,6 +24,7 @@ const Album: AlbumResolvers<GraphQLContext> = {
         .songDatamapper
         .findByAlbum(parent.id)
     );
+
     return songs;
   },
 };

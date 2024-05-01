@@ -1,6 +1,7 @@
 import { type IncomingMessage } from 'http';
 
 import {
+  type ArtistCreateInput,
   type AlbumUpdateInput,
   type ArtistLikeSong,
   type ArtistUpdateInput,
@@ -61,6 +62,7 @@ export type AllCreateInputs<TQueryArgs =
 | ArtistLikeSong
 | SongCreateInput
 | SongOnAlbum
+| ArtistCreateInput
 ,> = TQueryArgs;
 
 export type AllUpdateInputs<TQueryArgs = Partial<
