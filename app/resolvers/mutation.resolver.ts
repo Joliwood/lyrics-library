@@ -267,6 +267,28 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       picture,
     } = args.input;
 
+    const existingArtistName = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByName(name);
+
+    if (existingArtistName) {
+      throw new GraphQLError('An artist with this name already exists', {
+        extensions: { code: 'ARTIST_NAME_ALREADY_EXISTS' },
+      });
+    }
+
+    const existingArtistEmail = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByEmail(email);
+
+    if (existingArtistEmail) {
+      throw new GraphQLError('An artist with this email already exists', {
+        extensions: { code: 'ARTIST_EMAIL_ALREADY_EXISTS' },
+      });
+    }
+
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
