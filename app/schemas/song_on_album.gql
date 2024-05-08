@@ -3,3 +3,9 @@ type SongOnAlbum {
   song_id: Int!
   position: Int!
 }
+
+input SongOnAlbumInput {
+  album_id: Int!
+  song_id: Int!
+  position: Int!
+}

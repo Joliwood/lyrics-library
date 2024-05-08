@@ -13,7 +13,7 @@
     "build": "tsc && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "check:full": "yarn typescript && yarn eslint",
     "compile": "graphql-codegen --config codegen.ts",
-    "dev": "set DEBUG=app:*,knex* && nodemon --ext ts --exec ts-node ./app/index.ts",
+    "dev": "nodemon --ext ts --exec ts-node ./app/index.ts",
     "eslint": "eslint .",
     "generate:schema": "ts-node ./app/services/schemaMerger.ts && copyfiles ./app/schemas/*.gql schemas/*.gql dist/",
     "knex:migration": "knex migrate:make update_the_name",

@@ -23,6 +23,7 @@ export type Album = {
   cover?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   release_year?: Maybe<Scalars['Int']['output']>;
+  songOnAlbum?: Maybe<Array<Maybe<SongOnAlbum>>>;
   songs?: Maybe<Array<Maybe<Song>>>;
   title: Scalars['String']['output'];
 };
@@ -31,6 +32,7 @@ export type AlbumCreateInput = {
   cover?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<Scalars['Int']['input']>;
   songIds: Array<Scalars['Int']['input']>;
+  songOnAlbum: Array<SongOnAlbumInput>;
   title: Scalars['String']['input'];
 };
 
@@ -282,6 +284,12 @@ export type SongOnAlbum = {
   song_id: Scalars['Int']['output'];
 };
 
+export type SongOnAlbumInput = {
+  album_id: Scalars['Int']['input'];
+  position: Scalars['Int']['input'];
+  song_id: Scalars['Int']['input'];
+};
+
 export type SongUpdateInput = {
   cover?: InputMaybe<Scalars['String']['input']>;
   duration?: InputMaybe<Scalars['Int']['input']>;
@@ -383,6 +391,7 @@ export type ResolversTypes = {
   SongCreateInput: SongCreateInput;
   SongFilterInput: SongFilterInput;
   SongOnAlbum: ResolverTypeWrapper<SongOnAlbum>;
+  SongOnAlbumInput: SongOnAlbumInput;
   SongUpdateInput: SongUpdateInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
@@ -409,6 +418,7 @@ export type ResolversParentTypes = {
   SongCreateInput: SongCreateInput;
   SongFilterInput: SongFilterInput;
   SongOnAlbum: SongOnAlbum;
+  SongOnAlbumInput: SongOnAlbumInput;
   SongUpdateInput: SongUpdateInput;
   String: Scalars['String']['output'];
 };
@@ -419,6 +429,7 @@ export type AlbumResolvers<ContextType = any, ParentType extends ResolversParent
   cover?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   release_year?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  songOnAlbum?: Resolver<Maybe<Array<Maybe<ResolversTypes['SongOnAlbum']>>>, ParentType, ContextType>;
   songs?: Resolver<Maybe<Array<Maybe<ResolversTypes['Song']>>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

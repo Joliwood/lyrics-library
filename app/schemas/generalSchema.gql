@@ -6,6 +6,7 @@ type Album {
   release_year: Int
   songs: [Song]
   title: String!
+  songOnAlbum: [SongOnAlbum]
 }
 
 input AlbumCreateInput {
@@ -13,6 +14,7 @@ input AlbumCreateInput {
   release_year: Int
   songIds: [Int!]!
   title: String!
+  songOnAlbum: [SongOnAlbumInput!]!
 }
 
 input AlbumUpdateInput {
@@ -144,6 +146,11 @@ type SongOnAlbum {
   position: Int!
 }
 
+input SongOnAlbumInput {
+  album_id: Int!
+  song_id: Int!
+  position: Int!
+}
 type ArtistLikeSong {
   artist_id: Int!
   song_id: Int!
