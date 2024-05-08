@@ -147,7 +147,6 @@ type SongOnAlbum {
 }
 
 input SongOnAlbumInput {
-  album_id: Int!
   song_id: Int!
   position: Int!
 }

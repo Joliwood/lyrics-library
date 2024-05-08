@@ -285,7 +285,6 @@ export type SongOnAlbum = {
 };
 
 export type SongOnAlbumInput = {
-  album_id: Scalars['Int']['input'];
   position: Scalars['Int']['input'];
   song_id: Scalars['Int']['input'];
 };
