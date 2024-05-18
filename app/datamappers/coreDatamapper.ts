@@ -5,6 +5,7 @@ import {
   getReleaseYearFilterQuery,
   getLikedFilterQuery,
   checkIfDeleted,
+  getCreatedByUserFilterQuery,
 } from '#utils';
 import { type AssociationsToDelete, TableNamesEnum } from '#enums';
 import { type AllUpdateInputs, type AllCreateInputs, type AllFindAllArgs } from '#types';
@@ -62,6 +63,7 @@ class CoreDatamapper {
         release_year: releaseYear,
         name: title,
         liked,
+        createdByUser,
       } = filter;
 
       if (durationFilter) {
@@ -70,6 +72,13 @@ class CoreDatamapper {
 
       if (releaseYear) {
         await getReleaseYearFilterQuery(query, releaseYear);
+      }
+
+      if (createdByUser != null && (
+        this.tableName === TableNamesEnum.SONG
+        || this.tableName === TableNamesEnum.ALBUM
+      )) {
+        await getCreatedByUserFilterQuery(query, createdByUser, userEncoded);
       }
 
       if (

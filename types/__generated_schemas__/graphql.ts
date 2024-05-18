@@ -35,6 +35,7 @@ export type AlbumCreateInput = {
 };
 
 export type AlbumFilterInput = {
+  createdByUser?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   release_year?: InputMaybe<ReleaseYear>;
 };
@@ -270,6 +271,7 @@ export type SongCreateInput = {
 };
 
 export type SongFilterInput = {
+  createdByUser?: InputMaybe<Scalars['Boolean']['input']>;
   duration_filter?: InputMaybe<DurationRange>;
   liked?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;

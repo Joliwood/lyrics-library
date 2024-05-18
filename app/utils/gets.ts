@@ -92,3 +92,21 @@ export function getLikedFilterQuery(
     'artist_like_song.song_id',
   ).whereNot('artist_like_song.artist_id', artistId);
 }
+
+export function getCreatedByUserFilterQuery(
+  query: Knex.QueryBuilder,
+  createdByUser: boolean,
+  userEncoded: string | undefined,
+) {
+  const artistId = checkAuthentification({ userEncoded });
+
+  if (artistId == null) {
+    return null;
+  }
+
+  if (!createdByUser) {
+    return query.whereNot('artist_id', artistId);
+  }
+
+  return query.where('artist_id', artistId);
+}
