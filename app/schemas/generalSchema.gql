@@ -38,6 +38,7 @@ input AlbumFilterInput {
   name: String
   createdByUser: Boolean
 }
+
 type Artist {
   # email row exists in table but is visible only to the artist himself
   # email: String
