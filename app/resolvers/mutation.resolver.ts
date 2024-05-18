@@ -10,7 +10,6 @@ import {
   type Song,
   type SongOnAlbum,
   type ArtistCreateInput,
-  // type SongOnAlbum,
 } from '../../types/__generated_schemas__/graphql';
 
 import { checkAuthentification } from '#utils';
@@ -83,6 +82,15 @@ const Mutation: MutationResolvers<GraphQLContext> = {
   },
 
   async deleteAlbum(_, args, { dataSources }) {
+    const songOnAlbumsToDelete = await dataSources
+      .lyricsdb
+      .songOnAlbumDatamapper
+      .deleteByAlbum([args.id]);
+
+    if (!songOnAlbumsToDelete) {
+      throw new GraphQLError('Could not delete the songs on the album');
+    }
+
     const result = await dataSources
       .lyricsdb
       .albumDatamapper
@@ -266,6 +274,28 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       password,
       picture,
     } = args.input;
+
+    const existingArtistName = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByName(name);
+
+    if (existingArtistName) {
+      throw new GraphQLError('An artist with this name already exists', {
+        extensions: { code: 'ARTIST_NAME_ALREADY_EXISTS' },
+      });
+    }
+
+    const existingArtistEmail = await dataSources
+      .lyricsdb
+      .artistDatamapper
+      .findByEmail(email);
+
+    if (existingArtistEmail) {
+      throw new GraphQLError('An artist with this email already exists', {
+        extensions: { code: 'ARTIST_EMAIL_ALREADY_EXISTS' },
+      });
+    }
 
     const artist = await dataSources
       .lyricsdb

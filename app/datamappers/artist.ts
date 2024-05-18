@@ -25,6 +25,16 @@ class ArtistDatamapper extends CoreDatamapper {
     );
     return artist;
   }
+
+  async findByName(name: string) {
+    const artist: ArtistUser = await (
+      this.client.query
+        .from(this.tableName)
+        .where({ name })
+        .first()
+    );
+    return artist;
+  }
 }
 
 export default ArtistDatamapper;

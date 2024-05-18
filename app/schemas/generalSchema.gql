@@ -38,7 +38,9 @@ enum ReleaseYear {
 input AlbumFilterInput {
   release_year: ReleaseYear
   name: String
+  createdByUser: Boolean
 }
+
 type Artist {
   # email row exists in table but is visible only to the artist himself
   # email: String
@@ -130,6 +132,7 @@ input SongFilterInput {
   duration_filter: DurationRange
   name: String
   liked: Boolean
+  createdByUser: Boolean
 }
 
 input SongUpdateInput {
