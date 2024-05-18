@@ -35,6 +35,7 @@ input SongFilterInput {
   duration_filter: DurationRange
   name: String
   liked: Boolean
+  createdByUser: Boolean
 }
 
 input SongUpdateInput {
