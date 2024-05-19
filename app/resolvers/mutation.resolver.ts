@@ -140,8 +140,12 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     return artist;
   },
 
-  async deleteArtist(_, args, { dataSources }) {
-    const artistId = args.id;
+  async deleteArtist(_, __, { dataSources, userEncoded }) {
+    const artistId = checkAuthentification({ userEncoded });
+
+    if (artistId == null) {
+      throw new Error('You must be logged in to like a song');
+    }
 
     // Find all albums to delete with the artist id
     const albums = await dataSources
