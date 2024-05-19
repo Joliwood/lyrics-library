@@ -38,7 +38,6 @@ input AlbumFilterInput {
   name: String
   createdByUser: Boolean
 }
-
 type Artist {
   # email row exists in table but is visible only to the artist himself
   # email: String
@@ -176,7 +175,7 @@ type Mutation {
 
   # -- Delete -- #
   deleteAlbum(id: Int!): Boolean
-  deleteArtist(id: Int!): Boolean
+  deleteArtist: Boolean
   deleteSongs(ids: [Int!]!): Boolean
 
   # -- Others -- #
