@@ -38,6 +38,7 @@ enum ReleaseYear {
 input AlbumFilterInput {
   release_year: ReleaseYear
   name: String
+  createdByUser: Boolean
 }
 type Artist {
   # email row exists in table but is visible only to the artist himself
@@ -130,6 +131,7 @@ input SongFilterInput {
   duration_filter: DurationRange
   name: String
   liked: Boolean
+  createdByUser: Boolean
 }
 
 input SongUpdateInput {
@@ -179,7 +181,7 @@ type Mutation {
 
   # -- Delete -- #
   deleteAlbum(id: Int!): Boolean
-  deleteArtist(id: Int!): Boolean
+  deleteArtist: Boolean
   deleteSongs(ids: [Int!]!): Boolean
 
   # -- Others -- #

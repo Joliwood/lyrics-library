@@ -14,13 +14,13 @@ import { checkAuthentification, isEqual } from '#utils';
 import { type GraphQLContext } from '#types';
 
 const Query: QueryResolvers<GraphQLContext> = {
-  async albums(_, args, { dataSources }) {
+  async albums(_, args, { dataSources, userEncoded }) {
     const { limit, filter } = args;
 
     const albums = await dataSources
       .lyricsdb
       .albumDatamapper
-      .findAll<typeof args, Album[]>({ limit, filter });
+      .findAll<typeof args, Album[]>({ limit, filter, userEncoded });
 
     return albums;
   },
