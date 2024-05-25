@@ -176,7 +176,7 @@ type Mutation {
 
   # -- Delete -- #
   deleteAlbum(id: Int!): Boolean
-  deleteArtist(id: Int!): Boolean
+  deleteArtist: Boolean
   deleteSongs(ids: [Int!]!): Boolean
 
   # -- Others -- #
