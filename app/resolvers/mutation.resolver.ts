@@ -113,7 +113,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       throw new Error('You must be logged in to add a song');
     }
 
-    const songToCreate = await dataSources
+    const song = await dataSources
       .lyricsdb
       .songDatamapper
       .create<typeof args['input'], Song>(
@@ -126,12 +126,6 @@ const Mutation: MutationResolvers<GraphQLContext> = {
         release_year,
       },
     );
-
-    // WIP
-    const song = await dataSources
-      .lyricsdb
-      .songDatamapper
-      .findByPk<Song>(songToCreate.id);
 
     return song;
   },
