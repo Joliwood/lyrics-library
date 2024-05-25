@@ -104,6 +104,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       duration,
       lyrics,
       title,
+      release_year,
     } = args.input;
 
     const artistId = checkAuthentification({ userEncoded });
@@ -112,16 +113,25 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       throw new Error('You must be logged in to add a song');
     }
 
+    const songToCreate = await dataSources
+      .lyricsdb
+      .songDatamapper
+      .create<typeof args['input'], Song>(
+      {
+        artist_id: artistId,
+        cover,
+        duration,
+        lyrics,
+        title,
+        release_year,
+      },
+    );
+
+    // WIP
     const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create<typeof args['input'], Song>({
-      artist_id: artistId,
-      cover,
-      duration,
-      lyrics,
-      title,
-    });
+      .findByPk<Song>(songToCreate.id);
 
     return song;
   },
