@@ -16,11 +16,15 @@ const Song: SongResolvers<GraphQLContext> = {
   // },
 
   async artist(parent, _, { dataSources }) {
+    if (parent.artist_id == null) {
+      return null;
+    }
+
     const artist = await (
       dataSources
         .lyricsdb
         .artistDatamapper
-        .findBySong(parent.id)
+        .findBySong(parent.artist_id)
     );
     return artist;
   },

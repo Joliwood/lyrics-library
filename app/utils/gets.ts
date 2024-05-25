@@ -1,12 +1,8 @@
 import { type Knex } from 'knex';
 
-// import { type SongFilterInput } from '../../types/__generated_schemas__/graphql';
-
 import { DurationRange, ReleaseYear } from '../../types/__generated_schemas__/graphql';
 
-// import { ReleaseYear } from '#enums';
 import { checkAuthentification, convertFromMinuteToSecond } from '#utils';
-// import { type FilterTypes } from '#types';
 
 export function getIndexFromEnumValue(
   enumType: { [x: string]: any },
@@ -45,24 +41,24 @@ export function getReleaseYearFilterQuery(
   query: Knex.QueryBuilder,
   releaseYear: ReleaseYear,
 ) {
-  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_70)) {
-    return query.whereBetween('release_year', [ReleaseYear.Year_70, ReleaseYear.Year_80]);
+  if (releaseYear === ReleaseYear.Year_70) {
+    return query.whereBetween('release_year', [1970, 1980]);
   }
 
-  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_80)) {
-    return query.whereBetween('release_year', [ReleaseYear.Year_80, ReleaseYear.Year_90]);
+  if (releaseYear === ReleaseYear.Year_80) {
+    return query.whereBetween('release_year', [1980, 1990]);
   }
 
-  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_90)) {
-    return query.whereBetween('release_year', [ReleaseYear.Year_90, ReleaseYear.Year_2000]);
+  if (releaseYear === ReleaseYear.Year_90) {
+    return query.whereBetween('release_year', [1990, 2000]);
   }
 
-  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_2000)) {
-    return query.whereBetween('release_year', [ReleaseYear.Year_2000, ReleaseYear.Year_2010]);
+  if (releaseYear === ReleaseYear.Year_2000) {
+    return query.whereBetween('release_year', [2000, 2010]);
   }
 
-  if (releaseYear === getIndexFromEnumValue(ReleaseYear, ReleaseYear.Year_2010)) {
-    return query.whereBetween('release_year', [ReleaseYear.Year_2010, ReleaseYear.Year_2010 + 10]);
+  if (releaseYear === ReleaseYear.Year_2010) {
+    return query.whereBetween('release_year', [2010, 2020]);
   }
 
   return null;

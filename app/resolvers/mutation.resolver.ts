@@ -104,6 +104,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       duration,
       lyrics,
       title,
+      release_year,
     } = args.input;
 
     const artistId = checkAuthentification({ userEncoded });
@@ -115,13 +116,16 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create<typeof args['input'], Song>({
-      artist_id: artistId,
-      cover,
-      duration,
-      lyrics,
-      title,
-    });
+      .create<typeof args['input'], Song>(
+      {
+        artist_id: artistId,
+        cover,
+        duration,
+        lyrics,
+        title,
+        release_year,
+      },
+    );
 
     return song;
   },
