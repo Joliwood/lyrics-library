@@ -33,11 +33,8 @@ input ArtistUpdateInput {
   email: String
   password: String
   picture: String
-  # the favorite input will be in artist_like_song schema
-  # favorites: [SongOnAlbum]
   name: String
   country: String
-  # songs: [Song]
 }
 
 input ArtistFilterInput {
