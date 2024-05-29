@@ -51,6 +51,7 @@ export type Artist = {
   __typename?: 'Artist';
   albums?: Maybe<Array<Maybe<Album>>>;
   country?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
   favorites?: Maybe<Array<Maybe<ArtistLikeSong>>>;
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
@@ -423,6 +424,7 @@ export type AlbumResolvers<ContextType = any, ParentType extends ResolversParent
 export type ArtistResolvers<ContextType = any, ParentType extends ResolversParentTypes['Artist'] = ResolversParentTypes['Artist']> = {
   albums?: Resolver<Maybe<Array<Maybe<ResolversTypes['Album']>>>, ParentType, ContextType>;
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   favorites?: Resolver<Maybe<Array<Maybe<ResolversTypes['ArtistLikeSong']>>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
