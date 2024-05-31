@@ -12,7 +12,7 @@ import {
   type ArtistCreateInput,
 } from '../../types/__generated_schemas__/graphql';
 
-import { checkAuthentification } from '#utils';
+import { checkAuthentification, hashPassword } from '#utils';
 import { type GraphQLContext } from '#types';
 import { AssociationsToDelete } from '#enums';
 
@@ -328,6 +328,8 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       });
     }
 
+    const hashedPassword = await hashPassword(password);
+
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
@@ -335,7 +337,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       country,
       email,
       name,
-      password,
+      password: hashedPassword,
       picture,
     });
 
