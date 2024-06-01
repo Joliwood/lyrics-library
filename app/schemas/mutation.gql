@@ -5,7 +5,7 @@ type Mutation {
   addArtist(input: ArtistCreateInput!): Artist
 
   # -- Update -- #
-  updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
+  updateAlbum(albumId: Int!, input: AlbumUpdateInput!): Album
   updateArtist(input: ArtistUpdateInput!): Artist
   updateSong(songId: Int!, input: SongUpdateInput!): Song
 

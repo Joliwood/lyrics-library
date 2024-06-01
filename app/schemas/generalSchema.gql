@@ -40,8 +40,7 @@ input AlbumFilterInput {
 }
 
 type Artist {
-  # email row exists in table but is visible only to the artist himself
-  # email: String
+  email: String
   albums: [Album]
   country: String
   favorites: [ArtistLikeSong]
@@ -75,11 +74,8 @@ input ArtistUpdateInput {
   email: String
   password: String
   picture: String
-  # the favorite input will be in artist_like_song schema
-  # favorites: [SongOnAlbum]
   name: String
   country: String
-  # songs: [Song]
 }
 
 input ArtistFilterInput {
@@ -170,7 +166,7 @@ type Mutation {
   addArtist(input: ArtistCreateInput!): Artist
 
   # -- Update -- #
-  updateAlbum(albumId: Int!, albumArtistId: Int!, input: AlbumUpdateInput!): Album
+  updateAlbum(albumId: Int!, input: AlbumUpdateInput!): Album
   updateArtist(input: ArtistUpdateInput!): Artist
   updateSong(songId: Int!, input: SongUpdateInput!): Song
 
