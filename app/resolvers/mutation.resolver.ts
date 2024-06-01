@@ -12,7 +12,7 @@ import {
   type ArtistCreateInput,
 } from '../../types/__generated_schemas__/graphql';
 
-import { checkAuthentification } from '#utils';
+import { checkAuthentification, hashPassword } from '#utils';
 import { type GraphQLContext } from '#types';
 import { AssociationsToDelete } from '#enums';
 
@@ -29,13 +29,10 @@ const Mutation: MutationResolvers<GraphQLContext> = {
   },
 
   async updateAlbum(_, args, { dataSources, userEncoded }) {
-    const artistId = checkAuthentification({ userEncoded });
     const {
       albumId,
-      albumArtistId,
       input,
     } = args;
-
     const {
       cover,
       release_year,
@@ -43,9 +40,18 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       songIds,
     } = input;
 
+    const artistId = checkAuthentification({ userEncoded });
+
     if (artistId == null) {
       throw new GraphQLError('You must be logged in to update an album');
     }
+
+    const album = await dataSources
+      .lyricsdb
+      .albumDatamapper
+      .findByPk<Album>(albumId);
+
+    const { artist_id: albumArtistId } = album;
 
     if (albumArtistId !== artistId) {
       throw new GraphQLError('You can only update your own albums');
@@ -73,23 +79,23 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       }
     }
 
-    const album = await dataSources
+    const albumUpdated = await dataSources
       .lyricsdb
       .albumDatamapper
       .update<typeof args['input'], Album>(albumId, { cover, release_year, title });
 
-    return album;
+    return albumUpdated;
   },
 
   async deleteAlbum(_, args, { dataSources }) {
-    const songOnAlbumsToDelete = await dataSources
+    await dataSources
       .lyricsdb
       .songOnAlbumDatamapper
       .deleteByAlbum([args.id]);
 
-    if (!songOnAlbumsToDelete) {
-      throw new GraphQLError('Could not delete the songs on the album');
-    }
+    // if (!songOnAlbumsToDelete) {
+    //   throw new GraphQLError('Could not delete the songs on the album');
+    // }
 
     const result = await dataSources
       .lyricsdb
@@ -104,6 +110,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       duration,
       lyrics,
       title,
+      release_year,
     } = args.input;
 
     const artistId = checkAuthentification({ userEncoded });
@@ -115,13 +122,16 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     const song = await dataSources
       .lyricsdb
       .songDatamapper
-      .create<typeof args['input'], Song>({
-      artist_id: artistId,
-      cover,
-      duration,
-      lyrics,
-      title,
-    });
+      .create<typeof args['input'], Song>(
+      {
+        artist_id: artistId,
+        cover,
+        duration,
+        lyrics,
+        title,
+        release_year,
+      },
+    );
 
     return song;
   },
@@ -259,15 +269,32 @@ const Mutation: MutationResolvers<GraphQLContext> = {
     return true;
   },
 
-  async updateSong(_, args, { dataSources }) {
+  async updateSong(_, args, { dataSources, userEncoded }) {
     const { songId, input } = args;
+
+    const artistId = checkAuthentification({ userEncoded });
+
+    if (artistId == null) {
+      throw new Error('You must be logged in to update a song');
+    }
 
     const song = await dataSources
       .lyricsdb
       .songDatamapper
+      .findByPk<Song>(songId);
+
+    const { artist_id: songArtistId } = song;
+
+    if (songArtistId !== artistId) {
+      throw new GraphQLError('You can only update your own songs');
+    }
+
+    const songUpdated = await dataSources
+      .lyricsdb
+      .songDatamapper
       .update<typeof input, Song>(songId, args.input);
 
-    return song;
+    return songUpdated;
   },
 
   async addArtist(_, args, { dataSources }) {
@@ -301,6 +328,8 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       });
     }
 
+    const hashedPassword = await hashPassword(password);
+
     const artist = await dataSources
       .lyricsdb
       .artistDatamapper
@@ -308,7 +337,7 @@ const Mutation: MutationResolvers<GraphQLContext> = {
       country,
       email,
       name,
-      password,
+      password: hashedPassword,
       picture,
     });
 
