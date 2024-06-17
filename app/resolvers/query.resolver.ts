@@ -15,12 +15,19 @@ import { type GraphQLContext } from '#types';
 
 const Query: QueryResolvers<GraphQLContext> = {
   async albums(_, args, { dataSources, userEncoded }) {
-    const { limit, filter } = args;
+    const { limit, filter, offset } = args;
 
     const albums = await dataSources
       .lyricsdb
       .albumDatamapper
-      .findAll<typeof args, Album[]>({ limit, filter, userEncoded });
+      .findAll<typeof args, Album[]>(
+      {
+        filter,
+        limit,
+        offset,
+        userEncoded,
+      },
+    );
 
     return albums;
   },
@@ -38,11 +45,18 @@ const Query: QueryResolvers<GraphQLContext> = {
   },
 
   async songs(_, args, { dataSources, userEncoded }) {
-    const { limit, filter } = args;
+    const { limit, filter, offset } = args;
     const rows = await dataSources
       .lyricsdb
       .songDatamapper
-      .findAll<typeof args, Song[]>({ limit, filter, userEncoded });
+      .findAll<typeof args, Song[]>(
+      {
+        filter,
+        limit,
+        offset,
+        userEncoded,
+      },
+    );
 
     return rows;
   },

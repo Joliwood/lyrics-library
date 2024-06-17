@@ -38,7 +38,6 @@ input AlbumFilterInput {
   name: String
   createdByUser: Boolean
 }
-
 type Artist {
   email: String
   albums: [Album]
@@ -150,11 +149,11 @@ type ArtistLikeSong {
 
 type Query {
   album(id: Int!): Album
-  albums(limit: Int, filter: AlbumFilterInput): [Album]
+  albums(limit: Int, offset: Int, filter: AlbumFilterInput): [Album]
   artist(id: Int!): Artist
-  artists(limit: Int, filter: ArtistFilterInput): [Artist]
+  artists(filter: ArtistFilterInput): [Artist]
   song(id: Int!): Song
-  songs(limit: Int, filter: SongFilterInput): [Song]
+  songs(limit: Int, offset: Int, filter: SongFilterInput): [Song]
   login(input: LoginInput!): JWT
   profile: ArtistUser
 }
