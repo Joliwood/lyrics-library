@@ -202,6 +202,7 @@ export type QueryAlbumArgs = {
 export type QueryAlbumsArgs = {
   filter?: InputMaybe<AlbumFilterInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -212,7 +213,6 @@ export type QueryArtistArgs = {
 
 export type QueryArtistsArgs = {
   filter?: InputMaybe<ArtistFilterInput>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -229,6 +229,7 @@ export type QuerySongArgs = {
 export type QuerySongsArgs = {
   filter?: InputMaybe<SongFilterInput>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export enum ReleaseYear {

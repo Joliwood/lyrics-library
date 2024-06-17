@@ -50,11 +50,16 @@ class CoreDatamapper {
     const {
       filter,
       limit,
+      offset,
       userEncoded,
     } = args || {};
 
     if (limit) {
       query.limit(limit);
+    }
+
+    if (offset) {
+      query.offset(offset);
     }
 
     if (filter) {
